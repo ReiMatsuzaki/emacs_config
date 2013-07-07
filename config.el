@@ -120,6 +120,9 @@
 ;;==========buffer controll=====================
 ;; depend on windmove.el
 ;; depend on hiwin.el
+; win manage
+(load "~/.emacs.d/elisp/win-controll/win-controll.el")
+
 (require 'windmove)
 (defun buffer-flip-chose-direction (direction)
   (flet ((buffer-flip (win1 win2)
@@ -161,8 +164,6 @@
       (buffer-control-ui))))
 
 (define-key global-map (kbd "C-t") 'buffer-control-ui)
-
-
 
 ;;==========auto complete(package)==============
 (require 'auto-complete)
@@ -248,7 +249,8 @@
   (message "there is no opening-buufer")))
 
 (define-key global-map (kbd "C-M-m") 'switch-to-opening-buffer)
-    
+
+
 
 ;;==========eshell======================
 ;; avoid "Text is read-only"
