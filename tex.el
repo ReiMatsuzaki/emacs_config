@@ -68,14 +68,18 @@
      "*helm Label")))
 
 ;;==============ref junp to label================
-(defun tex-ref-junp ()
+(defun tex-pop-to-label ()
   "point \ref{...} and junp the related \label"
   (interactive)
   (if (looking-at "\\\\ref{\\(.*\\)}")
-      (let ((lbl (concat "\\label{" (match-string 1) "}")))
+      (let ((lbl (concat "label{" (match-string-no-properties 1) "}"))
+	    (buf (current-buffer)))
+	(other-window-or-split 1)
+	(switch-to-buffer buf)
 	(goto-char (point-min))
-	(search-forward lbl))
-	(message "failed to find")))
+	(search-forward lbl)
+	(recenter))
+    (message "failed to find")))
 
 
 ;(defun helm-ref-tex ()
