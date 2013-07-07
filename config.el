@@ -718,11 +718,11 @@
 	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
-;	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("right)")))
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("right\}")))
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("left\{")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("left\{")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("\[" ("begin{eqnarray}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("\]" ("end{eqnarray}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("[a" ("begin{array}")))
@@ -741,7 +741,7 @@
 	     (orgtbl-mode)
 	     (fold-dwim-hide-all)
 	     (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
-	     (define-key TeX-mode-map (kbd "C-c j") 'tex-ref-junp)
+	     (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
 	     (set-face-foreground 'font-latex-sectioning-2-face "Yellow")
 	     (set-face-foreground 'font-latex-sectioning-3-face "GreenYellow")
 	     (yas-load-directory "y:/.emacs.d/snippets/")))
@@ -749,7 +749,8 @@
 ;auto insert
 (define-auto-insert "\\.tex$" "tex.tex")
 
-(load "./tex.el")
+(load (expand-file-name "~/.emacs.d/elisp/tex.el"))
+
 ;=========org-mode===========================
 (setq org-startup-truncated t)
 (setq temporary-file-directory "~/tmp/")
@@ -875,6 +876,7 @@
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda()
 	     (hs-minor-mode 1)))
+
 ;;=====================================
 ;;=======auto insert===================
 (auto-insert-mode)

@@ -73,14 +73,18 @@
   (interactive)
   (if (looking-at "\\\\ref{\\(.*\\)}")
       (let ((lbl (concat "label{" (match-string-no-properties 1) "}"))
-	    (buf (current-buffer)))
+	    (buf (current-buffer))
+	    (win (selected-window)))
 	(other-window-or-split 1)
 	(switch-to-buffer buf)
 	(goto-char (point-min))
 	(search-forward lbl)
-	(recenter))
+	(recenter)
+	(select-window win))
     (message "failed to find")))
 
+
+;;==============insert cite====================
 
 ;(defun helm-ref-tex ()
 ;  "search label in this buffer and insert ref{}"
