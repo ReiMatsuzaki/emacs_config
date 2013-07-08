@@ -693,6 +693,7 @@
 		("\\.ltx$" . japanese-latex-mode)) auto-mode-alist))
 (setq TeX-parse-self t) ; Enable parse on load.
 (setq TeX-auto-save t) ; Enable parse on save.
+(setq TeX-math-close-double-dollar t) ; $->$$ ?
 ;(setq TeX-command-list (list "platex" "dviout"))
 ;(setq-default TeX-master nil)
 ;(setq TeX-default-mode 'japanese-latex-mode)
