@@ -10,12 +10,18 @@
 ;; load path
 ;(add-to-list 'load-path "~/.emacs.d")
 
+;; serial number
+(load "~/.emacs.d/elisp/serial-num/serial.el")
+(global-set-key (kbd "C-c 0") 'set-serial-num-0)
+(global-set-key (kbd "C-c s") 'insert-serial-num)
+(global-set-key (kbd "C-c i") 'set-serial-num-n-interface)
+
 ;; exec path
 (setq exec-path (cons (expand-file-name "~/bin") exec-path))
 (setq exec-path (cons (expand-file-name "~/local/bin") exec-path))
 
 ;; unbind C-c C-x and define exit command
-(global-unset-key "\C-c \C-x")
+(global-unset-key "\C-x \C-c")
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; no tool bar, scroll bar, mnu bar
