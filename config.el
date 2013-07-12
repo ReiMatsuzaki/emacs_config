@@ -10,12 +10,18 @@
 ;; load path
 ;(add-to-list 'load-path "~/.emacs.d")
 
+;; serial number
+(load "~/.emacs.d/elisp/serial-num/serial.el")
+(global-set-key (kbd "C-c 0") 'set-serial-num-0)
+(global-set-key (kbd "C-c s") 'insert-serial-num)
+(global-set-key (kbd "C-c i") 'set-serial-num-n-interface)
+
 ;; exec path
 (setq exec-path (cons (expand-file-name "~/bin") exec-path))
 (setq exec-path (cons (expand-file-name "~/local/bin") exec-path))
 
 ;; unbind C-c C-x and define exit command
-(global-unset-key "\C-c \C-x")
+(global-unset-key "\C-x \C-c")
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; no tool bar, scroll bar, mnu bar
@@ -693,6 +699,7 @@
 		("\\.ltx$" . japanese-latex-mode)) auto-mode-alist))
 (setq TeX-parse-self t) ; Enable parse on load.
 (setq TeX-auto-save t) ; Enable parse on save.
+(setq TeX-math-close-double-dollar t) ; $->$$ ?
 ;(setq TeX-command-list (list "platex" "dviout"))
 ;(setq-default TeX-master nil)
 ;(setq TeX-default-mode 'japanese-latex-mode)
@@ -706,7 +713,7 @@
 	     (setq TeX-insert-braces t)
 	     (auto-complete-mode)
 	     (ac-latex-mode-setup)
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("V")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("vector")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("|{1}>" ("ket")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}|" ("bra")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("Braket")))
