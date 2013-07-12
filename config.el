@@ -720,7 +720,7 @@
 	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("[" ("left[")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("right)")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("right\}")))
