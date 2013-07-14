@@ -64,8 +64,22 @@
                     :background "yellow"
 		    :box nil)
 
-;; underline
-(setq hl-line-face 'underline)
+;; hight light line
+; under line
+;(setq hl-line-face 'underline)
+;(global-hl-line-mode)
+
+(defface hlline-face
+  '((((class color)
+      (background dark))
+     (:background "dark slate gray"))
+    (((class color)
+      (background light))
+     (:background  "#98FB98"))
+    (t
+     ()))
+  "*Face used by hl-line.")
+(setq hl-line-face 'hlline-face)
 (global-hl-line-mode)
 
 ;;=========Appearance================
@@ -170,6 +184,13 @@
       (buffer-control-ui))))
 
 (define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+;;==========smart chr========================
+(add-to-list 'load-path "~/.emacs.d/elisp/smartchr")
+(require 'smartchr)
+(global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
+(global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
+(global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
 
 ;;==========auto complete(package)==============
 (require 'auto-complete)
@@ -685,6 +706,17 @@
 ;; TEXPK    ^r\tfm\\^s^tfm;^r\pk\\^s.^dpk;^r\vf\\^s.vf;^r\ovf\\^s.ovf;^r\tfm\\^s.tfm
 ;; TEXFONTS ^r\tfm\\
 
+;; get folding relations which fold "fold-str"
+(defun filter-LaTeX-fold-spec-list (fold-str)
+  (let ((filter (lambda (x) (string-match fold-str (caadr x))))
+	(fold-list-list (list 
+			 LaTeX-fold-env-spec-list 
+			 LaTeX-fold-math-spec-list
+			 LaTeX-fold-macro-spec-list)))
+    (mapcar (lambda (fold-list) 
+	      (remove-if-not filter fold-list))
+	    fold-list-list)))
+
 (defun modify-TeX-fold-spec-list ()
   (let ((key1 1))
     (delete "subsection" (car (cdr (assoc key1 TeX-fold-macro-spec-list))))
@@ -704,6 +736,16 @@
 ;(setq-default TeX-master nil)
 ;(setq TeX-default-mode 'japanese-latex-mode)
 (require 'fold-dwim)
+(defun auctex-define-keys ()
+  (progn
+    (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
+    (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
+    (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
+    (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
+    (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
+    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\")))
+    (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))))
+
 (add-hook 'TeX-mode-hook
 	  '(lambda ()
 	     (setq TeX-command-default "platex")
@@ -721,26 +763,35 @@
 	     (add-to-list 'LaTeX-fold-math-spec-list '("~{1}" ("tilde")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})/({2})" ("frac")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathrm")))
-	     (add-to-list 'LaTeX-fold-env-spec-list  '("fig" ("figure")))
-	     (add-to-list 'LaTeX-fold-env-spec-list  '("tbl" ("table")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("boldsymbol")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("[" ("left[")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("right)")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("right\}")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("left\{")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))	     
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
+;	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
+;	     (add-to-list 'LaTeX-fold-math-spec-list '("[[1]" ("left[")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("right)")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})" ("braces")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{{1}}" ("bracem")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("[{1}]" ("braceb")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("rights")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("lefts")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("rightb")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("[" ("leftb")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("rightm")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("leftm")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("right\}")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("left\{")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("\[" ("begin{eqnarray}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("\]" ("end{eqnarray}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("[a" ("begin{array}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("a]" ("end{array}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("[i" ("begin{itemize}")))
 	     (add-to-list 'LaTeX-fold-macro-spec-list '("i]" ("end{itemize}")))
+	     (add-to-list 'LaTeX-fold-env-spec-list  '("fig" ("figure")))
+	     (add-to-list 'LaTeX-fold-env-spec-list  '("tbl" ("table")))
 ;	     (modify-TeX-fold-spec-list)
-	     (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
-	     (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
+	     (auctex-define-keys)
 	     (turn-on-reftex)
 	     (LaTeX-math-mode 1)
 	     (tex-fold-mode 1)
@@ -749,8 +800,6 @@
 	     (outline-minor-mode 1)
 	     (orgtbl-mode)
 	     (fold-dwim-hide-all)
-	     (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
-	     (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
 	     (set-face-foreground 'font-latex-sectioning-2-face "Yellow")
 	     (set-face-foreground 'font-latex-sectioning-3-face "GreenYellow")
 	     (yas-load-directory "y:/.emacs.d/snippets/")))
