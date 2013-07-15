@@ -743,7 +743,7 @@
     (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
     (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
     (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
-    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\")))
+    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))
     (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))))
 
 (add-hook 'TeX-mode-hook
