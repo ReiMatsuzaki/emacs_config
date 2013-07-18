@@ -69,16 +69,31 @@
 ;(setq hl-line-face 'underline)
 ;(global-hl-line-mode)
 
+
+
+;(defface hlline-face
+;  '((((class color)
+;      (background dark))
+;     (:background "dark slate gray"))
+;    (((class color)
+;      (background light))
+;     (:background  "#98FB98"))
+;    (t
+;     ()))
+;  "*Face used by hl-line.")
+
 (defface hlline-face
   '((((class color)
       (background dark))
-     (:background "dark slate gray"))
+     (:background "black"))
     (((class color)
       (background light))
-     (:background  "#98FB98"))
+     (:background "black"))
     (t
      ()))
   "*Face used by hl-line.")
+
+
 (setq hl-line-face 'hlline-face)
 (global-hl-line-mode)
 
@@ -90,7 +105,7 @@
 	   (list
 	    `(width  .  80)
 	    `(height .  50)
-	    `(alpha  .  100))
+	    `(alpha  .  80))
 	   default-frame-alist))))
 
 ;color theme
