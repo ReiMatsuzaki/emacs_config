@@ -69,8 +69,6 @@
 ;(setq hl-line-face 'underline)
 ;(global-hl-line-mode)
 
-
-
 ;(defface hlline-face
 ;  '((((class color)
 ;      (background dark))
@@ -85,14 +83,13 @@
 (defface hlline-face
   '((((class color)
       (background dark))
-     (:background "black"))
+     (:background "gray10"))
     (((class color)
       (background light))
      (:background "black"))
     (t
      ()))
   "*Face used by hl-line.")
-
 
 (setq hl-line-face 'hlline-face)
 (global-hl-line-mode)
