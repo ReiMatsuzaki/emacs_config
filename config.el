@@ -637,7 +637,8 @@
 ;haskell-program-name
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook
-	  (lambda () (ghc-init)))
+	  (lambda () (ghc-init)
+	    (haskell-indent-mode)))
 ;;========SLIME, IDE for lisp(package)======
 ;; ~~CAUTION~~
 ;; For operating slime correctry, I had to modify slime.el as follows:
