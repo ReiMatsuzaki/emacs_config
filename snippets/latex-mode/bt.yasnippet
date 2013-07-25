@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: bt
+# --
+\begin{table}[h]
+ \caption{${1:cap1}}
+ \label{tbl:${2:label1}}
+ \begin{center}
+% BEGIN RECEIVE ORGTBL tbl_$2
+% END RECEIVE ORGTBL tbl_$2
+ \end{center}
+\end{table}
+
+\iffalse
+#+ORGTBL: SEND tbl_$2 orgtbl-to-latex
+$0
+\fi
