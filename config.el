@@ -119,7 +119,6 @@
                     :foreground "black"
                     :background "white"
 		    :box nil)
-;
 
 (set-face-attribute 'mode-line nil
                     :foreground "red"
