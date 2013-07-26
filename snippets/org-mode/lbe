@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lbe
+# key: lbe
+# --
+\label{eq_$0}

@@ -51,6 +51,10 @@
 (setq backup-inhibited t)
 (setq delete-auto-save-files t)
 
+;; edit s exp
+(global-set-key (kbd "C-M-f") 'forward-sexp)
+(global-set-key (kbd "C-M-b") 'backward-sexp)
+
 ;; doc-view
 ;(add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
@@ -504,10 +508,13 @@
 ;;==========yasnippet(package)==================
 (require 'yasnippet)
 (yas-global-mode t)
-(add-to-list 'load-path
-	     "Y:/.emacs.d/snippets")
-(setq yas-snippet-dirs 
-      '("Y:/.emacs.d/snippets"))
+;(add-to-list 'load-path
+;	     "Y:/.emacs.d/snippets")
+;(setq yas-snippet-dirs 
+;      '("Y:/.emacs.d/snippets"))
+(setq yas-snippet-dirs (expand-file-name "~/.emacs.d/elisp/snippets"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp/snippets"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -636,7 +643,8 @@
 ;haskell-program-name
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook
-	  (lambda () (ghc-init)))
+	  (lambda () (ghc-init)
+	    (haskell-indent-mode)))
 ;;========SLIME, IDE for lisp(package)======
 ;; ~~CAUTION~~
 ;; For operating slime correctry, I had to modify slime.el as follows:
@@ -824,7 +832,7 @@
 	     (fold-dwim-hide-all)
 	     (set-face-foreground 'font-latex-sectioning-2-face "Yellow")
 	     (set-face-foreground 'font-latex-sectioning-3-face "GreenYellow")
-	     (yas-load-directory "y:/.emacs.d/snippets/")))
+	     (yas-load-directory (expand-file-name "~/.emacs.d/elisp/snippets/"))))
 
 ;auto insert
 (define-auto-insert "\\.tex$" "tex.tex")
@@ -933,7 +941,7 @@
 	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
 	    (turn-on-font-lock)
-	    (yas-load-directory "y:/.emacs.d/snippets/")))
+	    (yas-load-directory (expand-file-name "~/.emacs.d/elisp/snippets/"))))
 ; org-babel
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -943,24 +951,39 @@
  
 
 ;=========elisp=========================
-(let ((elisp-mode-hs-info
-       '(emacs-lisp-mod
-	 "{"
-	 "}"
-         ";"
-          nil
-          nil)))
-  (if (not (member elisp-mode-hs-info hs-special-modes-alist))
-      (setq hs-special-modes-alist
-            (cons elisp-mode-hs-info hs-special-modes-alist))))
+;(let ((elisp-mode-hs-info
+;       '(emacs-lisp-mod
+;	 "{"
+;	 "}"
+;         ";"
+;          nil
+;          nil)))
+;  (if (not (member elisp-mode-hs-info hs-special-modes-alist))
+;      (setq hs-special-modes-alist
+;            (cons elisp-mode-hs-info hs-special-modes-alist))))
+
+; lispxmp (package)
+; unit test package for emacs lisp 
+(require 'lispxmp)
+
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda()
-	     (hs-minor-mode 1)))
+;	     (hs-minor-mode 1)
+	     (turn-on-eldoc-mode)
+	     (setq eldoc-idle-delay 0.2)
+	     (setq eldoc-minor-mode-string "")
+	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
+	     ))
+; ert-expectation (package)
+; unit test for emacs lisp
+; This is not work correctory.
+(require 'ert-expectations)
 
 ;;=====================================
 ;;=======auto insert===================
 (auto-insert-mode)
-(setq auto-insert-directory "y:/.emacs.d/insert/")
+(setq auto-insert-directory (expand-file-name "~/.emacs.d/elisp/insert"))
+;;(setq auto-insert-directory "y:/.emacs.d/insert/")
 
 ;;=====================================
 ;========gnuplot=======================
