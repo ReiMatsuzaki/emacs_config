@@ -966,6 +966,12 @@
 ; unit test package for emacs lisp 
 (require 'lispxmp)
 
+; ert-expectation (package)
+; unit test for emacs lisp
+; This is not work correctory.
+(require 'ert-expectations)
+
+; emacs lisp hook
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda()
 ;	     (hs-minor-mode 1)
@@ -974,10 +980,6 @@
 	     (setq eldoc-minor-mode-string "")
 	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
 	     ))
-; ert-expectation (package)
-; unit test for emacs lisp
-; This is not work correctory.
-(require 'ert-expectations)
 
 ;;=====================================
 ;;=======auto insert===================
