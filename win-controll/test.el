@@ -1,3 +1,25 @@
+;-------test character-------------
+(setq *buffer-info-test* '((file ("buf1" "buf2")) (shell ("buf3"))))
+(setq *window-info-test* '(("win1" file 0) ("win2" file 1) ("win3" shell 0)))
+
+(car *window-info-test*)
+(wincon-minor-w-bt-number-and-buffer-info-to-w-b (car *window-info-test*) *buffer-info-test*)
+(wincon-get-window-buffer-pair-list *window-info-test* *buffer-info-test*)
+
+;--------test new---------------
+(setq *wincon-info-test* `((file ,(lambda ()  (list (get-buffer "win-controll.el")
+						    (get-buffer "test.el"))))
+			     (shell ,(lambda () (list (get-buffer "*eshell*<1>"))))))
+
+(setq *wincon-info-num-test* `((file ,(lambda () (list "buffer1" "buffer2")))
+			       (shell ,(lambda () (list "buffer3" "buffer4")))))
+
+
+
+(wincon-calc-bufffer-info *wincon-info-num-test*)
+
+
+
 ;--------using number------------
 (defvar *btype-number-collect-t* `((file ,(lambda ()  `((0 ,(get-buffer "win-controll.el"))
 							(1 ,(get-buffer "test.el")))))

@@ -24,6 +24,51 @@
 
 ;;; Code:
 (print "1")
+
+;; ------------------------------------------
+;; buffer and buffer type information
+;; ------------------------------------------
+;; wincon-info is information for window configuration.
+;; buffer-type, whose first element of wincon-info is type of buffer (file or shell or etc..)
+;; lambda-buffer-list, whose second element of wincon-info is lambda formula which calculate 
+;; buffer list, whose type is equal to buffer-type.
+
+;; wincon-info = '((buffer-type lambda-buffer-list) ..)
+;; buffer-type = file | eshell | ..
+;; lambda-buffer-list :: () -> (buffer..)
+
+;; buffer-info = '((buffer-type (buffer..))..)
+
+;; wincon-info -> buffer-info
+(defun wincon-calc-bufffer-info (wincon-info)
+  (flet ((bt-lbl-to-bt-bl (bt-lbl)
+			  (list (car bt-lbl) (funcall (cadr bt-lbl)))))
+    (mapcar #'bt-lbl-to-bt-bl
+	    wincon-info)))
+
+
+;; --------------------------------------------
+;; window and buffer type and number
+;; --------------------------------------------
+
+;; window-info :: ( (window1 buffer-type1 number1)..)
+
+;; calculate (window buffer) tupple list.
+(defun wincon-minor-w-bt-number-and-buffer-info-to-w-b (w-bt-number buffer-info)
+  (let* ((win (car w-bt-number))
+	 (bt (cadr w-bt-number))
+	 (num (caddr w-bt-number))
+	 (bt-bl (car (remove-if-not 
+		      (lambda (bt-bl) (eq bt (car bt-bl)))
+		      buffer-info))))
+    (list win (nth num (cadr bt-bl)))))
+
+;; window-info, buffer-info -> ((window1 buffer1)..)
+(defun wincon-get-window-buffer-pair-list (window-info buffer-info)
+  (mapcar (lambda (w-bt-number) 
+	    (wincon-minor-w-bt-number-and-buffer-info-to-w-b w-bt-number buffer-info))
+	  window-info))
+
 ;;------------functional code using number----------------
 ;; bt-func-list :: (list (buffer-type lambda-id-buffer-list) ..)
 ;; bt = buffer-type :: file | shell | ... 
@@ -40,7 +85,6 @@
 		    (buffer (cadr id-buffer)))
 		(list buffer-type id buffer)))
 	    id-buffer-list)))
-
 (defun wincon-get-bt-num-buf-list (bt-func-list)
   (flet ((bt-func-to-bt-num-buf (bt-func)
 				(let ((buf-num-list (funcall (cadr bt-func)))
