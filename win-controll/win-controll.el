@@ -23,12 +23,24 @@
 ;; 
 
 ;;; Code:
-
+(print "1")
 ;;------------functional code using number----------------
-;; (list (buffer-type function-to-create-number-buffer-list) ..)
-;;->
-;; (list (buffer-id buffer) ...)
-;; buffer-id = (buffer-type number)
+;; bt-func-list :: (list (buffer-type lambda-id-buffer-list) ..)
+;; bt = buffer-type :: file | shell | ... 
+;; libl = lambda-id-buffer-list :: () -> (list (id1 buffer1) (id2 buffer2) ..)
+
+;; wincon-get-bt-num-buf-list :: 
+;; bt-func-list -> (list (buffer-id buffer) ...)
+;; buffer-id :: (buffer-type number)
+(defun wincon-minor-bt-libl-to-bt-id-b (bt-libl)
+  (let ((buffer-type (car bt-lbl))
+	(id-buffer-list (funcall (cadr bt-libl))))
+    (mapcar (lambda (id-buffer) 
+	      (let ((id (car id-buffer))
+		    (buffer (cadr id-buffer)))
+		(list buffer-type id buffer)))
+	    id-buffer-list)))
+
 (defun wincon-get-bt-num-buf-list (bt-func-list)
   (flet ((bt-func-to-bt-num-buf (bt-func)
 				(let ((buf-num-list (funcall (cadr bt-func)))
@@ -60,7 +72,6 @@
   (mapc (lambda (wb)
 	  (set-window-buffer (car wb) (cadr wb)))
 	win-buf-list))
-
 (defun wincon-construct (config-and-set-win btype-func-list)
   (let* ((w-bid-list (funcall config-and-set-win))
 	 (bid-b-list (wincon-get-bt-num-buf-list btype-func-list))
@@ -79,7 +90,6 @@
     (setq w2 (next-window))
     (list (list w1 '(file 0)) 
 	  (list w2 '(file 1)))))
-  
 (defun wincon-set-windows-three-holizon ()
   (delete-other-windows)
   (split-window-horizontally-n 3)
@@ -90,7 +100,6 @@
     (list (list w1 '(file 0))
 	  (list w2 '(file 1))
 	  (list w3 '(shell 0)))))
-
 (defun wincon-set-windows-112 ()
     (delete-other-windows)
     (split-window-horizontally-n 3)
@@ -107,7 +116,6 @@
 	    (list w2 '(file 1))
 	    (list w3 '(file 2))
 	    (list w4 '(shell 0)))))
-
 (defun wincon-set-windows-2121 ()
   (delete-other-windows)
   (split-window-horizontally-n 4)
@@ -124,9 +132,6 @@
     (push (list (nth 4 w-list) '(shell 1)) w-bid-list)
     (push (list (nth 5 w-list) '(file  3)) w-bid-list)))
 
-
-
-
 ;; make bid-buffer list (bid-buffer list => bbl)
 (defvar *wincon-size-buf-list* 10)
 
@@ -140,7 +145,6 @@
 	      (list bid
 		    (nth (mod bid b-num) b-list)))
 	    bid-list)))
-
 (defun wincon-get-bbl-in-current-frame (&optional buf-filter-p)
   (let* ((w-list (window-list nil nil (frame-first-window)))
 	 (b-list (mapcar 'window-buffer w-list)))
@@ -149,14 +153,12 @@
 	 (remove-if-not buf-filter-p b-list)
        b-list)
      *wincon-size-buf-list*)))
-
 (defun wincon-get-bbl-all (&optional buf-filter-p)
   (wincon-bufs-to-bbl
    (if buf-filter-p
        (remove-if-not buf-filter-p (buffer-list))
      (buffer-list))
    *wincon-size-buf-list*))
-
 (defun wincon-get-bbl-eshell-for-current-screen ()
   (flet ((eshell-current-elscreen-p 
 	  (buf)
@@ -164,7 +166,6 @@
 			      (number-to-string (elscreen-get-current-screen))
 			      ".>")))
 	    (string-match regx (buffer-name buf)))))
-    (wincon-get-bbl-all 'eshell-current-elscreen-p)))
-				    
+    (wincon-get-bbl-all 'eshell-current-elscreen-p)))				    
 (provide 'win-control)
 ;;; win-control.el ends here

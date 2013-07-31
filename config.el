@@ -982,12 +982,20 @@
 ; emacs lisp hook
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda()
-;	     (hs-minor-mode 1)
+	     (hs-minor-mode 1)
 	     (turn-on-eldoc-mode)
 	     (setq eldoc-idle-delay 0.2)
 	     (setq eldoc-minor-mode-string "")
 	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
+	     (define-key emacs-lisp-mode-map (kbd "C-c f" 'hs-toggle-hiding))
 	     ))
+
+;========hs-minor-mode================
+(add-hook 'hs-minor-mode-hook
+	  '(lambda ()
+	     (define-key hs-minor-mode-map (kbd "C-c f") 'hs-toggle-hiding)
+	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
+	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
 
 ;;=====================================
 ;;=======auto insert===================
