@@ -987,7 +987,6 @@
 	     (setq eldoc-idle-delay 0.2)
 	     (setq eldoc-minor-mode-string "")
 	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
-	     (define-key emacs-lisp-mode-map (kbd "C-c f" 'hs-toggle-hiding))
 	     ))
 
 ;========hs-minor-mode================
