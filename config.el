@@ -6,6 +6,45 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
+;; install packages
+(mapc 
+ (lambda (package)
+   (or (package-installed-p package)
+       (package-install package)))
+ '(
+  ac-math	     
+  ac-slime	     
+  auctex	     
+  auto-complete	     
+  bm		     
+  cl-lib	     
+  color-moccur	     
+  el-mock	     
+  elscreen	     
+  enh-ruby-mode	     
+  ert-expectations   
+  flymake-easy	     
+  flymake-ruby	     
+  fold-dwim	     
+  ghc		     
+  gnuplot	     
+  gnuplot-mode	     
+  haskell-mode	     
+  helm		     
+  helm-c-moccur	     
+  lispxmp	     
+  main-line	     
+  popup		     
+  popwin	     
+  powerline	     
+  rsense	     
+  scala-mode	     
+  slime		     
+  w3m		     
+  yasnippet	     
+   )
+)
+
 ;;=========Basic configuration=====
 ;; load path
 ;(add-to-list 'load-path "~/.emacs.d")
