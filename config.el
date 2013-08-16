@@ -50,7 +50,8 @@
 ;(add-to-list 'load-path "~/.emacs.d")
 
 ;; serial number
-(load "~/.emacs.d/elisp/serial-num/serial.el")
+;(load "~/.emacs.d/elisp/serial-num/serial.el")
+(load (concat config-home "serial-num/serial.el"))
 (global-set-key (kbd "C-c 0") 'set-serial-num-0)
 (global-set-key (kbd "C-c s") 'insert-serial-num)
 (global-set-key (kbd "C-c i") 'set-serial-num-n-interface)
@@ -195,7 +196,8 @@
 ;; depend on windmove.el
 ;; depend on hiwin.el
 ; win manage
-(load "~/.emacs.d/elisp/win-controll/win-controll.el")
+(load (concat config-home "win-controll/win-controll.el"))
+;(load "~/.emacs.d/elisp/win-controll/win-controll.el")
 
 (require 'windmove)
 (defun buffer-flip-chose-direction (direction)
@@ -240,7 +242,8 @@
 (define-key global-map (kbd "C-t") 'buffer-control-ui)
 
 ;;==========smart chr========================
-(add-to-list 'load-path "~/.emacs.d/elisp/smartchr")
+(add-to-list 'load-path (concat config-home "smartchr"))
+;(add-to-list 'load-path "~/.emacs.d/elisp/smartchr")
 (require 'smartchr)
 (global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
 (global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
@@ -559,8 +562,10 @@
 ;	     "Y:/.emacs.d/snippets")
 ;(setq yas-snippet-dirs 
 ;      '("Y:/.emacs.d/snippets"))
-(setq yas-snippet-dirs (expand-file-name "~/.emacs.d/elisp/snippets"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp/snippets"))
+(setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
+;(setq yas-snippet-dirs (expand-file-name "~/.emacs.d/elisp/snippets"))
+(add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
+;(add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp/snippets"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -879,12 +884,13 @@
 	     (fold-dwim-hide-all)
 	     (set-face-foreground 'font-latex-sectioning-2-face "Yellow")
 	     (set-face-foreground 'font-latex-sectioning-3-face "GreenYellow")
-	     (yas-load-directory (expand-file-name "~/.emacs.d/elisp/snippets/"))))
+	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
 ;auto insert
 (define-auto-insert "\\.tex$" "tex.tex")
 
-(load (expand-file-name "~/.emacs.d/elisp/tex.el"))
+(load (expand-file-name (concat config-home "tex.el")))
+;(load (expand-file-name "~/.emacs.d/elisp/tex.el"))
 
 ;=========org-mode===========================
 (setq org-startup-truncated t)
@@ -988,7 +994,8 @@
 	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
 	    (turn-on-font-lock)
-	    (yas-load-directory (expand-file-name "~/.emacs.d/elisp/snippets/"))))
+	    (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
+
 ; org-babel
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -1038,7 +1045,8 @@
 ;;=====================================
 ;;=======auto insert===================
 (auto-insert-mode)
-(setq auto-insert-directory (expand-file-name "~/.emacs.d/elisp/insert"))
+;(setq auto-insert-directory (expand-file-name "~/.emacs.d/elisp/insert"))
+(setq auto-insert-directory (expand-file-name (concat config-home "insert")))
 ;;(setq auto-insert-directory "y:/.emacs.d/insert/")
 
 ;;=====================================
