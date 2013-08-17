@@ -41,7 +41,8 @@
   scala-mode	     
   slime		     
   w3m		     
-  yasnippet	     
+  yasnippet
+  magit
    )
 )
 
@@ -240,6 +241,10 @@
       (buffer-control-ui))))
 
 (define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+;;==========git==============================
+(require 'magit)
+(global-set-key (kbd "C-c g") 'magit-status)
 
 ;;==========smart chr========================
 (add-to-list 'load-path (concat config-home "smartchr"))
