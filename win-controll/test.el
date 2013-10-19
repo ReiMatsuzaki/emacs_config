@@ -2,9 +2,19 @@
 (setq *buffer-info-test* '((file ("buf1" "buf2")) (shell ("buf3"))))
 (setq *window-info-test* '(("win1" file 0) ("win2" file 1) ("win3" shell 0)))
 
-(car *window-info-test*)
+(print *buffer-info-test*)
 (wincon-minor-w-bt-number-and-buffer-info-to-w-b (car *window-info-test*) *buffer-info-test*)
 (wincon-get-window-buffer-pair-list *window-info-test* *buffer-info-test*)
+
+(wincon-minor-list-cycle '(1 2 3 4))
+
+(assoc 'file *buffer-info-test*)
+(setf (cadr (assoc 'file *buffer-info-test*)) 
+      (wincon-minor-list-cycle (cadr (assoc 'file *buffer-info-test*))))
+
+(wincon-cycle-buffer-info 'file *buffer-info-test*)
+
+(wincon-cycle-buffer-info 'file *buffer-info-test*)
 
 ;--------test new---------------
 (setq *wincon-info-test* `((file ,(lambda ()  (list (get-buffer "win-controll.el")

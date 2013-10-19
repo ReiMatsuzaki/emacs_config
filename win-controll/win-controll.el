@@ -39,22 +39,34 @@
 
 ;; buffer-info = '((buffer-type (buffer..))..)
 
-;; wincon-info -> buffer-info
 (defun wincon-calc-bufffer-info (wincon-info)
+  "wincon-info->buffer-info"
   (flet ((bt-lbl-to-bt-bl (bt-lbl)
 			  (list (car bt-lbl) (funcall (cadr bt-lbl)))))
     (mapcar #'bt-lbl-to-bt-bl
 	    wincon-info)))
+(defun wincon-minor-list-cycle (lst)
+  (let ((x (car lst))
+	(xs (cdr lst)))
+    (append xs (list x))))
 
+(defun wincon-cycle-buffer-info (buffer-type buffer-info)
+  (let ((bt-bl (assoc buffer-type buffer-info)))
+    (subst 
+     (list buffer-type (wincon-minor-list-cycle (cadr bt-bl)))
+     bt-bl
+     buffer-info)))
 
+;  (setf (cadr (assoc buffer-type buffer-info))
+;	(wincon-minor-list-cycle 
+;	 (cadr (assoc buffer-type buffer-info)))))
 ;; --------------------------------------------
 ;; window and buffer type and number
 ;; --------------------------------------------
 
 ;; window-info :: ( (window1 buffer-type1 number1)..)
-
-;; calculate (window buffer) tupple list.
 (defun wincon-minor-w-bt-number-and-buffer-info-to-w-b (w-bt-number buffer-info)
+  "calculate (window buffer) tupple list"
   (let* ((win (car w-bt-number))
 	 (bt (cadr w-bt-number))
 	 (num (caddr w-bt-number))
@@ -62,9 +74,8 @@
 		      (lambda (bt-bl) (eq bt (car bt-bl)))
 		      buffer-info))))
     (list win (nth num (cadr bt-bl)))))
-
-;; window-info, buffer-info -> ((window1 buffer1)..)
 (defun wincon-get-window-buffer-pair-list (window-info buffer-info)
+  "window-info, buffer-info -> ((window1 buffer1)..)"
   (mapcar (lambda (w-bt-number) 
 	    (wincon-minor-w-bt-number-and-buffer-info-to-w-b w-bt-number buffer-info))
 	  window-info))
@@ -121,7 +132,6 @@
 	 (bid-b-list (wincon-get-bt-num-buf-list btype-func-list))
 	 (w-b-list (wincon-get-win-buf-list bid-b-list w-bid-list)))
     (wincon-set-buffers w-b-list)))
-
 ;;------------customization function----------------------
 
 ;; split window and
@@ -211,5 +221,6 @@
 			      ".>")))
 	    (string-match regx (buffer-name buf)))))
     (wincon-get-bbl-all 'eshell-current-elscreen-p)))				    
+
 (provide 'win-control)
 ;;; win-control.el ends here
