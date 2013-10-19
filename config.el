@@ -799,8 +799,10 @@
 	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("Braket")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("braket")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("~{1}" ("tilde")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("-{1}" ("bar")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})/({2})" ("frac")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathrm")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathbf")))	     
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("boldsymbol")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))	     
@@ -948,6 +950,7 @@
 	    (define-key org-mode-map (kbd "\C-c r") 'helm-ref-tex-in-org)
 	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
+	    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))	    
 	    (turn-on-font-lock)
 	    (yas-load-directory (expand-file-name "~/.emacs.d/elisp/snippets/"))))
 ; org-babel
