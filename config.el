@@ -852,6 +852,7 @@
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathrm")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("boldsymbol")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathbf")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))	     
 ;	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
 ;	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
