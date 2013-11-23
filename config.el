@@ -57,6 +57,9 @@
 (global-set-key (kbd "C-c s") 'insert-serial-num)
 (global-set-key (kbd "C-c i") 'set-serial-num-n-interface)
 
+;; truncate-lines
+(setq truncate-lines t)
+
 ;; exec path
 (setq exec-path (cons (expand-file-name "~/bin") exec-path))
 (setq exec-path (cons (expand-file-name "~/local/bin") exec-path))
@@ -438,6 +441,8 @@
 ;               (tramp-default-port         22)))
 
 ;;=======elscreen(package)=================
+(setq elscreen-prefix-key "\C-q")
+
 (setq my-color-tab "#123550")
 (setq my-color-back "#112230")
 
@@ -739,7 +744,6 @@
     (beginning-of-line)))
 
 (add-to-list 'ac-modes 'f90-mode)
-
 (add-hook 'f90-mode-hook
 	  '(lambda()
 	     (hs-minor-mode 1)
