@@ -31,7 +31,6 @@
   gnuplot-mode	     
   haskell-mode	     
   helm		     
-  helm-c-moccur	     
   lispxmp	     
   main-line	     
   popup		     
@@ -246,8 +245,8 @@
 (define-key global-map (kbd "C-t") 'buffer-control-ui)
 
 ;;==========git==============================
-(require 'magit)
-(global-set-key (kbd "C-c g") 'magit-status)
+;(require 'magit)
+;(global-set-key (kbd "C-c g") 'magit-status)
 
 ;;==========smart chr========================
 (add-to-list 'load-path (concat config-home "smartchr"))
@@ -256,7 +255,7 @@
 (global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
 (global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
 (global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
-
+(global-set-key (kbd "y") (smartchr '("y" "\\" "\\\\")))
 ;;==========auto complete(package)==============
 (require 'auto-complete)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
@@ -316,14 +315,31 @@
 ;; window move
 (global-set-key (kbd "M-DEL") nil)
 (setq windmove-wrap-around t)
-(define-key global-map (kbd "C-M-k") 'windmove-up)
-(define-key global-map (kbd "C-M-p") 'windmove-up)
-(define-key global-map (kbd "C-M-j") 'windmove-down)
-(define-key global-map (kbd "C-M-n") 'windmove-down)
-(define-key global-map (kbd "C-M-l") 'windmove-right)
-(define-key global-map (kbd "C-M-f") 'windmove-right)
-(define-key global-map (kbd "M-DEL") 'windmove-left)
-(define-key global-map (kbd "C-M-b") 'windmove-left)
+
+(defun buffer-flip-up ()
+  (interactive)
+  (buffer-flip-chose-direction 'up))
+(defun buffer-flip-down ()
+  (interactive)
+  (buffer-flip-chose-direction 'down))
+(defun buffer-flip-right ()
+  (interactive)
+  (buffer-flip-chose-direction 'right))
+(defun buffer-flip-left ()
+  (interactive)
+  (buffer-flip-chose-direction 'left))
+
+(defun define-windmove (mode-map)
+  (define-key mode-map (kbd "C-M-l") 'windmove-right)
+  (define-key mode-map (kbd "C-M-h") 'windmove-left)
+  (define-key mode-map (kbd "C-M-j") 'windmove-down)
+  (define-key mode-map (kbd "C-M-k") 'windmove-up)
+  (define-key mode-map (kbd "C-M-p") 'buffer-flip-up)
+  (define-key mode-map (kbd "C-M-n") 'buffer-flip-down)
+  (define-key mode-map (kbd "C-M-f") 'buffer-flip-left)
+  (define-key mode-map (kbd "C-M-b") 'buffer-flip-right))
+
+(define-windmove global-map)
 
 ;; find file any window
 (defvar opening-buffer nil)
@@ -373,11 +389,10 @@
 	       (let ((dir (expand-file-name "~/bin")))
 		 (setenv "PATH"  (concat dir ":" (getenv "PATH")))
 		 (setq exec-path (append (list dir) exec-path)))
-	       (define-key eshell-mode-map (kbd "C-M-l") 'windmove-right)
+	       (define-windmove eshell-mode-map)
 	       (define-key eshell-mode-map "\C-a" 'eshell-bol)
 	       (define-key eshell-mode-map "\C-p" 'eshell-previous-matching-input-from-input)
 	       (define-key eshell-mode-map "\C-n" 'eshell-next-matching-input-from-input))))
-
 
 
 ;(setq eshell-prompt-function
@@ -593,8 +608,8 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 
 ;helm-moccur(package)
-(require 'helm-c-moccur)
-(define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
+;(require 'helm-c-moccur)
+;(define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
 ;;(helm-mode 1)
 
 
@@ -651,6 +666,7 @@
 (add-hook 'ruby-mode-hook
 	  (lambda ()
 	    (hs-minor-mode 1)
+	    (define-windmove ruby-mode-map)
 	    (define-key ruby-mode-map (kbd "C-c q") 'hs-toggle-hiding)
 	    (define-key ruby-mode-map (kbd "C-c f") 'hs-hide-def)
 	    (define-key ruby-mode-map (kbd "C-c w") 'hs-hide-whole-def)
@@ -726,7 +742,10 @@
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 (add-hook 'inferior-lisp-mode-hook 'set-up-slime-ac)
 
-
+;;========Fortran 77====================
+(add-hook 'fortran-mode-hook
+	  '(lambda()
+	     (define-windmove fortran-mode-map)))
 ;;========fortran 90/95=================
 (defun hs-hide-function-or-subroutine ()
   (interactive)
@@ -758,6 +777,7 @@
 ;;	     (define-key f90-mode-map (kbd "C-c q") 'hs-toggle-hiding)
 ;;	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
 ;;	     (define-key f90-mode-map (kbd "C-c o") 'hs-show-all)
+	     (define-windmove f90-mode-map)
 	     (define-key f90-mode-map (kbd "C-c f") 'hs-hide-function-or-subroutine)
 	     (define-key f90-mode-map (kbd "C-c w") 'hs-hide-whole-function-and-subroutine)
 	     (define-key f90-mode-map (kbd "C-M-DEL") 'windmove-left)
@@ -790,7 +810,7 @@
 ;	     ("\\\\label{.*}" 0 'font-lock-keyword-face))))
 
 ;;========Programming C++===============
-(goto-char 21220)
+
 ;;========auctex(package)===========================
 ;(setq dum-list '(("[f]" ("footnoe" "footnote2")) ("[i]" ("index" "in")) (1 ("section" "subsection" "part" "paragraph"))))
 ;; TEXROOT  C:\w32tex\share\texmf\fonts;C:\w32tex\share\texmf-local\fonts
@@ -829,6 +849,7 @@
 (require 'fold-dwim)
 (defun auctex-define-keys ()
   (progn
+    (define-windmove TeX-mode-map)
     (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
     (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
     (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
@@ -1000,12 +1021,12 @@
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (ac-latex-mode-setup)
+	    (define-windmove org-mode-map)
 	    (define-key org-mode-map (kbd "\C-c c") 'org-export-dvi-by-modify-tex)
 	    (define-key org-mode-map (kbd "\C-c p") 'latex-math-preview-expression)
 	    (define-key org-mode-map (kbd "\C-c r") 'helm-ref-tex-in-org)
 	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
-	    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))	    
 	    (turn-on-font-lock)
 	    (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
