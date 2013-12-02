@@ -42,6 +42,7 @@
   w3m		     
   yasnippet
   magit
+  inf-ruby
    )
 )
 
@@ -336,8 +337,8 @@
   (define-key mode-map (kbd "C-M-k") 'windmove-up)
   (define-key mode-map (kbd "C-M-p") 'buffer-flip-up)
   (define-key mode-map (kbd "C-M-n") 'buffer-flip-down)
-  (define-key mode-map (kbd "C-M-f") 'buffer-flip-left)
-  (define-key mode-map (kbd "C-M-b") 'buffer-flip-right))
+  (define-key mode-map (kbd "C-M-f") 'buffer-flip-right)
+  (define-key mode-map (kbd "C-M-b") 'buffer-flip-left))
 
 (define-windmove global-map)
 
@@ -705,8 +706,8 @@
 				     interpreter-mode-alist))
 (autoload 'run-ruby "inf-ruby"
   "Run an inferior Ruby process")
-;;(autoload 'inf-ruby-keys "inf-ruby"
-;;  "Set local key defs for inf-ruby in ruby-mode")
+(autoload 'inf-ruby-keys "inf-ruby"
+  "Set local key defs for inf-ruby in ruby-mode")
 ;(add-hook 'ruby-mode-hook
 ;	  '(lambda ()
 ;	     (inf-ruby-keys)))
