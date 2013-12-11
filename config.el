@@ -43,6 +43,7 @@
   yasnippet
   magit
   inf-ruby
+  foreign-regexp
    )
 )
 
@@ -244,6 +245,12 @@
       (buffer-control-ui))))
 
 (define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+;;==========foreign regexp===================
+(require 'foreign-regexp)
+(custom-set-variables
+ '(foreign-regexp/regexp-type 'ruby)
+ '(reb-re-syntax 'foreign-regexp))
 
 ;;==========git==============================
 ;(require 'magit)
