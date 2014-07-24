@@ -257,13 +257,14 @@
 ;(global-set-key (kbd "C-c g") 'magit-status)
 
 ;;==========smart chr========================
-(add-to-list 'load-path (concat config-home "smartchr"))
+;; will be removed
+;(add-to-list 'load-path (concat config-home "smartchr"))
 ;(add-to-list 'load-path "~/.emacs.d/elisp/smartchr")
-(require 'smartchr)
-(global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
-(global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
-(global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
-(global-set-key (kbd "y") (smartchr '("y" "\\" "\\\\")))
+;(require 'smartchr)
+;(global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
+;(global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
+;(global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
+;(global-set-key (kbd "y") (smartchr '("y" "\\" "\\\\")))
 ;;==========auto complete(package)==============
 (require 'auto-complete)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
