@@ -154,8 +154,8 @@
 	   default-frame-alist))))
 
 ;color theme
-;(color-theme-initialize)
-;(color-theme-billw)
+(color-theme-initialize)
+(color-theme-billw)
 
 ;; prompt
 ;(set-face-foreground 'minibuffer-prompt "white")
@@ -253,19 +253,17 @@
 ;; will be removed
 ;(add-to-list 'load-path (concat config-home "smartchr"))
 ;(add-to-list 'load-path "~/.emacs.d/elisp/smartchr")
-<<<<<<< HEAD:config.el~
-(require 'smartchr)
-(global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
-(global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
-(global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
 
-=======
+;(require 'smartchr)
+;(global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
+;(global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
+;(global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
+
 ;(require 'smartchr)
 ;(global-set-key (kbd "(") (smartchr '("(`!!')" "(")))
 ;(global-set-key (kbd "{") (smartchr '("{`!!'}" "{")))
 ;(global-set-key (kbd "[") (smartchr '("[`!!']" "[")))
 ;(global-set-key (kbd "y") (smartchr '("y" "\\" "\\\\")))
->>>>>>> a9e2582c2e395e5082d2b83851eed1aca5e3667c:config.el
 ;;==========auto complete(package)==============
 (require 'auto-complete)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
@@ -279,7 +277,6 @@
     ac-source-abbrev
     ac-source-files-in-current-dir
     ac-source-filename))
-
 (setq ac-use-menu-map t)
 (setf (symbol-function 'yas-active-keys)
       (lambda ()
@@ -322,6 +319,8 @@
 (global-set-key "\C-x$" '(lambda ()
                            (interactive)
                            (split-window-horizontally-n 4)))
+
+
 ;; window move
 (global-set-key (kbd "M-DEL") nil)
 (setq windmove-wrap-around t)
@@ -1019,11 +1018,11 @@
 	    (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
 ; org-babel
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((latex . t)
-   (ruby . t)
-   (sh . t)))
+;(org-babel-do-load-languages
+; 'org-babel-load-languages
+; '((latex . t)
+;   (ruby . t)
+;   (sh . t)))
  
 
 ;=========elisp=========================
