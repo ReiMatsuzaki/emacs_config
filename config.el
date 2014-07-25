@@ -610,6 +610,7 @@
 ;(require 'fold-dwim)
 ;(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
 ;(define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
+
 ;;========ruby and rsense(package)=========
 ; rsense(package)
 ;(require 'rsense)
