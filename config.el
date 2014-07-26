@@ -30,6 +30,7 @@
   gnuplot	     
   gnuplot-mode	     
   haskell-mode	     
+  ghc
   helm		     
   helm-c-moccur	     
   lispxmp	     
@@ -607,8 +608,6 @@
 
 ;;========fold-mode======================
 (require 'folding)
-(folding-add-to-marks-list 'haskell-mode "%{{{" "%}}}" nil t)
-(folding-add-to-marks-list 'literate-haskell-mode "%{{{" "%}}}" nil t)
 
 
 ;;========fold-dwin(package)=============
@@ -713,6 +712,9 @@
 (require 'haskell-mode)
 (require 'haskell-cabal)
 
+(folding-add-to-marks-list 'haskell-mode "%{" "%}" nil t)
+(folding-add-to-marks-list 'literate-haskell-mode "%{" "%}" nil t)
+
 (add-to-list 'exec-path (concat (getenv "HOME") "/.cabal/bin"))
 (add-to-list 'load-path "~/.cabal/share/ghc-mod-4.1.5")
 
@@ -721,19 +723,22 @@
 (add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
 ;haskell-program-name
 (autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
 
 ; by setting (set-input-method "haskell-unicode"), psi [space] produce Greek psi.
 (add-hook 'haskell-mode-hook
 	  (lambda () (ghc-init)
+;	    (flymake-mode)
+	    (folding-mode)
 	    (haskell-indent-mode)
+	    (inf-haskell-mode)
 	    (setq haskell-literate-default (quote tex))
-	    (setq haskell-font-lock-symbols t)
-	    (set-input-method "haskell-unicode")
-	    (folding-mode)))
+	    (set-input-method "TeX")
+	    (define-key haskell-mode-map (kbd "C-c f") 'folding-toggle-show-hide)
+	    (define-key haskell-mode-map (kbd "C-c w") 'folding-whole-buffer)
+	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)))
 
 
-
-(add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
 ;;========SLIME, IDE for lisp(package)======
 ;; ~~CAUTION~~
 ;; For operating slime correctry, I had to modify slime.el as follows:
