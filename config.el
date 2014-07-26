@@ -44,6 +44,7 @@
   w3m		     
   yasnippet
   magit
+  mmm-mode
    )
 )
 
@@ -565,6 +566,13 @@
 ;(powerline-center-theme)
 ;;========programming======================
 (require 'flymake)
+
+;;========mmm-mode=========================
+(require 'mmm-mode)
+;(setq mmm-global-mode t)
+(setq mmm-submode-decoration-level 0)
+(set-face-background 'mmm-default-submode-face "Gray")
+
 ;;=======scala mode(package), ensime(git-hub)======
 ;(add-to-list 'load-path "~/.emacs.d/ensime-master/src/main/elisp/")
 ;(require 'ensime)
@@ -726,17 +734,42 @@
 (autoload 'ghc-debug "ghc" nil t)
 
 ; by setting (set-input-method "haskell-unicode"), psi [space] produce Greek psi.
+
+(mmm-add-classes
+ '((literate-haskell-bird
+    :submode text-mode
+    :frot "^[^>]"
+    :include-from true
+    :back "^>\\|$"
+    )
+   (literate-haskell-latex
+    :submode literate-haskell-mode
+    :front "^\\\\end{code}"
+    :front-offset (end-of-line 1)
+    :back "^\\\\begin{code}"
+    :include-back nil
+    :back-offset (beginning-of-line -1)
+    )))
+
+(defun my-haskel-mmm-mode ()
+  (make-local-variable 'mmm-global-mode)
+  (setq mmm-global-mode 'true))
+
 (add-hook 'haskell-mode-hook
 	  (lambda () (ghc-init)
 ;	    (flymake-mode)
-	    (folding-mode)
 	    (haskell-indent-mode)
 	    (inf-haskell-mode)
 	    (setq haskell-literate-default (quote tex))
 	    (set-input-method "TeX")
 	    (define-key haskell-mode-map (kbd "C-c f") 'folding-toggle-show-hide)
 	    (define-key haskell-mode-map (kbd "C-c w") 'folding-whole-buffer)
-	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)))
+	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)
+	    (my-haskel-mmm-mode)
+	    (folding-mode)
+	    ))
+
+
 
 
 ;;========SLIME, IDE for lisp(package)======
@@ -865,9 +898,10 @@
     (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
     (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
     (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
-    (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
-    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))
-    (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))))
+;    (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
+;    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))
+;    (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))
+))
 
 (add-hook 'TeX-mode-hook
 	  '(lambda ()
@@ -1037,7 +1071,7 @@
 	    (define-key org-mode-map (kbd "\C-c r") 'helm-ref-tex-in-org)
 	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
-	    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))	    
+;	    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))   
 	    (turn-on-font-lock)
 	    (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
