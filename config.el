@@ -605,6 +605,11 @@
 (define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
 ;;(helm-mode 1)
 
+;;========fold-mode======================
+(require 'folding)
+(folding-add-to-marks-list 'haskell-mode "%{{{" "%}}}" nil t)
+(folding-add-to-marks-list 'literate-haskell-mode "%{{{" "%}}}" nil t)
+
 
 ;;========fold-dwin(package)=============
 ;(require 'fold-dwim)
@@ -708,14 +713,27 @@
 (require 'haskell-mode)
 (require 'haskell-cabal)
 
+(add-to-list 'exec-path (concat (getenv "HOME") "/.cabal/bin"))
+(add-to-list 'load-path "~/.cabal/share/ghc-mod-4.1.5")
+
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
 (add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
 ;haskell-program-name
 (autoload 'ghc-init "ghc" nil t)
+
+; by setting (set-input-method "haskell-unicode"), psi [space] produce Greek psi.
 (add-hook 'haskell-mode-hook
 	  (lambda () (ghc-init)
-	    (haskell-indent-mode)))
+	    (haskell-indent-mode)
+	    (setq haskell-literate-default (quote tex))
+	    (setq haskell-font-lock-symbols t)
+	    (set-input-method "haskell-unicode")
+	    (folding-mode)))
+
+
+
+(add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
 ;;========SLIME, IDE for lisp(package)======
 ;; ~~CAUTION~~
 ;; For operating slime correctry, I had to modify slime.el as follows:
