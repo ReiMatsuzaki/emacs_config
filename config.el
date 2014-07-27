@@ -570,8 +570,8 @@
 ;;========mmm-mode=========================
 (require 'mmm-mode)
 ;(setq mmm-global-mode t)
-(setq mmm-submode-decoration-level 0)
-(set-face-background 'mmm-default-submode-face "Gray")
+(setq mmm-submode-decoration-level 2)
+(set-face-background 'mmm-default-submode-face "Blue")
 
 ;;=======scala mode(package), ensime(git-hub)======
 ;(add-to-list 'load-path "~/.emacs.d/ensime-master/src/main/elisp/")
@@ -744,11 +744,11 @@
     )
    (literate-haskell-latex
     :submode literate-haskell-mode
-    :front "^\\\\end{code}"
-    :front-offset (end-of-line 1)
-    :back "^\\\\begin{code}"
-    :include-back nil
-    :back-offset (beginning-of-line -1)
+    :front "^\\\\begin{code}"
+;    :front-offset (end-of-line 1)
+    :back "^\\\\end{code}"
+;    :include-back nil
+;    :back-offset (beginning-of-line -1)
     )))
 
 (defun my-haskel-mmm-mode ()

@@ -1,0 +1,12 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: literate haskell section
+# key: {{{
+# binding: direct-keybinding
+# --
+%{ Note $1
+$0
+%}
+%{ Def $1
+\begin{code}
+\end{code}
+%}
