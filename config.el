@@ -45,6 +45,7 @@
   yasnippet
   magit
   mmm-mode
+  outshine
    )
 )
 
@@ -175,6 +176,8 @@
                     :background "white"
 		    :box nil
                     )
+
+
 ;;
 (defun describe-face-at-point ()
   "Return face used at point"
@@ -567,11 +570,37 @@
 ;;========programming======================
 (require 'flymake)
 
-;;========mmm-mode=========================
+;;========mmm-mode (package)=======================
 (require 'mmm-mode)
 ;(setq mmm-global-mode t)
 (setq mmm-submode-decoration-level 2)
-(set-face-background 'mmm-default-submode-face "Blue")
+;(set-face-background 'mmm-default-submode-face "Blue")
+
+
+;;======= outshine (package) =====================
+(require 'outshine)
+(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
+(set-face-attribute 'outshine-level-1 nil
+                    :foreground "mediumspringgreen"
+		    :height 150
+		    :underline t)
+(set-face-attribute 'outshine-level-2 nil
+                    :foreground "light salmon"
+		    :underline t		    
+		    :height 130
+		    :underline t)
+(set-face-attribute 'outshine-level-3 nil
+                    :foreground "cyan1"
+		    :underline t
+		    :height 100)
+
+(defun outshine-fold-to-level-1  ()
+  (interactive)
+  (beginning-of-line)
+  (while (not (eobp))
+    (outline-hide-more)
+    (forward-line 1)))
+
 
 ;;=======scala mode(package), ensime(git-hub)======
 ;(add-to-list 'load-path "~/.emacs.d/ensime-master/src/main/elisp/")
@@ -587,8 +616,8 @@
 (yas-global-mode t)
 ;(add-to-list 'load-path
 ;	     "Y:/.emacs.d/snippets")
-;(setq yas-snippet-dirs 
-;      '("Y:/.emacs.d/snippets"))
+(setq yas-snippet-dirs 
+      '(concat config-home "snippets"))
 (setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
 ;(setq yas-snippet-dirs (expand-file-name "~/.emacs.d/elisp/snippets"))
 (add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
@@ -755,6 +784,17 @@
   (make-local-variable 'mmm-global-mode)
   (setq mmm-global-mode 'true))
 
+(let ((literate-haskell-mode-hs-info
+       '(literate-haskell-mode
+          "\begin{code}"
+          "\end{code}"
+	  nil
+	  nil
+          nil)))
+  (if (not (member literate-haskell-mode-hs-info hs-special-modes-alist))
+      (setq hs-special-modes-alist
+            (cons literate-haskell-mode-hs-info hs-special-modes-alist))))
+
 (add-hook 'haskell-mode-hook
 	  (lambda () (ghc-init)
 ;	    (flymake-mode)
@@ -762,12 +802,35 @@
 	    (inf-haskell-mode)
 	    (setq haskell-literate-default (quote tex))
 	    (set-input-method "TeX")
-	    (define-key haskell-mode-map (kbd "C-c f") 'folding-toggle-show-hide)
-	    (define-key haskell-mode-map (kbd "C-c w") 'folding-whole-buffer)
-	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)
-	    (my-haskel-mmm-mode)
-	    (folding-mode)
+	    (outline-minor-mode)
+	    (outshine-fold-to-level-1)
+	    (set-face-attribute 'font-lock-doc-face nil
+				:foreground "white")
+	    (define-key haskell-mode-map (kbd "C-c f") 'fold-dwim-toggle)
+	    (define-key haskell-mode-map (kbd "C-c o") 'fold-dwim-show-all)
+	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)	
+	    (my-ac-haskell-mode)
+ ;	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)
+;	    (my-haskel-mmm-mode)
 	    ))
+
+;;----complete by auto-complete and GHC-mode-----
+(ac-define-source ghc-mod 
+  '((depends ghc)
+    (candidates . (ghc-select-completion-symbol))
+    (symbol . "s")
+    (cache)))
+
+(defun my-ac-haskell-mode ()
+  (setq ac-sources '(ac-source-words-in-same-mode-buffers ac-source-dictionary ac-source-ghc-mod)))
+
+(defun my-haskell-ac-init ()
+  (when (member (file-name-extension buffer-file-name) '("hs" "lhs"))
+    (auto-complete-mode t)
+    (setq ac-sources '(ac-source-words-in-same-mode-buffers ac-source-dictionary ac-source-ghc-mod))))
+
+(add-hook 'find-file-hook 'my-haskell-ac-init)
+
 
 
 
@@ -958,7 +1021,7 @@
 	     (TeX-fold-buffer)
 	     (TeX-fold-buffer)
 	     (outline-minor-mode 1)
-	     (orgtbl-mode)
+;	     (orgtbl-mode)
 	     (fold-dwim-hide-all)
 	     (set-face-foreground 'font-latex-sectioning-2-face "Yellow")
 	     (set-face-foreground 'font-latex-sectioning-3-face "GreenYellow")
