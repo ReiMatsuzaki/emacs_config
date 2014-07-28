@@ -800,7 +800,7 @@
 ;	    (flymake-mode)
 	    (haskell-indent-mode)
 	    (inf-haskell-mode)
-	    (setq haskell-literate-default (quote tex))
+;	    (setq haskell-literate-default (quote tex))
 	    (set-input-method "TeX")
 	    (outline-minor-mode)
 	    (outshine-fold-to-level-1)
