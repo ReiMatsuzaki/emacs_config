@@ -803,12 +803,14 @@
 ;	    (setq haskell-literate-default (quote tex))
 	    (set-input-method "TeX")
 	    (outline-minor-mode)
+	    (linum-mode)
 	    (outshine-fold-to-level-1)
 	    (set-face-attribute 'font-lock-doc-face nil
 				:foreground "white")
 	    (define-key haskell-mode-map (kbd "C-c f") 'fold-dwim-toggle)
 	    (define-key haskell-mode-map (kbd "C-c o") 'fold-dwim-show-all)
-	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)	
+	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
+	    (define-key haskell-mode-map (kbd "C-c C-e") 'my-haskell-dynamical-evaluate)
 	    (my-ac-haskell-mode)
  ;	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)
 ;	    (my-haskel-mmm-mode)
@@ -831,9 +833,44 @@
 
 (add-hook 'find-file-hook 'my-haskell-ac-init)
 
+;;-----dynamical evaluation-----
+;; Like mathematica, evaluate one line. Before evaluate, *haskell* buffer must be activated.
 
+(defun my-get-one-line ()
+  (interactive)  
+  (progn
+    (end-of-line)
+    (let ((p2 (point)))
+      (beginning-of-line)
+      (let ((p1 (point)))
+	    (buffer-substring p1 p2)))))
 
+(defun my-haskell-is-code ()
+  (interactive)
+  
+)
 
+(defun my-haskell-dynamical-evaluate-one-line ()
+  (interactive)
+  (let* ((p0 (point))
+	 (line (my-get-one-line))
+	 (res (string-match "^ *> *" line)))
+    (if res
+	(let* ((idx (match-end 0))
+		(line2 (substring line idx))
+		(wind (selected-window)))
+	  (progn
+	    (switch-to-haskell)
+	    (insert line2)
+	    (comint-send-input)
+	    (select-window wind))))
+    (goto-char p0)
+    res))
+
+(defun my-haskell-dynamical-evaluate ()
+  (interactive)
+  (while (my-haskell-dynamical-evaluate-one-line)
+    (forward-line)))
 
 ;;========SLIME, IDE for lisp(package)======
 ;; ~~CAUTION~~
