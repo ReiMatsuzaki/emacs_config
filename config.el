@@ -435,18 +435,29 @@
 
 
 ;;;; Window Move
-;;;;; Key-Binding
+;;;;; def (wind move)
 
-(global-set-key (kbd "M-DEL") nil)
+(defun define-windmove-key-bindings (key-map)
+  (define-key key-map (kbd "C-M-k") 'windmove-up)
+  (define-key key-map (kbd "C-M-l") 'windmove-right)
+  (define-key key-map (kbd "C-M-h") 'windmove-left)
+  (define-key key-map (kbd "C-M-j") 'windmove-down))
+
+;;;;; Binding for global
+
+(define-windmove-key-bindings global-map)
+
+;(global-set-key (kbd "M-DEL") nil)
 (setq windmove-wrap-around t)
-(define-key global-map (kbd "C-M-k") 'windmove-up)
-(define-key global-map (kbd "C-M-p") 'windmove-up)
-(define-key global-map (kbd "C-M-j") 'windmove-down)
-(define-key global-map (kbd "C-M-n") 'windmove-down)
-(define-key global-map (kbd "C-M-l") 'windmove-right)
-(define-key global-map (kbd "C-M-f") 'windmove-right)
-(define-key global-map (kbd "M-DEL") 'windmove-left)
-(define-key global-map (kbd "C-M-b") 'windmove-left)
+;(define-key global-map (kbd "C-M-k") 'windmove-up)
+;(define-key global-map (kbd "C-M-p") 'windmove-up)
+;(define-key global-map (kbd "C-M-j") 'windmove-down)
+;(define-key global-map (kbd "C-M-n") 'windmove-down)
+;(define-key global-map (kbd "C-M-l") 'windmove-right)
+;(define-key global-map (kbd "C-M-f") 'windmove-right)
+;(define-key global-map (kbd "M-DEL") 'windmove-left)
+;(define-key global-map (kbd "C-M-b") 'windmove-left)
+
 
 ;;;; Window Kept and opening buffer
 ;;;;; def
@@ -620,6 +631,31 @@
 
 
 ;;; Edit
+;;;; ibus (does not use)
+
+
+;
+; need ibus package.
+; this package can be obtained from apt-get:
+;   apt-get install ibus-el
+; and add the sentence to .Xresources file:
+;   Emacs*useXIM: false
+
+(require 'ibus)
+(add-hook 'after-init-hook 'ibus-mode-on)
+;(ibus-define-common-key ?\C-\s nil)
+;(setq ibus-cursor-color '("red" "blue" "limegreen"))
+;(ibus-define-common-key (kbd "C-o") t)
+;;;; mozc
+
+;; need emacs-mozc package of apt-get
+
+(require 'mozc)
+(set-language-environment "japanese")
+(setq default-input-method "japanese-mozc")
+(global-set-key (kbd "C-o") 'toggle-input-method)
+
+
 ;;;; Git
 
 (require 'magit)
@@ -938,6 +974,7 @@
 	    (outline-minor-mode)
 	    (linum-mode)
 	    (outshine-fold-to-level-1)
+	    (define-windmove-key-bindings inferior-haskell-mode-map)
 	    (define-key haskell-mode-map (kbd "C-c f") 'fold-dwim-toggle)
 	    (define-key haskell-mode-map (kbd "C-c o") 'fold-dwim-show-all)
 	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
@@ -1038,11 +1075,11 @@
 	  '(lambda ()
 	     (outline-minor-mode)
 	     (outshine-fold-to-level-1)
+	     (define-windmove-key-bindings emacs-lisp-mode-map)
 	     (turn-on-eldoc-mode)
 	     (setq eldoc-idle-delay 0.2)
 	     (setq eldoc-minor-mode-string "")
-	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
-	     ))
+	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)))
 
 ;;;; ?
 
