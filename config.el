@@ -131,16 +131,16 @@
 ;     ()))
 ;  "*Face used by hl-line.")
 
-(defface hlline-face
-  '((((class color)
-      (background dark))
-     (:background "gray10"))
-    (((class color)
-      (background light))
-     (:background "black"))
-    (t
-     ()))
-  "*Face used by hl-line.")
+;(defface hlline-face
+;  '((((class color)
+;      (background dark))
+;     (:background "gray10"))
+;    (((class color)
+;      (background light))
+;     (:background "black"))
+;    (t
+;     ()))
+;  "*Face used by hl-line.")
 
 (setq hl-line-face 'hlline-face)
 (global-hl-line-mode)
@@ -159,6 +159,8 @@
 ;color theme
 (color-theme-initialize)
 (color-theme-billw)
+(set-face-attribute 'font-lock-doc-face nil
+		    :foreground "white")
 
 ;; prompt
 ;(set-face-foreground 'minibuffer-prompt "white")
@@ -581,16 +583,15 @@
 (require 'outshine)
 (add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 (set-face-attribute 'outshine-level-1 nil
-                    :foreground "mediumspringgreen"
+;                    :foreground "mediumspringgreen"
 		    :height 150
 		    :underline t)
 (set-face-attribute 'outshine-level-2 nil
-                    :foreground "light salmon"
-		    :underline t		    
+;                    :foreground "light salmon"
 		    :height 130
 		    :underline t)
 (set-face-attribute 'outshine-level-3 nil
-                    :foreground "cyan1"
+ ;                   :foreground "cyan1"
 		    :underline t
 		    :height 100)
 
@@ -805,8 +806,6 @@
 	    (outline-minor-mode)
 	    (linum-mode)
 	    (outshine-fold-to-level-1)
-	    (set-face-attribute 'font-lock-doc-face nil
-				:foreground "white")
 	    (define-key haskell-mode-map (kbd "C-c f") 'fold-dwim-toggle)
 	    (define-key haskell-mode-map (kbd "C-c o") 'fold-dwim-show-all)
 	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
