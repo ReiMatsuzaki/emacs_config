@@ -226,7 +226,7 @@
 	   (list
 	    `(width  .  80)
 	    `(height .  50)
-	    `(alpha  .  80))
+	    `(alpha  .  100))
 	   default-frame-alist))))
 
 ;;;;; color-theme
@@ -251,6 +251,10 @@
                     :background "white"
 		    :box nil
                     )
+;;;;; region
+
+(setq transient-mark-mode t)
+(set-face-background 'region "midnight blue")
 
 ;;;;; describe-face-at-point
 
@@ -282,16 +286,16 @@
 ;     ()))
 ;  "*Face used by hl-line.")
 
-;(defface hlline-face
-;  '((((class color)
-;      (background dark))
-;     (:background "gray10"))
-;    (((class color)
-;      (background light))
-;     (:background "black"))
-;    (t
-;     ()))
-;  "*Face used by hl-line.")
+(defface hlline-face
+  '((((class color)
+      (background dark))
+     (:background "gray10"))
+    (((class color)
+      (background light))
+     (:background "black"))
+    (t
+     ()))
+  "*Face used by hl-line.")
 
 (setq hl-line-face 'hlline-face)
 (global-hl-line-mode)
@@ -335,7 +339,7 @@
 ;(powerline-center-theme)
 
 
-
+			
 ;;; Window / Buffer
 ;;;; Win-control
 ;;;;; * load
@@ -631,7 +635,7 @@
 
 
 ;;; Edit
-;;;; ibus (does not use)
+;;;; ibus
 
 
 ;
@@ -641,10 +645,10 @@
 ; and add the sentence to .Xresources file:
 ;   Emacs*useXIM: false
 
-(require 'ibus)
-(add-hook 'after-init-hook 'ibus-mode-on)
+;(require 'ibus)
+;(add-hook 'after-init-hook 'ibus-mode-on)
 ;(ibus-define-common-key ?\C-\s nil)
-;(setq ibus-cursor-color '("red" "blue" "limegreen"))
+;(setq ibus-cursor-color '("red" "white" "limegreen"))
 ;(ibus-define-common-key (kbd "C-o") t)
 ;;;; mozc
 
@@ -654,7 +658,7 @@
 (set-language-environment "japanese")
 (setq default-input-method "japanese-mozc")
 (global-set-key (kbd "C-o") 'toggle-input-method)
-
+(setq mozc-candidate-style 'echo-area)
 
 ;;;; Git
 
@@ -1039,6 +1043,37 @@
   (while (my-haskell-dynamical-evaluate-one-line)
     (forward-line)))
 
+;;;;; color control (incomplete)
+
+(make-face 'face-literate-haskell-code)
+(set-face-background 'face-literate-haskell-code "navy")
+(make-face 'face-literate-haskell-non-code)
+(set-face-background 'face-literate-haskell-non-code "black")
+
+(defun my-literate-haskell-color ()
+  (interactive)
+  (progn
+    (beginning-of-buffer)
+    (while (not (eobp))
+      (progn
+	(beginning-of-line)
+	(let ((p0 (point)))
+	  (progn
+	    (forward-line 1)
+	    (beginning-of-line)
+	    (let* ((p1 (point))
+		   (line (buffer-substring p0 p1)))
+	      (if (string-match "^ *> *" line)
+		  (put-text-property p0 p1 'face 'face-literate-haskell-code)
+		(put-text-property p0 p1 'face 'face-literate-haskell-non-code)))))))))
+
+
+
+;(forward-line)
+
+
+;)))
+
 ;;;; lisp 
 
 ;;========SLIME, IDE for lisp(package)======
@@ -1177,6 +1212,21 @@
 ;(modify-TeX-fold-spec-list)
 ;(print TeX-fold-macro-spec-list)
 
+;;;;; doc view 
+
+; revert doc view from other buffer
+
+;(defun my-doc-view-revert-from-other-buffer ()
+;  (interactive)
+;  (let ((tex-buf-name (buffer-name (current-buffer))))
+;    (if (string-match "\\.tex$" tex-buf-name)
+;	(let ((dvi-buf-name (concat (substring tex-buf-name 0 -4) ".dvi")))
+;	  (progn
+;	    (switch-to-buffer dvi-buf-name)
+;	    (revert-buffer))))))
+
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
 ;;;;; config
 
 (load "tex-site")
@@ -1202,11 +1252,13 @@
     (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
     (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
     (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
+    (define-key outline-minor-mode-map (kbd "C-c b") 'TeX-fold-buffer)    
 ;    (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
 ;    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))
 ;    (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))
 ))
 
+;;;;; hook
 (add-hook 'TeX-mode-hook
 	  '(lambda ()
 	     (setq TeX-command-default "platex")
