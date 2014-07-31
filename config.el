@@ -18,7 +18,8 @@
 ;; scroll
 (global-set-key (kbd "M-n") 'scroll-up-command)
 (global-set-key (kbd "M-p") 'scroll-down-command)
-
+;;;;; * load basic
+(load (concat config-home "themes/soft-color.el"))
 ;;;;; * Serial Number
 ;(load "~/.emacs.d/elisp/serial-num/serial.el")
 (load (concat config-home "serial-num/serial.el"))
@@ -35,7 +36,7 @@
 (setq exec-path (cons (expand-file-name "~/local/bin") exec-path))
 
 ;; unbind C-c C-x and define exit command
-(global-unset-key "\C-x \C-c")
+(global-unset-key (kbd "C-x C-c"))
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; no tool bar, scroll bar, mnu bar
@@ -146,13 +147,14 @@
 
 ;;;;; color
 
-(setq my-color-tab "#123550")
-(setq my-color-back "#112230")
+; Dark 
+;(setq my-color-tab "#123550")
+;(setq my-color-back "#112230")
 
-(set-face-background 'elscreen-tab-other-screen-face my-color-tab)
-(set-face-foreground 'elscreen-tab-other-screen-face "white")
-(set-face-background 'elscreen-tab-current-screen-face my-color-tab)
-(set-face-foreground 'elscreen-tab-current-screen-face "red")
+(set-face-background 'elscreen-tab-other-screen-face my-color-tab-other-background)
+(set-face-foreground 'elscreen-tab-other-screen-face my-color-tab-other-foreground)
+(set-face-background 'elscreen-tab-current-screen-face my-color-tab-current-background)
+(set-face-foreground 'elscreen-tab-current-screen-face my-color-tab-current-foreground)
 
 (set-face-background 'elscreen-tab-background-face my-color-back)
 
@@ -229,15 +231,26 @@
 	    `(alpha  .  100))
 	   default-frame-alist))))
 
-;;;;; color-theme
+;;;;; color-theme (black)
 ;color theme
-(color-theme-initialize)
-(color-theme-billw)
-(set-face-attribute 'font-lock-doc-face nil
-		    :foreground "white")
+;(color-theme-initialize)
+;
+;(color-theme-billw)
+;(set-face-attribute 'font-lock-doc-face nil
+;		    :foreground "white")
+;(make-face 'face-literate-haskell-code)
+;(set-face-background 'face-literate-haskell-code "navy")
 
 ;; prompt
 ;(set-face-foreground 'minibuffer-prompt "white")
+;;;;; color-theme (white)
+
+;(color-theme-initialize)
+;
+;(color-theme-infodoc)
+;(set-face-attribute 'font-lock-doc-face nil
+;		    :foreground "white")
+
 
 ;;;;; Mode line
 ;;(load "d:/public_vm/Dropbox/Config/powerline_themes/billw.el")
@@ -254,7 +267,7 @@
 ;;;;; region
 
 (setq transient-mark-mode t)
-(set-face-background 'region "midnight blue")
+;(set-face-background 'region "midnight blue")
 
 ;;;;; describe-face-at-point
 
@@ -286,24 +299,29 @@
 ;     ()))
 ;  "*Face used by hl-line.")
 
-(defface hlline-face
-  '((((class color)
-      (background dark))
-     (:background "gray10"))
-    (((class color)
-      (background light))
-     (:background "black"))
-    (t
-     ()))
-  "*Face used by hl-line.")
+;(defface hlline-face
+;  '((((class color)
+;      (background dark))
+;     (:background "gray10"))
+;    (((class color)
+;      (background light))
+;     (:background "black"))
+;    (t
+;     ()))
+;  "*Face used by hl-line.")
 
-(setq hl-line-face 'hlline-face)
-(global-hl-line-mode)
+;(setq hl-line-face 'hlline-face)
+;(global-hl-line-mode)
 
 ;;;;; main-line
 (when window-system
   (require 'main-line))
-;(setq main-line-separator-style 'wave)
+
+;(setq main-line-color2 my-color-tab-other-background)
+(setq main-line-color2 my-main-line-color-1)
+(setq main-line-color1 my-main-line-color-2)
+(setq main-line-separator-style 'wave)
+;(setq main-line-separator-style 'brace)
 ;(defmain-line row "%41")
 ; - contour
 ; - contour-left
@@ -331,7 +349,7 @@
 ; - slant-right
 ;- curve
 
-;;;;; power line
+;;;;; power line (does not use)
 
 ;(require 'powerline)
 ;(powerline-vim-theme)
@@ -430,10 +448,10 @@
 		'(lambda () (interactive) (other-window-or-split 1)))
 (global-set-key (kbd "C-<non-convert>")
 		'(lambda () (interactive) (other-window-or-split -1)))
-(global-set-key "\C-x#" '(lambda ()
-                           (interactive)
+(global-set-key (kbd "C-x #") '(lambda ()
+                           (interactive)				 
                            (split-window-horizontally-n 3)))
-(global-set-key "\C-x$" '(lambda ()
+(global-set-key "\C-x $" '(lambda ()
                            (interactive)
                            (split-window-horizontally-n 4)))
 
@@ -735,7 +753,7 @@
 ;;;;; require
 
 (require 'outshine)
-(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
+;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 
 ;;;;; face
 
@@ -798,6 +816,32 @@
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(yas-trigger-key "TAB"))
+;;;; add face area
+;;;;; RegularExpression -> [(Point . Point)]
+
+;; from Regular Expression, obtaine matching sentence list
+(defun rexp-to-point-point-list (rexp)
+  (save-excursion
+    (goto-char (point-min))
+    (let (p0 p1 pp-list)
+      (while (re-search-forward rexp nil t)
+	(setq p0 (match-beginning 0))
+	(setq p1 (match-end 0))
+	(setq pp-list (cons (cons p0 p1) pp-list)))
+      pp-list)))
+
+;;;;; RegularExpression -> IO (add overlay)_
+(defun add-face-to-rexp-area (rexp adapting-face)
+  (remove-overlays (point-min) (point-max) 'face adapting-face)
+  (let ((pp-list (rexp-to-point-point-list rexp)))
+    (mapcar 
+     (lambda (pp)
+       (let* ((p0 (car pp))
+	      (p1 (cdr pp))
+	      (ov (make-overlay p0 p1 (current-buffer) t t)))
+	 (overlay-put ov 'face adapting-face )))
+     pp-list)))
+
 ;;; Programming
 ;;;; scala
 
@@ -974,8 +1018,11 @@
 	    (haskell-indent-mode)
 	    (inf-haskell-mode)
 ;	    (setq haskell-literate-default (quote tex))
+	    (my-literate-haskell-color)
+	    (add-hook 'after-save-hook 'my-literate-haskell-color)
 	    (set-input-method "TeX")
 	    (outline-minor-mode)
+	    (outshine-hook-function)
 	    (linum-mode)
 	    (outshine-fold-to-level-1)
 	    (define-windmove-key-bindings inferior-haskell-mode-map)
@@ -1043,36 +1090,12 @@
   (while (my-haskell-dynamical-evaluate-one-line)
     (forward-line)))
 
-;;;;; color control (incomplete)
-
-(make-face 'face-literate-haskell-code)
-(set-face-background 'face-literate-haskell-code "navy")
-(make-face 'face-literate-haskell-non-code)
-(set-face-background 'face-literate-haskell-non-code "black")
+;;;;; color control 
 
 (defun my-literate-haskell-color ()
   (interactive)
-  (progn
-    (beginning-of-buffer)
-    (while (not (eobp))
-      (progn
-	(beginning-of-line)
-	(let ((p0 (point)))
-	  (progn
-	    (forward-line 1)
-	    (beginning-of-line)
-	    (let* ((p1 (point))
-		   (line (buffer-substring p0 p1)))
-	      (if (string-match "^ *> *" line)
-		  (put-text-property p0 p1 'face 'face-literate-haskell-code)
-		(put-text-property p0 p1 'face 'face-literate-haskell-non-code)))))))))
+  (add-face-to-rexp-area "\\(^ *>.*\n\\)+" 'face-literate-program-code))
 
-
-
-;(forward-line)
-
-
-;)))
 
 ;;;; lisp 
 
@@ -1109,6 +1132,7 @@
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)
+	     (outshine-hook-function)
 	     (outshine-fold-to-level-1)
 	     (define-windmove-key-bindings emacs-lisp-mode-map)
 	     (turn-on-eldoc-mode)
