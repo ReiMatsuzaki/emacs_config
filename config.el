@@ -318,8 +318,8 @@
   (require 'main-line))
 
 ;(setq main-line-color2 my-color-tab-other-background)
-(setq main-line-color2 my-main-line-color-1)
-(setq main-line-color1 my-main-line-color-2)
+(setq main-line-color2 my-main-line-color-2)
+(setq main-line-color1 my-main-line-color-1)
 (setq main-line-separator-style 'wave)
 ;(setq main-line-separator-style 'brace)
 ;(defmain-line row "%41")
@@ -625,7 +625,7 @@
                     )
 ;;;; w3m
 ;package
-;(require 'w3m)
+(require 'w3m)
 ;;;; color-moccur 
 ; package
 (require 'color-moccur)
@@ -653,30 +653,8 @@
 
 
 ;;; Edit
-;;;; ibus
 
 
-;
-; need ibus package.
-; this package can be obtained from apt-get:
-;   apt-get install ibus-el
-; and add the sentence to .Xresources file:
-;   Emacs*useXIM: false
-
-;(require 'ibus)
-;(add-hook 'after-init-hook 'ibus-mode-on)
-;(ibus-define-common-key ?\C-\s nil)
-;(setq ibus-cursor-color '("red" "white" "limegreen"))
-;(ibus-define-common-key (kbd "C-o") t)
-;;;; mozc
-
-;; need emacs-mozc package of apt-get
-
-(require 'mozc)
-(set-language-environment "japanese")
-(setq default-input-method "japanese-mozc")
-(global-set-key (kbd "C-o") 'toggle-input-method)
-(setq mozc-candidate-style 'echo-area)
 
 ;;;; Git
 
@@ -722,15 +700,44 @@
 
 
 ;;;; IME
+;;;;; ibus (does not use)
+;
+; need ibus package.
+; this package can be obtained from apt-get:
+;   apt-get install ibus-el
+; and add the sentence to .Xresources file:
+;   Emacs*useXIM: false
+
+;(require 'ibus)
+;(add-hook 'after-init-hook 'ibus-mode-on)
+;(ibus-define-common-key ?\C-\s nil)
+;(setq ibus-cursor-color '("red" "white" "limegreen"))
+;(ibus-define-common-key (kbd "C-o") t)
+
+;;;;; mozc
+
+;; need emacs-mozc package of apt-get
+
+(require 'mozc)
+(set-language-environment "japanese")
+(setq default-input-method "japanese-mozc")
+(setq mozc-candidate-style 'echo-area)
+
+;(global-set-key (kbd "C-o") 'toggle-input-method)
+
+;;;;; color
 
 ;   ;; IME OFF
 ;   (set-cursor-color "pink")
 
    (add-hook 'input-method-activate-hook
-	     (lambda() (set-cursor-color "red")))
+	     (lambda() (set-cursor-color my-ime-active-color)))
    (add-hook 'input-method-inactivate-hook
-	     (lambda() (set-cursor-color "cyan")))
-   (define-key global-map "\C-o" 'toggle-input-method)
+	     (lambda() (set-cursor-color my-ime-inactive-color)))
+
+;;;;; key binding
+
+(define-key global-map "\C-o" 'toggle-input-method)
 
 ;;;; flymake
 (require 'flymake)
@@ -1340,8 +1347,12 @@
 	     (outline-minor-mode 1)
 ;	     (orgtbl-mode)
 	     (fold-dwim-hide-all)
-	     (set-face-foreground 'font-latex-sectioning-2-face "Yellow")
-	     (set-face-foreground 'font-latex-sectioning-3-face "GreenYellow")
+	     (set-face-foreground 
+	      'font-latex-sectioning-2-face my-sect-color-1)
+	     (set-face-foreground 
+	      'font-latex-sectioning-3-face my-sect-color-2)
+	     (set-face-foreground 
+	      'font-latex-sectioning-4-face my-sect-color-3)
 	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
 

@@ -13,6 +13,15 @@
 (make-face 'face-literate-program-code)
 (set-face-background 'face-literate-program-code "snow")
 
+;; sectioninng 
+(setq my-sect-color-1 "blue4")
+(setq my-sect-color-2 "chocolate")
+(setq my-sect-color-3 "dark orchid")
+
+;; cursor
+(setq my-ime-active-color "red")
+(setq my-ime-inactive-color "blue")
+
 ;; pale color
 (make-face 'my-face-pale)
 (set-face-foreground 'my-face-pale "gray")
