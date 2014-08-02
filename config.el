@@ -653,9 +653,6 @@
 
 
 ;;; Edit
-
-
-
 ;;;; Git
 
 (require 'magit)
@@ -1027,7 +1024,7 @@
 ;	    (setq haskell-literate-default (quote tex))
 	    (my-literate-haskell-color)
 	    (add-hook 'after-save-hook 'my-literate-haskell-color)
-	    (set-input-method "TeX")
+;	    (set-input-method "TeX")
 	    (outline-minor-mode)
 	    (outshine-hook-function)
 	    (linum-mode)
