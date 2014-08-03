@@ -38,3 +38,14 @@
 (setq my-main-line-color-2 "#cdaa7d")
 
 
+
+;; error check
+
+(make-face 'my-face-error-check-error)
+(set-face-background 'my-face-error-check-error "pink")
+
+(make-face 'my-face-error-check-warn)
+(set-face-background 'my-face-error-check-warn "yellow")
+
+
+	   

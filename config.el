@@ -738,6 +738,8 @@
 
 ;;;; flymake
 (require 'flymake)
+(set-face-background 'flymake-errline "red3")
+(set-face-background 'flymake-warnline "yello")
 
 ;;;; mmm-mode
 
@@ -1014,6 +1016,13 @@
       (setq hs-special-modes-alist
             (cons literate-haskell-mode-hs-info hs-special-modes-alist))))
 
+;;;;; face
+
+(defun my-haskell-define-face ()
+  (copy-face 'my-face-error-check-warn 'ghc-face-warn)
+  (copy-face 'my-face-error-check-error 'ghc-face-error)
+)
+
 ;;;;; hook
 
 (add-hook 'haskell-mode-hook
@@ -1035,6 +1044,7 @@
 	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
 	    (define-key haskell-mode-map (kbd "C-c C-e") 'my-haskell-dynamical-evaluate)
 	    (my-ac-haskell-mode)
+	    (my-haskell-define-face)
  ;	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)
 ;	    (my-haskel-mmm-mode)
 	    ))
@@ -1099,7 +1109,6 @@
 (defun my-literate-haskell-color ()
   (interactive)
   (add-face-to-rexp-area "\\(^ *>.*\n\\)+" 'face-literate-program-code))
-
 
 ;;;; lisp 
 
@@ -1510,3 +1519,11 @@
 
 
 
+
+;;; Key bind 2
+(global-set-key (kbd "C-x #") '(lambda ()
+                           (interactive)				 
+                           (split-window-horizontally-n 3)))
+(global-set-key "\C-x $" '(lambda ()
+                           (interactive)
+                           (split-window-horizontally-n 4)))
