@@ -18,6 +18,11 @@
 (setq my-sect-color-2 "chocolate")
 (setq my-sect-color-3 "dark orchid")
 
+(make-face 'face-sectioning)
+(set-face-background 'face-sectioning "darkorange2")
+(set-face-foreground 'face-sectioning "white")
+(set-face-underline-p 'face-sectioning nil)
+
 ;; cursor
 (setq my-ime-active-color "red")
 (setq my-ime-inactive-color "blue")

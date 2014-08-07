@@ -1023,6 +1023,36 @@
   (copy-face 'my-face-error-check-error 'ghc-face-error)
 )
 
+;;;;; Display Synopsis
+
+; Search whole of file editting and collect synopsis,
+; then display these at the other buffer named "Synopsis"
+
+; search file of current buffer and collect synopsis as string
+; :: [string]
+(defun my-haskell-collect-synopsis ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let (line-list)
+      (while (re-search-forward "\\(^> [a-zA-Z0-9]* ::.*$\\|^--\\* .*$\\)" nil t)
+	(setq line-list (cons (match-string 0) line-list)))
+      line-list)))
+
+; create buffer if not exist, and display strings
+(defun my-haskell-display-synopsis ()
+  (interactive)
+  (save-excursion
+    (let ((buf (get-buffer-create "*Synopsis*"))
+	  (str-list (reverse (my-haskell-collect-synopsis))))
+      (set-buffer buf)
+      (erase-buffer)
+      (while str-list
+	(insert (car str-list))
+	(insert "\n")
+	(setq str-list (cdr str-list)))
+      (my-literate-haskell-color))))
+
 ;;;;; hook
 
 (add-hook 'haskell-mode-hook
@@ -1033,6 +1063,7 @@
 ;	    (setq haskell-literate-default (quote tex))
 	    (my-literate-haskell-color)
 	    (add-hook 'after-save-hook 'my-literate-haskell-color)
+	    (add-hook 'after-save-hook 'my-haskell-display-synopsis)
 ;	    (set-input-method "TeX")
 	    (outline-minor-mode)
 	    (outshine-hook-function)
@@ -1108,7 +1139,9 @@
 
 (defun my-literate-haskell-color ()
   (interactive)
-  (add-face-to-rexp-area "\\(^ *>.*\n\\)+" 'face-literate-program-code))
+  (add-face-to-rexp-area "\\(^ *>.*\n\\)+" 'face-literate-program-code)
+  (add-face-to-rexp-area "^--\\* .*\n" 'face-sectioning)
+)
 
 ;;;; lisp 
 
