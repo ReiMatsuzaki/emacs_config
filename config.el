@@ -738,7 +738,7 @@
 
 ;;;; flymake
 (require 'flymake)
-(set-face-background 'flymake-errline "red3")
+;(set-face-background 'flymake-errline "red3")
 (set-face-background 'flymake-warnline "yello")
 
 ;;;; mmm-mode
@@ -1074,11 +1074,15 @@
 	    (define-key haskell-mode-map (kbd "C-c o") 'fold-dwim-show-all)
 	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
 	    (define-key haskell-mode-map (kbd "C-c C-e") 'my-haskell-dynamical-evaluate)
+;	    (define-key inf-haskell-mode-map (kbd "C-n") 'comint-next-input)
+;	    (define-key inf-haskell-mode-map (kbd "C-p") 'comint-previous-input)
 	    (my-ac-haskell-mode)
 	    (my-haskell-define-face)
  ;	    (define-key haskell-mode-map (kbd "C-c o") 'folding-show-all)
 ;	    (my-haskel-mmm-mode)
 	    ))
+
+
 
 ;;;;; complete
 
@@ -1549,6 +1553,31 @@
   (point) (point)
   ))
 (define-auto-insert "\\.gp$" 'insert-gp-template)
+
+
+
+
+;;;; c/c++
+;;;;; flymake
+
+(defun flymake-cc-init ()
+  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+         (local-file  (file-relative-name
+                       temp-file
+                       (file-name-directory buffer-file-name))))
+    (list "g++" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+
+(push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
+
+;;;;; config
+(define-auto-insert "\\.cpp" "cpp_template.cpp")
+(add-hook 'c++-mode-hook
+	  (lambda ()
+	    (hs-minor-mode)
+	    (fold-dwim-hide-all)
+	    (flymake-mode t)
+	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)))
 
 
 
