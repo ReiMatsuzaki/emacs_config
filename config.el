@@ -1470,7 +1470,9 @@
   (message "done"))
 
 (setq org-latex-to-pdf-process
-      '("mypdflatex %f"))
+      '("platex %f"
+	"dvipdfmx %b.dvi"))
+
 
 ;;;;; auto complete
 (require 'ac-math)
