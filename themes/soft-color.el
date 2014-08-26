@@ -5,8 +5,7 @@
 (color-theme-infodoc)
 
 ;; default font size
-(setq my-default-font-height 70)
-
+(setq my-default-font-height 80)
 
 
 ;; doc
