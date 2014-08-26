@@ -220,6 +220,11 @@
 
 
 ;;;; Appearance
+;;;;; Font
+
+(set-face-attribute 'default nil
+		    :family "DejaVu Sans Mono"
+		    :height (round my-default-font-height))
 ;;;;; Window 
 (when window-system
   (progn
@@ -765,16 +770,16 @@
 
 (set-face-attribute 'outshine-level-1 nil
 ;                    :foreground "mediumspringgreen"
-		    :height 150
+		    :height (round (* my-default-font-height 1.4))
 		    :underline t)
 (set-face-attribute 'outshine-level-2 nil
 ;                    :foreground "light salmon"
-		    :height 130
+		    :height (round (* my-default-font-height 1.2))
 		    :underline t)
 (set-face-attribute 'outshine-level-3 nil
  ;                   :foreground "cyan1"
 		    :underline t
-		    :height 100)
+		    :height (round (* my-default-font-height 1.1)))
 
 ;;;;; def (outshine-fold-to-level-1)
 
