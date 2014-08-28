@@ -222,9 +222,10 @@
 ;;;; Appearance
 ;;;;; Font
 
-(set-face-attribute 'default nil
-		    :family "DejaVu Sans Mono"
-		    :height (round my-default-font-height))
+ (set-face-attribute 'default nil
+ 		    :family "DejaVu Sans Mono"
+ 		    :height (round my-default-font-height))
+
 ;;;;; Window 
 (when window-system
   (progn
