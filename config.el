@@ -1585,6 +1585,8 @@
 	    (hs-minor-mode)
 	    (fold-dwim-hide-all)
 	    (flymake-mode t)
+	    (linum-mode t)
+	    (define-windmove-key-bindings c++-mode-map)
 	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)))
 
 
