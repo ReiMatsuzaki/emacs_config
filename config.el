@@ -18,8 +18,13 @@
 ;; scroll
 (global-set-key (kbd "M-n") 'scroll-up-command)
 (global-set-key (kbd "M-p") 'scroll-down-command)
-;;;;; * load basic
-(load (concat config-home "themes/soft-color.el"))
+;;;;; * load color
+
+;; (load (concat config-home "themes/soft-color.el"))
+;; (load (concat config-home "themes/dark-color.el"))
+(load (concat config-home "themes/black_board.el"))
+
+
 ;;;;; * Serial Number
 ;(load "~/.emacs.d/elisp/serial-num/serial.el")
 (load (concat config-home "serial-num/serial.el"))
@@ -135,6 +140,7 @@
   magit
   mmm-mode
   outshine
+  multiple-cursors
    )
 )
 
@@ -656,6 +662,17 @@
 ;;(helm-mode 1)
 
 
+
+
+;;;; mutli-cursors
+
+
+
+(require 'multiple-cursors)
+
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 
 ;;; Edit
@@ -1578,12 +1595,50 @@
 
 (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 
+;;;;; color control
+
+(defun my-cplus-color ()
+  (interactive)
+  (add-face-to-rexp-area "^ *// +\\* .*\n" 'face-sectioning)
+ ;; (add-face-to-rexp-area "^ *//> .*$\\(.*\n\\)*^//<.*$" 'face-literate-program-code)
+)
+
+;;;;; face
+
+
+;;(defun my-cplus-face-setting ()
+;;  (interactive)
+;;  (set-face-background 'font-lock-comment-face "white")
+;;  )
+
+;;;;; section
+
+(defun my-cplus-insert-outsine-section ()
+  (interactive)
+  (beginning-of-line)
+  (insert "// \*"))
+
 ;;;;; config
 (define-auto-insert "\\.cpp" "cpp_template.cpp")
 (add-hook 'c++-mode-hook
 	  (lambda ()
-	    (hs-minor-mode)
-	    (fold-dwim-hide-all)
+;	    (hs-minor-mode)
+;	    (fold-dwim-hide-all)
+
+	    (my-cplus-color)
+	    (add-hook 'after-save-hook 'my-cplus-color)
+
+;;	    (set-face-background 'font-lock-comment-face "white")
+	    
+	    (outline-minor-mode)
+	    (outshine-hook-function)
+
+	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
+
+	    (define-key c++-mode-map (kbd "C-c f") 'fold-dwim-toggle)
+;	    (define-key c++-mode-map (kbd "C-c o") 'fold-dwim-show-all)
+	    (define-key c++-mode-map (kbd "C-c w") 'fold-dwim-hide-all)	    
+	    
 	    (flymake-mode t)
 	    (linum-mode t)
 	    (define-windmove-key-bindings c++-mode-map)
