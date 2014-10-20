@@ -463,9 +463,9 @@
 (global-set-key (kbd "C-x #") '(lambda ()
                            (interactive)				 
                            (split-window-horizontally-n 3)))
-(global-set-key "\C-x $" '(lambda ()
-                           (interactive)
-                           (split-window-horizontally-n 4)))
+(global-set-key (kbd "C-x $") '(lambda ()
+				 (interactive)
+				 (split-window-horizontally-n 4)))
 
 
 ;;;; Window Move
