@@ -22,7 +22,8 @@
 
 ;; (load (concat config-home "themes/soft-color.el"))
 ;; (load (concat config-home "themes/dark-color.el"))
-(load (concat config-home "themes/black_board.el"))
+;; (load (concat config-home "themes/black_board.el"))
+;; (load (concat config-home "themes/non_x.el"))
 
 
 ;;;;; * Serial Number
@@ -45,8 +46,10 @@
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; no tool bar, scroll bar, mnu bar
-(tool-bar-mode 0)
-(scroll-bar-mode -1)
+(if (window-system)
+    (progn 
+      (tool-bar-mode 0)
+      (scroll-bar-mode -1)))
 
 ;; ffap. Extention of C-x C-f
 (ffap-bindings)
@@ -106,7 +109,7 @@
    (or (package-installed-p package)
        (package-install package)))
  '(
-  ac-math	     
+;  ac-math	     
   ac-slime	     
   auctex	     
   auto-complete	     
@@ -140,6 +143,7 @@
   magit
   mmm-mode
   outshine
+  outorg
   multiple-cursors
    )
 )
@@ -737,11 +741,12 @@
 ;;;;; mozc
 
 ;; need emacs-mozc package of apt-get
-
-(require 'mozc)
-(set-language-environment "japanese")
-(setq default-input-method "japanese-mozc")
-(setq mozc-candidate-style 'echo-area)
+(if (window-system)
+    (progn
+      (require 'mozc)
+      (set-language-environment "japanese")
+      (setq default-input-method "japanese-mozc")
+      (setq mozc-candidate-style 'echo-area)))
 
 ;(global-set-key (kbd "C-o") 'toggle-input-method)
 
@@ -781,23 +786,25 @@
 ;;;; outshine
 ;;;;; require
 
-(require 'outshine)
+
+      (require 'outshine)
 ;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 
 ;;;;; face
 
-(set-face-attribute 'outshine-level-1 nil
+      (set-face-attribute 'outshine-level-1 nil
 ;                    :foreground "mediumspringgreen"
 		    :height (round (* my-default-font-height 1.4))
 		    :underline t)
-(set-face-attribute 'outshine-level-2 nil
+      (set-face-attribute 'outshine-level-2 nil
 ;                    :foreground "light salmon"
 		    :height (round (* my-default-font-height 1.2))
 		    :underline t)
-(set-face-attribute 'outshine-level-3 nil
+      (set-face-attribute 'outshine-level-3 nil
  ;                   :foreground "cyan1"
 		    :underline t
 		    :height (round (* my-default-font-height 1.1)))
+
 
 ;;;;; def (outshine-fold-to-level-1)
 
@@ -1498,12 +1505,15 @@
 
 
 ;;;;; auto complete
-(require 'ac-math)
-(add-to-list 'ac-modes 'org-mode)
-(defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-  (setq ac-sources
-        (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-                ac-sources)))
+(if (window-system)
+    (progn
+      (require 'ac-math)
+      (add-to-list 'ac-modes 'org-mode)
+      (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+	(setq ac-sources
+	      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+		      ac-sources)))))
+
 ;;latex-math-preview(from web)
 
 ;;;;; math preview
@@ -1651,6 +1661,8 @@
 (global-set-key (kbd "C-x #") '(lambda ()
                            (interactive)				 
                            (split-window-horizontally-n 3)))
-(global-set-key "\C-x $" '(lambda ()
+(global-set-key (kbd "C-x $") '(lambda ()
                            (interactive)
                            (split-window-horizontally-n 4)))
+
+
