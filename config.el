@@ -20,9 +20,9 @@
 (global-set-key (kbd "M-p") 'scroll-down-command)
 ;;;;; * load color
 
-;; (load (concat config-home "themes/soft-color.el"))
+(load (concat config-home "themes/soft-color.el"))
 ;; (load (concat config-home "themes/dark-color.el"))
-(load (concat config-home "themes/black_board.el"))
+;; (load (concat config-home "themes/black_board.el"))
 
 
 ;;;;; * Serial Number
