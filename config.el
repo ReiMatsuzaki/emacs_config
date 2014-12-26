@@ -374,6 +374,14 @@
 
 
 			
+;;;;; generic mode
+
+;; cf : "Emacs Lisp technique bible (japanese):
+;;       written by Rubikichi.
+
+(require 'generic-x)
+
+
 ;;; Window / Buffer
 ;;;; Win-control
 ;;;;; * load
