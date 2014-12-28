@@ -1802,6 +1802,28 @@
 
 
 
+;;;; mathematica script file
+
+(define-generic-mode mathematica-script-mode
+  ;; comment list
+  '("(*" "*)")
+  ;; key words list
+  '("@" "\\[" "\\]")
+  ;; color list
+  '(
+    ("@" . font-lock-keyword-face)
+    ("\\[" . font-lock-builtin-face)
+    ("\\]" . font-lock-builtin-face)
+    ("\\{" . font-lock-builtin-face)
+    ("\\}" . font-lock-builtin-face)
+    )
+  ;; file regexp list
+  '("\\.m$")
+  ;; init function list
+  nil
+  )
+
+
 ;;; Key bind 2
 (global-set-key (kbd "C-x #") '(lambda ()
                            (interactive)				 
