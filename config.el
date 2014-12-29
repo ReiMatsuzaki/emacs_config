@@ -130,6 +130,7 @@
   ghc
   helm		     
   helm-c-moccur	     
+  helm-c-yasnippet
   lispxmp	     
   main-line	     
   popup		     
@@ -454,7 +455,10 @@
       (buffer-control-ui))))
 
 ;;;;; * Key Bind
-(define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+; (define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+
 ;;;; Window split
 ;;;;; def (other-window-or-split)
 
@@ -681,6 +685,8 @@
 	 (name-new (register-string-to-num name (elscreen-get-current-screen))))
     (rename-buffer name-new)))
 
+(global-set-key (kbd "C-q r") 'register-buffer-for-this-elscreen)
+
 
 ;;;; window-move-minor-mode
 
@@ -787,7 +793,8 @@
 ;;;; w3m
 ;package
 (require 'w3m)
-;;;; color-moccur 
+;;;; color-moccur
+
 ; package
 (require 'color-moccur)
 (setq moccur-split-word t)
@@ -801,7 +808,9 @@
 
 ; helm(package)
 (require 'helm-config)
-(global-set-key (kbd "C-;") 'helm-mini)
+(global-set-key (kbd "C-t") 'helm-mini)
+(global-set-key (kbd "C-c r") 'helm-recentf)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
@@ -810,12 +819,7 @@
 (define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
 ;;(helm-mode 1)
 
-
-
-
 ;;;; mutli-cursors
-
-
 
 (require 'multiple-cursors)
 
@@ -1385,7 +1389,7 @@
 ;;========Programming C++===============
 ;(goto-char 21220)
 
-;;;; fortran 90/96
+;;;; fortran 90/95
 ;;;;; hideshow
 (defun hs-hide-function-or-subroutine ()
   (interactive)
