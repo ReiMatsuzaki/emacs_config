@@ -894,12 +894,12 @@
 ;;;;; mozc
 
 ;; need emacs-mozc package of apt-get
-(if (window-system)
-    (progn
-      (require 'mozc)
-      (set-language-environment "japanese")
-      (setq default-input-method "japanese-mozc")
-      (setq mozc-candidate-style 'echo-area)))
+;(if (window-system)
+;    (progn
+;      (require 'mozc)
+;      (set-language-environment "japanese")
+;      (setq default-input-method "japanese-mozc")
+;      (setq mozc-candidate-style 'echo-area)))
 
 ;(global-set-key (kbd "C-o") 'toggle-input-method)
 
