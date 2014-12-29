@@ -131,6 +131,7 @@
   helm		     
   helm-c-moccur	     
   helm-c-yasnippet
+  helm-descbinds
   lispxmp	     
   main-line	     
   popup		     
@@ -813,6 +814,9 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
+
+;; helm-descbinds(package)
+(global-set-key (kbd "C-c b") 'helm-descbinds)
 
 ;helm-moccur(package)
 (require 'helm-c-moccur)
