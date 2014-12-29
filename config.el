@@ -23,6 +23,10 @@
 (load (concat config-home "themes/soft-color.el"))
 ;; (load (concat config-home "themes/dark-color.el"))
 ;; (load (concat config-home "themes/black_board.el"))
+<<<<<<< HEAD
+=======
+;; (load (concat config-home "themes/non_x.el"))
+>>>>>>> 82319460a32573d2b8789679bf26224c70888b0c
 
 
 ;;;;; * Serial Number
@@ -45,8 +49,10 @@
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; no tool bar, scroll bar, mnu bar
-(tool-bar-mode 0)
-(scroll-bar-mode -1)
+(if (window-system)
+    (progn 
+      (tool-bar-mode 0)
+      (scroll-bar-mode -1)))
 
 ;; ffap. Extention of C-x C-f
 (ffap-bindings)
@@ -106,7 +112,7 @@
    (or (package-installed-p package)
        (package-install package)))
  '(
-  ac-math	     
+;  ac-math	     
   ac-slime	     
   auctex	     
   auto-complete	     
@@ -127,6 +133,8 @@
   ghc
   helm		     
   helm-c-moccur	     
+  helm-c-yasnippet
+  helm-descbinds
   lispxmp	     
   main-line	     
   popup		     
@@ -140,6 +148,7 @@
   magit
   mmm-mode
   outshine
+  outorg
   multiple-cursors
    )
 )
@@ -370,6 +379,14 @@
 
 
 			
+;;;;; generic mode
+
+;; cf : "Emacs Lisp technique bible (japanese):
+;;       written by Rubikichi.
+
+(require 'generic-x)
+
+
 ;;; Window / Buffer
 ;;;; Win-control
 ;;;;; * load
@@ -382,6 +399,8 @@
 (require 'windmove)
 
 ;;;;; * def (flip)
+
+
 (defun buffer-flip-chose-direction (direction)
   (flet ((buffer-flip (win1 win2)
 		      (let ((b1 (window-buffer win1))
@@ -391,7 +410,24 @@
 			(select-window win2))))
     (buffer-flip (selected-window) 
 		 (windmove-find-other-window direction))))
-;(buffer-flip-chose-direction 'right)
+
+(defun buffer-flip-up ()
+  (interactive)
+  (buffer-flip-chose-direction 'up))
+(defun buffer-flip-down ()
+  (interactive)
+  (buffer-flip-chose-direction 'down))
+(defun buffer-flip-right ()
+  (interactive)
+  (buffer-flip-chose-direction 'right))
+(defun buffer-flip-left ()
+  (interactive)
+  (buffer-flip-chose-direction 'left))
+
+
+
+;; simple test:
+; (buffer-flip-chose-direction 'right)
 
 ;;;;; * def (UI)
 (defun buffer-control-ui ()
@@ -423,7 +459,10 @@
       (buffer-control-ui))))
 
 ;;;;; * Key Bind
-(define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+; (define-key global-map (kbd "C-t") 'buffer-control-ui)
+
+
 ;;;; Window split
 ;;;;; def (other-window-or-split)
 
@@ -468,21 +507,25 @@
 				 (split-window-horizontally-n 4)))
 
 
-;;;; Window Move
+;;;; Window Move(not used)
 ;;;;; def (wind move)
 
-(defun define-windmove-key-bindings (key-map)
-  (define-key key-map (kbd "C-M-k") 'windmove-up)
-  (define-key key-map (kbd "C-M-l") 'windmove-right)
-  (define-key key-map (kbd "C-M-h") 'windmove-left)
-  (define-key key-map (kbd "C-M-j") 'windmove-down))
+
+;(defun define-windmove-key-bindings (key-map)
+;  (define-key key-map (kbd "C-M-k") 'windmove-up)
+;  (define-key key-map (kbd "C-M-l") 'windmove-right)
+;  (define-key key-map (kbd "C-M-h") 'windmove-left)
+;  (define-key key-map (kbd "C-M-j") 'windmove-down))
+
+;(defun define-windmove-key-bindings (key-map)
+;  nil)
 
 ;;;;; Binding for global
 
-(define-windmove-key-bindings global-map)
+;(define-windmove-key-bindings global-map)
 
 ;(global-set-key (kbd "M-DEL") nil)
-(setq windmove-wrap-around t)
+;(setq windmove-wrap-around t)
 ;(define-key global-map (kbd "C-M-k") 'windmove-up)
 ;(define-key global-map (kbd "C-M-p") 'windmove-up)
 ;(define-key global-map (kbd "C-M-j") 'windmove-down)
@@ -491,6 +534,8 @@
 ;(define-key global-map (kbd "C-M-f") 'windmove-right)
 ;(define-key global-map (kbd "M-DEL") 'windmove-left)
 ;(define-key global-map (kbd "C-M-b") 'windmove-left)
+
+
 
 
 ;;;; Window Kept and opening buffer
@@ -502,6 +547,12 @@
   (interactive)
   (setq opening-buffer (find-file-noselect (expand-file-name file-name))))
 
+(defun save-opening-buffer ()
+  "change buffer and kept it for opening-buffer"
+  (interactive)
+  (setq opening-buffer (current-buffer)))
+
+
 (defun switch-to-opening-buffer ()
   "open opening-buffer at current window"
   (interactive)
@@ -511,23 +562,20 @@
 	(setq opening-buffer nil))
   (message "there is no opening-buufer")))
 
-;;;;; key-binding
+;;;;; key-binding(not used)
 
-(define-key global-map (kbd "C-M-m") 'switch-to-opening-buffer)
+;; (define-key global-map (kbd "C-M-m") 'switch-to-opening-buffer)
 
-;;; Control
-;;;; Eshell
-;;;;; avoid 
-;; avoid "Text is read-only"
-(defadvice eshell-get-old-input (after eshell-read-only-korosu activate)
-  (setq ad-return-value (substring-no-properties ad-return-value)))
 
-;;;;; relation with Elscreen 
+;;;; With Elscreen [utils]
+
 (defun eshell-current-elscreen-p (buf)
   (let ((regx (concat "\\*eshell\\*<" 
 		      (number-to-string (elscreen-get-current-screen))
 		      ".>")))
     (string-match regx (buffer-name buf))))
+;;;; with Elscreen [eshell]
+;;;;; eshell utils
 
 (defun eshell-number-for-this-elscreen (index)
   (+ (* 10 (elscreen-get-current-screen)) index))
@@ -537,6 +585,9 @@
   (interactive "p")
   (eshell (eshell-number-for-this-elscreen (/ arg 4))))
 
+
+;;;;; eshell
+
 (global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
 
 (add-hook 'eshell-mode-hook
@@ -545,7 +596,7 @@
 	       (let ((dir (expand-file-name "~/bin")))
 		 (setenv "PATH"  (concat dir ":" (getenv "PATH")))
 		 (setq exec-path (append (list dir) exec-path)))
-	       (define-key eshell-mode-map (kbd "C-M-l") 'windmove-right)
+;	       (define-key eshell-mode-map (kbd "C-M-l") 'windmove-right)
 	       (define-key eshell-mode-map "\C-a" 'eshell-bol)
 	       (define-key eshell-mode-map "\C-p" 'eshell-previous-matching-input-from-input)
 	       (define-key eshell-mode-map "\C-n" 'eshell-next-matching-input-from-input))))
@@ -564,6 +615,114 @@
 ;	 "] ")))
 
 
+
+;;;; with elscreen [files]
+;;;;; file name rule
+
+(defun name-for-this-elscreen (original-name)
+  (concat original-name "[" (number-to-string (elscreen-get-current-screen)) "]"))
+
+;;;;; find file
+
+(defadvice find-file (after add-elscreen-id activate)
+  (let ((buf-name (name-for-this-elscreen (buffer-name (current-buffer)))))
+    (rename-buffer buf-name)))
+
+;;;;; buffer-show (toggle all file <-> file in elscreen)
+
+(require 'bs)
+
+
+(defvar bs-toggle-status nil)
+(defun bs-toggle-files-configuration ()
+  (interactive)
+  (if bs-toggle-status
+      (bs-set-configuration bs-default-configuration)
+    (bs-set-configuration "files"))
+  (setq bs-toggle-status (not bs-toggle-status))
+  (bs--redisplay t))
+
+(define-key bs-mode-map "f" 'bs-toggle-files-configuration)
+
+(defadvice bs-show (after init-bs-show-status-variables activate)
+  (setq bs-toggle-status nil))
+
+;;;;; buffer-show (in elscreen or not)
+
+(defun is-not-buffer-for-elscreen (buf)
+  (let ((re-correct (concat "\\[" (number-to-string (elscreen-get-current-screen)) 
+			    "\\]$")))
+    (not (string-match re-correct (buffer-name buf)))))
+
+; define bs-configuration for elscreen.
+; bs-configuration are list whose elements are
+; (`bs-must-show-regexp', `bs-must-show-function',
+;`bs-dont-show-regexp', `bs-dont-show-function' `bs-buffer-sort-function'.)
+(setq bs-elscreen-configuration
+      '("elscreen" nil nil nil is-not-buffer-for-elscreen nil))
+
+; add elscreen bs-configuration to bs-configurations.
+(custom-set-variables 
+ '(bs-configurations 
+   (cons bs-elscreen-configuration
+	 bs-configurations)))
+
+; set default configuration
+(custom-set-variables
+ '(bs-default-configuration "elscreen"))
+
+;;;;; buffer-show (register)
+
+(defun register-string-to-num (str id)
+  (let ((orig-str 
+	 (if (string-match "^\\(.*\\)\\[[0-9]+\\]$" str)
+	     (match-string 1 str)
+	   str)))
+    (concat orig-str "[" (number-to-string id) "]")))
+;; (register-string-to-num "ss" 1)
+;; (register-string-to-num "ss[3]" 1)
+
+
+(defun register-buffer-for-this-elscreen ()
+  (interactive)
+  (let* ((name (buffer-name (current-buffer)))
+	 (name-new (register-string-to-num name (elscreen-get-current-screen))))
+    (rename-buffer name-new)))
+
+(global-set-key (kbd "C-q r") 'register-buffer-for-this-elscreen)
+
+
+;;;; window-move-minor-mode
+
+
+(defvar window-move-minor-mode-map
+  (let ((map (make-sparse-keymap)))
+    (setq windmove-wrap-around t)
+    (define-key map (kbd "C-M-j") 'windmove-down)
+    (define-key map (kbd "C-M-k") 'windmove-up)
+    (define-key map (kbd "C-M-l") 'windmove-right)
+    (define-key map (kbd "M-DEL") 'windmove-left)
+    (define-key map (kbd "M-J") 'buffer-flip-down)
+    (define-key map (kbd "M-K") 'buffer-flip-up)
+    (define-key map (kbd "M-L") 'buffer-flip-right)
+    (define-key map (kbd "M-H") 'buffer-flip-left)
+    (define-key map (kbd "C-M-s") 'save-opening-buffer)
+    (define-key map (kbd "C-M-m") 'switch-to-opening-buffer)
+    map))
+
+
+(define-minor-mode window-move-minor-mode
+  "window move minor mode"
+  :global t)
+
+(window-move-minor-mode t)
+
+
+
+
+
+
+;;; control
 ;;;; pop-win
 
 ; pop-win(package)
@@ -638,7 +797,8 @@
 ;;;; w3m
 ;package
 (require 'w3m)
-;;;; color-moccur 
+;;;; color-moccur
+
 ; package
 (require 'color-moccur)
 (setq moccur-split-word t)
@@ -652,21 +812,21 @@
 
 ; helm(package)
 (require 'helm-config)
-(global-set-key (kbd "C-;") 'helm-mini)
+(global-set-key (kbd "C-t") 'helm-mini)
+(global-set-key (kbd "C-c r") 'helm-recentf)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
+
+;; helm-descbinds(package)
+(global-set-key (kbd "C-c b") 'helm-descbinds)
 
 ;helm-moccur(package)
 (require 'helm-c-moccur)
 (define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
 ;;(helm-mode 1)
 
-
-
-
 ;;;; mutli-cursors
-
-
 
 (require 'multiple-cursors)
 
@@ -737,11 +897,12 @@
 ;;;;; mozc
 
 ;; need emacs-mozc package of apt-get
-
-(require 'mozc)
-(set-language-environment "japanese")
-(setq default-input-method "japanese-mozc")
-(setq mozc-candidate-style 'echo-area)
+;(if (window-system)
+;    (progn
+;      (require 'mozc)
+;      (set-language-environment "japanese")
+;      (setq default-input-method "japanese-mozc")
+;      (setq mozc-candidate-style 'echo-area)))
 
 ;(global-set-key (kbd "C-o") 'toggle-input-method)
 
@@ -781,23 +942,25 @@
 ;;;; outshine
 ;;;;; require
 
-(require 'outshine)
+
+      (require 'outshine)
 ;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 
 ;;;;; face
 
-(set-face-attribute 'outshine-level-1 nil
+      (set-face-attribute 'outshine-level-1 nil
 ;                    :foreground "mediumspringgreen"
 		    :height (round (* my-default-font-height 1.4))
 		    :underline t)
-(set-face-attribute 'outshine-level-2 nil
+      (set-face-attribute 'outshine-level-2 nil
 ;                    :foreground "light salmon"
 		    :height (round (* my-default-font-height 1.2))
 		    :underline t)
-(set-face-attribute 'outshine-level-3 nil
+      (set-face-attribute 'outshine-level-3 nil
  ;                   :foreground "cyan1"
 		    :underline t
 		    :height (round (* my-default-font-height 1.1)))
+
 
 ;;;;; def (outshine-fold-to-level-1)
 
@@ -1092,7 +1255,7 @@
 	    (outshine-hook-function)
 	    (linum-mode)
 	    (outshine-fold-to-level-1)
-	    (define-windmove-key-bindings inferior-haskell-mode-map)
+;	    (define-windmove-key-bindings inferior-haskell-mode-map)
 	    (define-key haskell-mode-map (kbd "C-c f") 'fold-dwim-toggle)
 	    (define-key haskell-mode-map (kbd "C-c o") 'fold-dwim-show-all)
 	    (define-key haskell-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
@@ -1207,7 +1370,7 @@
 	     (outline-minor-mode)
 	     (outshine-hook-function)
 	     (outshine-fold-to-level-1)
-	     (define-windmove-key-bindings emacs-lisp-mode-map)
+;	     (define-windmove-key-bindings emacs-lisp-mode-map)
 	     (turn-on-eldoc-mode)
 	     (setq eldoc-idle-delay 0.2)
 	     (setq eldoc-minor-mode-string "")
@@ -1233,7 +1396,7 @@
 ;;========Programming C++===============
 ;(goto-char 21220)
 
-;;;; fortran 90/96
+;;;; fortran 90/95
 ;;;;; hideshow
 (defun hs-hide-function-or-subroutine ()
   (interactive)
@@ -1498,12 +1661,15 @@
 
 
 ;;;;; auto complete
-(require 'ac-math)
-(add-to-list 'ac-modes 'org-mode)
-(defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-  (setq ac-sources
-        (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-                ac-sources)))
+(if (window-system)
+    (progn
+      (require 'ac-math)
+      (add-to-list 'ac-modes 'org-mode)
+      (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+	(setq ac-sources
+	      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+		      ac-sources)))))
+
 ;;latex-math-preview(from web)
 
 ;;;;; math preview
@@ -1641,16 +1807,40 @@
 	    
 	    (flymake-mode t)
 	    (linum-mode t)
-	    (define-windmove-key-bindings c++-mode-map)
+;	    (define-windmove-key-bindings c++-mode-map)
 	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)))
 
 
+
+
+;;;; mathematica script file
+
+(define-generic-mode mathematica-script-mode
+  ;; comment list
+  '("(*" "*)")
+  ;; key words list
+  '("@" "\\[" "\\]")
+  ;; color list
+  '(
+    ("@" . font-lock-keyword-face)
+    ("\\[" . font-lock-builtin-face)
+    ("\\]" . font-lock-builtin-face)
+    ("\\{" . font-lock-builtin-face)
+    ("\\}" . font-lock-builtin-face)
+    )
+  ;; file regexp list
+  '("\\.m$")
+  ;; init function list
+  nil
+  )
 
 
 ;;; Key bind 2
 (global-set-key (kbd "C-x #") '(lambda ()
                            (interactive)				 
                            (split-window-horizontally-n 3)))
-(global-set-key "\C-x $" '(lambda ()
+(global-set-key (kbd "C-x $") '(lambda ()
                            (interactive)
                            (split-window-horizontally-n 4)))
+
+
