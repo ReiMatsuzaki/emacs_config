@@ -12,9 +12,9 @@
 (set-face-background 'face-literate-program-code "gray")
 
 ;; sectioninng 
-(setq my-sect-color-1 "blue4")
-(setq my-sect-color-2 "chocolate")
-(setq my-sect-color-3 "gray")
+(setq my-sect-color-1 "cyan")
+(setq my-sect-color-2 "purple")
+(setq my-sect-color-3 "gray40")
 
 (make-face 'face-sectioning)
 ;;(set-face-background 'face-sectioning "midnight blue")

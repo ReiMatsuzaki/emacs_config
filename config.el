@@ -947,15 +947,15 @@
 ;;;;; face
 
       (set-face-attribute 'outshine-level-1 nil
-;                    :foreground "mediumspringgreen"
+		    :foreground my-sect-color-1
 		    :height (round (* my-default-font-height 1.4))
 		    :underline t)
       (set-face-attribute 'outshine-level-2 nil
-;                    :foreground "light salmon"
+                    :foreground my-sect-color-2
 		    :height (round (* my-default-font-height 1.2))
 		    :underline t)
       (set-face-attribute 'outshine-level-3 nil
- ;                   :foreground "cyan1"
+                   :foreground "gray40"
 		    :underline t
 		    :height (round (* my-default-font-height 1.1)))
 
