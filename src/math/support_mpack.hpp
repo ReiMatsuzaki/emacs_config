@@ -6,11 +6,12 @@
 
 // ** include
 
+#include <qd/dd_real.h>
 #include <mpack/dd_complex.h>
 
 
 // * function    
-// ** exp for complex number
+// ** exp for dd complex
 
   inline dd_complex exp(dd_complex z) {
     dd_real zr, zi, exp_zr;
@@ -22,6 +23,32 @@
     exp_z.imag() = exp_zr * sin(zi);
     return exp_z;
   }
+
+// ** pow for dd complex
+
+inline dd_complex pow(dd_complex z, int n) {
+
+  dd_complex y = z;
+  unsigned int nn = (unsigned int)n;
+    for(unsigned int i = 1; i < nn; i++) 
+    y *= z;
+
+  return y;
+}
+
+// ** pow for double
+
+/*
+inline double pow(double x, int n) {
+  double y = x;
+  unsigned int nn = (unsigned int)n;
+  for(unsigned int i = 1; i < nn; i++)
+    y *= x;
+  return y;
+}
+*/
+
+
 
 // * namespace   
 // ** namespace

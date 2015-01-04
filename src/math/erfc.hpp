@@ -8,8 +8,6 @@
 
 #include <math.h>
 #include <iostream>
-// #include <complex>
-// #include <mblas_dd.h>
 #include <qd/dd_real.h>
 #include <mpack/dd_complex.h>
 #include <src/math/support_mpack.hpp>
