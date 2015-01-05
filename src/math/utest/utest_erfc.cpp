@@ -4,7 +4,7 @@
 #include <src/math/erfc.hpp>
 
 using namespace std;
-using namespace StongMath;
+using namespace StongMath; 
 
 TEST(dd_real, exp) {
   dd_real x,y,z,two;
