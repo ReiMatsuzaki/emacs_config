@@ -43,7 +43,8 @@ TEST(erfc, erfc_double) {
   EXPECT_DOUBLE_EQ(expect, y);
   EXPECT_TRUE(calc_data.convergence);
   
-  x = 0.01;
+  x = 1.0;
+  x = 1.0 / 100.0;
   expect = 0.98871658444415038308409047645193078905089904517;
   //  erfc_d(x, y, calc_data);
   erfc<double>(x, y, calc_data);
@@ -152,22 +153,23 @@ TEST(exp2_erfc, dd_real) {
   EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
   EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
 
-  x = 0.1 * sqrt(two)+0.01;
-  x.x[1]=pow(10.0,-33.0);
+  //  x = 0.1 * sqrt(two)+0.01;
+  x = 1;
+  x = x / 100 + sqrt(two) / 10;
   exp2_erfc_safe(x, y, data);
   y_expect = (char*)"0.84969677805129388481366918087432309562268580614995884360988093850588676";
   EXPECT_TRUE(data.convergence);
   EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
   EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
 
-  x = 0.01 * sqrt(two);
+  x = sqrt(two) / 100;
   exp2_erfc_safe(x, y, data);
   y_expect = (char*)"0.98424020092288885191445867736134214647609742652301131588156251063080162";
   EXPECT_TRUE(data.convergence);
   EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
   EXPECT_NEAR(y.x[1], y_expect.x[1], eps);  
 
-  x = 0.001 * sqrt(two);
+  x = sqrt(two)/1000;
   exp2_erfc_safe(x, y, data);
   y_expect = (char*)"0.99840622875270040632589756092830951970018875155597523417773450375510215";
   EXPECT_TRUE(data.convergence);

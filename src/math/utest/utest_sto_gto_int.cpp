@@ -19,16 +19,11 @@ TEST(dd_check, div) {
   dd_real x,y,z, expect;
   double eps = 4.0 * value_machine_eps<dd_real>();
   
-  x = 0.5; y =0.1;
+  x = "0.5";
+  y = "0.1";
   z = x/y;
   expect = 5;
   
-  EXPECT_DOUBLE_EQ(expect.x[0], z.x[0]);
-  EXPECT_NEAR(expect.x[1], z.x[1], eps);
-
-  x = 0.5; y = 0.1;
-  z = x * inv(y);
-  expect = 5;
   EXPECT_DOUBLE_EQ(expect.x[0], z.x[0]);
   EXPECT_NEAR(expect.x[1], z.x[1], eps);
 

@@ -17,9 +17,7 @@ run_utest_sto_gto_int: utest_sto_gto_int.cpp ../sto_gto_int.hpp
 #utest_factorial:utest_factorial.cpp ../factorial.hpp
 #utest_sto_gto_int:${HOME}/lib/libqd.a utest_sto_gto_int.cpp ../sto_gto_int.hpp
 
-run_utest:utest_erfc utest_factorial utest_sto_gto_int
-	./utest_factorial
-	./utest_sto_gto_int	
-	./utest_erfc
+run_utest:run_utest_erfc run_utest_factorial run_utest_sto_gto_int
+
 
 

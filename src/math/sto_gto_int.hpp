@@ -71,11 +71,10 @@ namespace StongMath {
   template<class F>
   F STO_GTO_int(int n, F as, F ag) {
   
-    F ex, res, pi, erfc_val;
+    F res, erfc_val;
     erfc_calc_data data;
-    pi = value_pi<F>();
     
-    ex = exp(as * as / (4 * ag));
+
     erfc<F>(as / (2 * sqrt(ag)), erfc_val, data);
   
     switch(n) {

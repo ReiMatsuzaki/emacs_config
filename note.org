@@ -1,0 +1,14 @@
+* todo
+** complare accuracy of exp
+** compare accuracy of (STO,GTO)
+** write Newton method code
+** write STO-GTO least square code
+
+* memo
+** accuracy in double-double precision
+*** exp
+
+    it seems that the result of exp(x) sometimes wrong
+    accuracy.
+   
+
