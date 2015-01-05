@@ -102,11 +102,13 @@ namespace StongMath {
     int  num_term;
     bool convergence;
   };
+
+  /*  
   template<class F>
   int erfc(F x, F & y, erfc_calc_data& data) {
 
     F y0, yn0, ratio;
-    double eps = 1.5 * value_machine_eps<F>();
+    double eps = 1.0 * value_machine_eps<F>();
 
     unsigned n0, n1;
     n0 = erfc_start_num_term<F>();
@@ -131,6 +133,135 @@ namespace StongMath {
     else 
       return (1);
   }
+  */
+
+  template<class F>
+  int erfc(F x, F & y, erfc_calc_data& data) {
+
+    F y0, yn0, ratio;
+    double eps = 1.0 * value_machine_eps<F>();
+
+    unsigned n0, n1;
+    n0 = erfc_start_num_term<F>();
+    n1 = n0 + 10;
+
+    data.convergence = false;
+    for(unsigned n = n0; n < n1; n++) {
+      erfc_at_n<F>(x, n, y0, yn0);
+      ratio = yn0 / y0;
+      data.num_term = n;
+
+      if(data.convergence)
+	break;
+
+      if(norm_is_less_than(ratio, eps) &&
+	 norm_is_less_than(yn0, eps)) {
+	data.convergence = true;
+      }
+    }
+
+    y = y0;
+
+    if(data.convergence)
+      return (0);
+    else 
+      return (1);
+  }
+
+
+// * Exp(z^2) Erfc(z)
+// ** calculated from n term
+
+  template<class F>
+  int exp2_erfc_at_n(F x, unsigned int n, F& y, F& yn) {
+
+    F y0, yn0;
+    F nnhh, h, xx, pi, t2;
+    pi = value_pi<F>();
+    xx = x * x;
+    h = sqrt(pi / (int)n);
+
+    y0 = value_zero<F>();
+    for(unsigned int i = 0; i < n; i++) {
+      nnhh = (2 * i + 1) * h / 2;
+      nnhh = nnhh * nnhh;
+      t2 = exp(-nnhh) / (nnhh + xx);
+      y0 += t2;
+      yn0 = t2;
+    }
+
+    t2 = 2 * h / pi * x;
+    y0  *= t2;
+    yn0 *= t2;
+
+    if(erfc_add_Eh_q<F>(x, h))
+      y0 += exp(xx) * 2 / (1 + exp(2*pi*x/h));
+
+    y=y0; yn=yn0;
+    return(0);
+    
+  }
+
+
+// ** exp2_erfc
+
+  template<class F>
+  int exp2_erfc(F x, F& y, erfc_calc_data& data) {
+
+    F y0, yn0, ratio;
+    double eps = 1.0 * value_machine_eps<F>();
+
+    unsigned n0, n1;
+    n0 = erfc_start_num_term<F>();
+    n1 = n0 + 10;
+
+    data.convergence = false;
+    for(unsigned n = n0; n < n1; n++) {
+      exp2_erfc_at_n<F>(x, n, y0, yn0);
+      ratio = yn0 / y0;
+      data.num_term = n;
+
+      if(data.convergence)
+	break;
+
+      if(norm_is_less_than(ratio, eps) &&
+	 norm_is_less_than(yn0, eps)) {
+	data.convergence = true;
+      }
+    }
+
+    y = y0;
+
+    if(data.convergence)
+      return (0);
+    else 
+      return (1);    
+
+  }
+
+// ** exp2_erfc_safe
+  
+  template<class F>
+  int exp2_erfc_safe(F x, F& y, erfc_calc_data& data) {
+    return (exp2_erfc(x,y,data));
+  }
+
+  template<>
+  int exp2_erfc_safe<dd_real>(dd_real x, dd_real& y, erfc_calc_data& d){
+
+    int res;
+    
+    if(x > 1) 
+      res = exp2_erfc(x, y, d);
+    else {
+      res = erfc(x, y, d);
+      y *= exp(x * x);
+    }
+    res = exp2_erfc(x, y, d);
+    return (res);
+  }
+  
+  
 // * Old          
 // ** general
 

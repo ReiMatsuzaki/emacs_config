@@ -94,14 +94,28 @@ return (res);
 
 template<class F>
 F sto_gto_int_5(F as, F ag) {
-F erfcVal, expVal, sqrtPi,pi,res;
+  F erfcVal, expVal, sqrtPi,pi,res, sqrt_ag;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
+
+ std::cout << data.num_term << std::endl;
+ 
 expVal=exp(as*as/(4*ag));
 pi=value_pi<F>();
 sqrtPi=sqrt(pi);
-res = (2*sqrt(ag)*(2*ag + pow(as,2))*(16*ag + pow(as,2)) - as*(60*pow(ag,2) + 20*ag*pow(as,2) + pow(as,4))*erfcVal*expVal*sqrtPi)/(64*pow(ag,5.5));
+ sqrt_ag = sqrt(ag);
 
+/*
+ res = (2*sqrt(ag)*(2*ag + pow(as,2))*(16*ag + pow(as,2)) - as*(60*pow(ag,2) + 20*ag*pow(as,2) + pow(as,4))*erfcVal*expVal*sqrtPi)/(64*pow(sqrt(ag),11));
+*/
+
+ F x = sqrt_ag;
+ 
+  res = (2*sqrt_ag*(2*ag + as*as)*(16*ag + as*as) -
+	 as*(60*ag*ag + 20*ag*as*as + as*as*as*as)*
+	 erfcVal*expVal*sqrtPi)/
+    (64*x*x*x*x*x*x*x*x*x*x*x);
+				 
 return (res);
 }
 

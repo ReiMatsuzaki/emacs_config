@@ -6,6 +6,31 @@
 using namespace std;
 using namespace StongMath;
 
+TEST(dd_real, exp) {
+  dd_real x,y,z,two;
+  double eps = 10.0 * value_machine_eps<dd_real>();
+  two = 2;
+    
+  x = 10 * sqrt(two);
+  y = exp(x);
+  z = (char*)"1386281.6152947822172266602497411511747352581619963839338686762902445915316711763";
+  EXPECT_DOUBLE_EQ(y.x[0], z.x[0]);
+  EXPECT_NEAR(y.x[1], z.x[1], eps);
+
+  x = sqrt(two);
+  y = exp(x);
+  z = (char*)"4.1132503787829275171735818151403045024016639431511096100683647098515097858308073";
+  EXPECT_DOUBLE_EQ(y.x[0], z.x[0]);
+  EXPECT_NEAR(y.x[1], z.x[1], eps);  
+
+
+  x = sqrt(two)/10;
+  y = exp(x);
+  z = (char*)"1.1519099101689089509765695840976418446376199957262033456848927733454560752242805";
+  EXPECT_DOUBLE_EQ(y.x[0], z.x[0]);
+  EXPECT_NEAR(y.x[1], z.x[1], eps);
+  
+}
 TEST(erfc, erfc_double) {
 
   double y, x, expect;
@@ -51,7 +76,7 @@ TEST(erfc, test_dd_complex) {
 
   dd_complex x, y, y_expect;
   erfc_calc_data calc_data;
-  double eps = 4.0 * value_machine_eps<dd_real>();
+  double eps = 10.0 * value_machine_eps<dd_real>();
 
   x.real() = 1;
   x.imag() = -1;
@@ -104,6 +129,50 @@ TEST(erfc, template_double) {
   EXPECT_EQ(y1, y2);
   EXPECT_EQ(z1, z2);
 
+  
+}
+TEST(exp2_erfc, dd_real) {
+
+  dd_real x,y,y_expect,two;
+  erfc_calc_data data;
+  double eps = 10.0 * value_machine_eps<dd_real>();
+  two = 2;
+
+  x = 1000;
+  exp2_erfc_safe(x, y, data);
+  y_expect = (char*)"0.000564189301453387654199745028061695727166402115006965391673638970767186230";
+  EXPECT_TRUE(data.convergence);
+  EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
+  EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
+
+  x = 1;
+  exp2_erfc_safe(x, y, data);
+  y_expect = (char*)"0.427583576155807004410750344490515180820159503164252663745539770740505422";
+  EXPECT_TRUE(data.convergence);  
+  EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
+  EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
+
+  x = 0.1 * sqrt(two)+0.01;
+  x.x[1]=pow(10.0,-33.0);
+  exp2_erfc_safe(x, y, data);
+  y_expect = (char*)"0.84969677805129388481366918087432309562268580614995884360988093850588676";
+  EXPECT_TRUE(data.convergence);
+  EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
+  EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
+
+  x = 0.01 * sqrt(two);
+  exp2_erfc_safe(x, y, data);
+  y_expect = (char*)"0.98424020092288885191445867736134214647609742652301131588156251063080162";
+  EXPECT_TRUE(data.convergence);
+  EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
+  EXPECT_NEAR(y.x[1], y_expect.x[1], eps);  
+
+  x = 0.001 * sqrt(two);
+  exp2_erfc_safe(x, y, data);
+  y_expect = (char*)"0.99840622875270040632589756092830951970018875155597523417773450375510215";
+  EXPECT_TRUE(data.convergence);
+  EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
+  EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
   
 }
 
