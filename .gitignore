@@ -1,0 +1,2 @@
+# ignore google unite test binary files
+run_utest_*  
