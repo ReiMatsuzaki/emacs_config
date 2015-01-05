@@ -700,6 +700,7 @@
     (define-key map (kbd "C-M-k") 'windmove-up)
     (define-key map (kbd "C-M-l") 'windmove-right)
     (define-key map (kbd "M-DEL") 'windmove-left)
+    (define-key map (kbd "C-M-H") 'windmove-left)
     (define-key map (kbd "M-J") 'buffer-flip-down)
     (define-key map (kbd "M-K") 'buffer-flip-up)
     (define-key map (kbd "M-L") 'buffer-flip-right)
@@ -831,6 +832,19 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+
+;;;; compile
+
+(add-hook 'compilation-mode-hook
+	  '(lambda ()
+	     (progn
+	       (add-to-list 
+		'compilation-mode-font-lock-keywords
+		'("\\(^\\[.*\\]\\)" (1 font-lock-function-name-face)))
+	       (add-to-list 
+		'compilation-mode-font-lock-keywords
+		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
 
 ;;; Edit
