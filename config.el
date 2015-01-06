@@ -148,6 +148,7 @@
   outshine
   outorg
   multiple-cursors
+  sage-shell-mode
    )
 )
 
@@ -626,6 +627,10 @@
   (let ((buf-name (name-for-this-elscreen (buffer-name (current-buffer)))))
     (rename-buffer buf-name)))
 
+(defadvice find-file-other-window (after add-elscreen-id activate)
+  (let ((buf-name (name-for-this-elscreen (buffer-name (current-buffer)))))
+    (rename-buffer buf-name)))
+
 ;;;;; buffer-show (toggle all file <-> file in elscreen)
 
 (require 'bs)
@@ -909,14 +914,15 @@
 ;;;;; mozc
 
 ;; need emacs-mozc package of apt-get
-;(if (window-system)
-;    (progn
-;      (require 'mozc)
-;      (set-language-environment "japanese")
-;      (setq default-input-method "japanese-mozc")
-;      (setq mozc-candidate-style 'echo-area)))
+(if (window-system)
+    (progn
+      (require 'mozc)
+      (set-language-environment "japanese")
+      (setq default-input-method "japanese-mozc")
+      (setq mozc-candidate-style 'overlay)))
+(setq mozc-candidate-style 'overlay)
+;;(setq mozc-candidate-style 'echo-area)))
 
-;(global-set-key (kbd "C-o") 'toggle-input-method)
 
 ;;;;; color
 
@@ -1797,7 +1803,11 @@
   (insert "// \*"))
 
 ;;;;; config
-(define-auto-insert "\\.cpp" "cpp_template.cpp")
+
+
+
+
+
 (add-hook 'c++-mode-hook
 	  (lambda ()
 ;	    (hs-minor-mode)
@@ -1819,10 +1829,12 @@
 	    
 	    (flymake-mode t)
 	    (linum-mode t)
-;	    (define-windmove-key-bindings c++-mode-map)
 	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)))
 
 
+;;;;; auto insert
+
+(define-auto-insert "\\.cpp" "cpp_template.cpp")
 
 
 ;;;; mathematica script file
