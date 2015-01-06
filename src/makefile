@@ -2,19 +2,19 @@ CXX=g++
 CXXFLAGS=
 
 # SRCDIR=${HOME}/source/stong
-SRCDIR=${STONG}
+#SRCDIR=${STONG}
 
 
 CXXFLAGS_DBG=-Wall -g
 
 # LIBGTEST=-lgtest_main -lgtest -lpthread
 # LIBGTEST= -L${HOME}/local/source/gtest-1.7.0/make -lgtest_main -lpthread 
-LIBGTEST= -lpthread ${HOME}/local/source/gtest-1.7.0/make/gtest_main.a
+#LIBGTEST= -lpthread ${HOME}/local/source/gtest-1.7.0/make/gtest_main.a
 
 RUN_GTEST=${CXX} -o $@ ${CXXFLAGS} ${LIBGTEST}
 
 #CXXFLAGS_INC=-I${HOME}/source/projects/csto_ng
-CXXFLAGS_INC=-I${SRCDIR}
+CXXFLAGS_INC=-I${SRCDIR} ${LIBPATH}
 
 #CXXFLAGS_INC= -I${SRCDIR} -I${HOME}/include/mpack -I${HOME}/include
 #GTEST_DIR=${HOME}/local/source/gtest-1.7.0

@@ -1,3 +1,4 @@
+include ../../local.mk
 include ../../makefile
 
 # CXXFLAGS = ${CXXFLAGS_DBG} ${CXXFLAGS_INC} ${CXXFLAGS_GTEST}
@@ -17,7 +18,7 @@ run_utest_sto_gto_int: utest_sto_gto_int.cpp ../sto_gto_int.hpp
 	${RUN_GTEST} $< -lqd
 	./$@
 run_utest_newton: utest_newton.cpp ../newton.hpp
-	${RUN_GTEST} $< -lmlapack_dd_ref -lmblas_dd_ref -lqd
+	${RUN_GTEST} $<  -lmlapack_dd_ref -lmblas_dd_ref -lqd
 	./$@
 
 run_utest_all:run_utest_mpack run_utest_erfc run_utest_factorial run_utest_sto_gto_int 

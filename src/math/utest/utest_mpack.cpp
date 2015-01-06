@@ -1,5 +1,6 @@
 #include <iostream>
 #include <gtest/gtest.h>
+#include <qd/dd_real.h>
 #include <src/math/support_mpack.hpp>
 
 using namespace std;
@@ -8,7 +9,7 @@ using namespace StongMath;
 TEST(Real, Add) {
   dd_real a,b,c,d;
   a = 1; b = 2;d=3;
-  add_real(a, b, c);
+  c = a + b;
   EXPECT_DOUBLE_EQ(c.x[0],d.x[0]);
   EXPECT_DOUBLE_EQ(c.x[1],d.x[1]);
 }
