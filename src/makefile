@@ -7,7 +7,9 @@ SRCDIR=${STONG}
 
 CXXFLAGS_DBG=-Wall -g
 
-LIBGTEST=-lgtest_main -lgtest -lpthread
+# LIBGTEST=-lgtest_main -lgtest -lpthread
+# LIBGTEST= -L${HOME}/local/source/gtest-1.7.0/make -lgtest_main -lpthread 
+LIBGTEST= -lpthread ${HOME}/local/source/gtest-1.7.0/make/gtest_main.a
 
 RUN_GTEST=${CXX} -o $@ ${CXXFLAGS} ${LIBGTEST}
 

@@ -36,8 +36,7 @@
    などとして、_refがついているlibraryを指定すると、うまくいく。
    why ?
 
-   
-   
+      
 * daily note
 ** 1/6
    c++ verでの拘束条件付きSTO-NG展開プログラムを
