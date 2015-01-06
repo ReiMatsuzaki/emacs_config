@@ -2,35 +2,12 @@
 #include <stdio.h>
 #include <gtest/gtest.h>
 #include <src/math/erfc.hpp>
+#include <sage/result/ref_real200_exp2_erfc.h>
+
 
 using namespace std;
 using namespace StongMath; 
 
-TEST(dd_real, exp) {
-  dd_real x,y,z,two;
-  double eps = 10.0 * value_machine_eps<dd_real>();
-  two = 2;
-    
-  x = 10 * sqrt(two);
-  y = exp(x);
-  z = (char*)"1386281.6152947822172266602497411511747352581619963839338686762902445915316711763";
-  EXPECT_DOUBLE_EQ(y.x[0], z.x[0]);
-  EXPECT_NEAR(y.x[1], z.x[1], eps);
-
-  x = sqrt(two);
-  y = exp(x);
-  z = (char*)"4.1132503787829275171735818151403045024016639431511096100683647098515097858308073";
-  EXPECT_DOUBLE_EQ(y.x[0], z.x[0]);
-  EXPECT_NEAR(y.x[1], z.x[1], eps);  
-
-
-  x = sqrt(two)/10;
-  y = exp(x);
-  z = (char*)"1.1519099101689089509765695840976418446376199957262033456848927733454560752242805";
-  EXPECT_DOUBLE_EQ(y.x[0], z.x[0]);
-  EXPECT_NEAR(y.x[1], z.x[1], eps);
-  
-}
 TEST(erfc, erfc_double) {
 
   double y, x, expect;
@@ -139,6 +116,16 @@ TEST(exp2_erfc, dd_real) {
   double eps = 10.0 * value_machine_eps<dd_real>();
   two = 2;
 
+  for(unsigned int i = 0; i < num_exp2_erfc; i++) {
+    x = x_y_exp2_erfc[2*i];
+    exp2_erfc(x, y, data);
+    y_expect = x_y_exp2_erfc[2*i+1];
+    EXPECT_TRUE(data.convergence);
+    EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
+    EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
+  }
+
+  /*
   x = 1000;
   exp2_erfc_safe(x, y, data);
   y_expect = (char*)"0.000564189301453387654199745028061695727166402115006965391673638970767186230";
@@ -175,7 +162,7 @@ TEST(exp2_erfc, dd_real) {
   EXPECT_TRUE(data.convergence);
   EXPECT_DOUBLE_EQ(y.x[0], y_expect.x[0]);
   EXPECT_NEAR(y.x[1], y_expect.x[1], eps);
-  
+  */
 }
 
 

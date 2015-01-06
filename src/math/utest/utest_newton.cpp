@@ -1,19 +1,10 @@
 #include <iostream>
 #include <gtest/gtest.h>
-#include "newton.hpp"
+#include <src/math/newton.hpp>
 
 using namespace std;
 
-TEST(Newton, First) {
-  //  blas_test();
-}
-TEST(Real, Add) {
-  dd_real a,b,c,d;
-  a = 1; b = 2;d=3;
-  add_real(a, b, c);
-  EXPECT_DOUBLE_EQ(c.x[0],d.x[0]);
-  EXPECT_DOUBLE_EQ(c.x[1],d.x[1]);
-}
+
 dd_real hess_x2(dd_real x) {return 2; }
 dd_real grad_x2(dd_real x) {return 2 * x; }
 TEST(Newton, update) {
@@ -53,7 +44,7 @@ TEST(Newton, update) {
 }
 dd_real hess_x3(dd_real x) {return 6 * x; }
 dd_real grad_x3(dd_real x) {return 3 * x * x; }
-TEST(Newton, while) {
+TEST(Newton, while_test) {
   
   double eps = pow(10.0, -20);
   FindMinNewton<dd_real> *solv = 
@@ -86,5 +77,6 @@ TEST(Newton, while) {
   EXPECT_DOUBLE_EQ(x0[0].x[1], zero.x[1]);
 
 }
+
 
 

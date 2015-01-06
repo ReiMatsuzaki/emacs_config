@@ -4,7 +4,7 @@
 #define NEWTON_HPP
 
 #include <qd/dd_real.h>
-#include <mblas_dd.h>
+#include <mpack/mblas_dd.h>
 #include <mlapack_dd.h>
 #include <memory.h>
 

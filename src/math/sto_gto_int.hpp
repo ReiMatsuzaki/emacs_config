@@ -22,6 +22,7 @@ namespace StongMath {
 
   
   double STO_int(int n, double a) {
+
     return pow(a, -1.0 - n) * factorial(n);
   }
   dd_real STO_int(int n, dd_real a) {
