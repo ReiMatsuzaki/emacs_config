@@ -1,0 +1,7 @@
+# ignore google unite test binary files
+run_utest_*  
+src/local.mk
+latex/
+html/
+
+

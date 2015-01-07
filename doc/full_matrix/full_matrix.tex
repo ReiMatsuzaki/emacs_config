@@ -1,0 +1,184 @@
+\documentclass[a4paper]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{braket}
+\def\vector#1{\mbox{\boldmath $#1$}}
+\def\braces#1{\left( #1 \right)}
+\def\bracem#1{\left\{ #1 \right\}}
+\def\braceb#1{\left[ #1 \right]}
+\def\lefts{\left(}
+\def\rights{\right)}
+\def\leftb{\left[}
+\def\rightb{\right]}
+\def\leftm{\left\{}
+\def\rightm{\right\}}
+\begin{document}
+\title{}
+\author{松崎　黎}
+\maketitle
+
+
+
+\section{概要}
+Stewart JCP(1969)のSTO-NG展開の方法を複素STO-NG展開に拡張する。
+ 懸念事項は最適化の自由度が4N+1と非常に大きくなることである。
+
+\section{実部および虚部の微分}
+\subsection{一変数}
+最初に、$f(z,z^*), z=x+iy$の場合に、$\partial f/\partial x$などを
+計算する場合を考える。ただし、前提条件として、
+\begin{eqnarray}
+  f(z, z^*) \in \Re \\
+\end{eqnarray}
+つまり、
+\begin{eqnarray}
+  f(z, z^*) = f(z, z^*)^* = f(z^*, z)
+\end{eqnarray}
+を要請する。
+
+一階微分を計算すると、
+\begin{eqnarray}
+  \frac{\partial f}{\partial x} &=&
+  \frac{\partial z}{\partial x} \frac{\partial f}{\partial z} + \frac{\partial z^*}{\partial x} \frac{\partial f}{\partial z^*} 
+  \\ &=&
+  \frac{\partial f}{\partial z} + \frac{\partial f}{\partial z^*}
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{\partial f}{\partial y} &=&
+  \frac{\partial z}{\partial y} \frac{\partial f}{\partial z} + \frac{\partial z^*}{\partial y} \frac{\partial f}{\partial z^*} 
+  \\ &=&
+  i \frac{\partial f}{\partial z} -i \frac{\partial f}{\partial z^*}
+\end{eqnarray}
+となる。つまり、単純に$z,z^*$の微分を計算すればいい。
+
+次に、二階微分を計算する。
+\begin{eqnarray}
+  \frac{\partial^2 f}{\partial x^2} &=&
+  \frac{\partial^2 f}{\partial z\partial z} +
+  2\frac{\partial^2 f}{\partial z\partial z^*} +
+  \frac{\partial^2 f}{\partial z^* \partial z^*} 
+\end{eqnarray}
+\begin{eqnarray}
+  \frac{\partial^2 f}{\partial y^2} &=&
+  -\frac{\partial^2 f}{\partial z\partial z} 
+  +2\frac{\partial^2 f}{\partial z\partial z^*} 
+  -\frac{\partial^2 f}{\partial z^* \partial z^*}   
+\end{eqnarray}
+\begin{eqnarray}
+  \frac{\partial^2 f}{\partial x\partial y} &=&
+  i\frac{\partial^2 f}{\partial z\partial z} 
+  -i\frac{\partial^2 f}{\partial z^* \partial z^*}   
+\end{eqnarray}
+となる。
+
+\subsection{多変数}
+
+次に、多変数関数を扱う。
+\begin{eqnarray}
+  f(\bracem{z_i^*}, \bracem{z_i}) \in \Re \\
+  z_i = x_i + i y_i
+\end{eqnarray}
+$a,b\in\bracem{x,y}$として、一階微分と二階微分を計算する。
+\begin{eqnarray}
+  \frac{\partial f}{\partial a_i} &=&
+  \frac{\partial z_i}{\partial a_i} \frac{\partial f}{\partial z_i} + \frac{\partial z_i^*}{\partial a_i} \frac{\partial f}{\partial z_i^*} \\
+  \frac{\partial^2 f}{\partial a_i \partial b_j} &=&
+  \frac{\partial z_i}{\partial a_i}\frac{\partial z_j}{\partial b_j} \frac{\partial^2 f}{\partial z_i \partial z_j}  +
+  \frac{\partial z_i}{\partial a_i}\frac{\partial z_j^*}{\partial b_j}\frac{\partial^2 f}{\partial z_i \partial z_j^*} +
+  \frac{\partial z_i^*}{\partial a_i}\frac{\partial z_j}{\partial b_j}\frac{\partial^2 f}{\partial z_i^* \partial z_j} +
+  \frac{\partial z_i^*}{\partial a_i}\frac{\partial z_j^*}{\partial b_j}\frac{\partial^2 f}{\partial z_i^* \partial z_j^*} 
+\end{eqnarray}
+ここで、$a_i$の微分は定数で$1,i,-i$のいずれかであることに注意。
+
+
+\section{full-matrix least square}
+\subsection{評価関数}
+
+次の関数の極小点を探索する。
+\begin{eqnarray}
+  \varepsilon \braces{\bracem{c_i}, \bracem{z_i}, \lambda} = \|\chi-\varphi\|^2 + \lambda (1-\braces{\chi, \chi})(1-\braces{\chi^*, \chi^*})
+\end{eqnarray}
+ここで、c-productの意味で規格化された$\varphi$はfitting対象の関数で、
+$\chi$は試行関数である。第二項は試行関数がc-productの意味で規格化される
+ことを補修するために追加した項である。複素共役をかけているのは
+評価関数を実に限定するためである。
+試行関数の形として
+\begin{eqnarray}
+  \chi(\bracem{c_i}, \bracem{z_i})=\sum_i c_i u(z_i)
+\end{eqnarray}
+とおく。$\varepsilon$は先の条件を満たす実関数である。
+
+\subsection{一階微分}
+前の節の議論から、
+$\mu \in \bracem{c_i, z_i}$および$\mu^* \in \bracem{c_i^*, z_i^*}$の微分が必要になる。
+一階微分を計算する。
+\begin{eqnarray}
+  \begin{array}{ccl}
+    \displaystyle \frac{\partial \varepsilon}{\partial \mu} &=&
+    \displaystyle \Braket{\chi-\varphi, \frac{\partial \chi}{\partial \mu }} -2\lambda \braces{\chi, \frac{\partial \chi}{\partial \mu}}(1-\braces{\chi^*, \chi^*})   \\
+    \displaystyle \braces{\frac{\partial \varepsilon}{\partial \mu}}^* &=& \displaystyle \frac{\partial \varepsilon}{\partial \mu^*} \\
+    \displaystyle \frac{\partial \varepsilon}{\partial \lambda} &=& (1-\braces{\chi, \chi})(1-\braces{\chi^*, \chi^*})
+  \end{array}
+\end{eqnarray}
+
+\subsection{二階微分}
+二階微分を計算する。
+\begin{eqnarray}
+  \frac{\partial^2 \varepsilon}{\partial \mu \partial \nu} &=&
+  \Braket{\chi-\varphi, \frac{\partial^2 \chi}{\partial \mu \partial \nu}}
+  -2\lambda \bracem{
+    \braces{\frac{\partial \chi}{\partial \nu}, \frac{\partial \chi}{\partial \mu}} +
+    \braces{\chi, \frac{\partial^2 \chi}{\partial \mu \partial \nu}} } (1-\braces{\chi^*, \chi^*}) \\ 
+  \frac{\partial^2 \varepsilon}{\partial \mu \partial \nu^*} &=&
+  \Braket{\frac{\partial \chi}{\partial \nu}, \frac{\partial \chi}{\partial \mu }}
+  +4\lambda \braces{\chi, \frac{\partial \chi}{\partial \mu}}
+  \braces{\chi^*, \frac{\partial \chi^*}{\partial \nu^*}} \\
+  \frac{\partial^2 \varepsilon}{\partial \mu^* \partial \nu^*} &=&
+  \braces{\frac{\partial^2 \varepsilon}{\partial \mu \partial \nu}}^* \\
+  \frac{\partial^2 \varepsilon}{\partial \mu \partial \lambda} &=&
+  -2\braces{\chi, \frac{\partial \chi}{\partial \mu}}(1-\braces{\chi^*, \chi^*}) \\
+  \frac{\partial^2 \varepsilon}{\partial \mu^* \partial \lambda} &=&
+  \braces{\frac{\partial^2 \varepsilon}{\partial \mu \partial \lambda}}^* \\
+  \frac{\partial^2 \varepsilon}{\partial \lambda^2} &=& 0
+\end{eqnarray}
+
+\subsection{微分基底}
+行列要素の計算に必要な基底は以下で計算できる。
+\begin{eqnarray}
+  \begin{array}{ccc}
+    \displaystyle
+    \frac{\partial \chi}{\partial c_i} = u_i &
+    \displaystyle
+    \frac{\partial \chi}{\partial z_i} = c_iu_i' &  \\
+    \displaystyle
+    \frac{\partial^2 \chi}{\partial z_i \partial z_j} = \delta_{ij}c_iu_i'' &
+    \displaystyle
+    \frac{\partial^2 \chi}{\partial z_i \partial c_j} = \delta_{ij}u_i' &
+    \displaystyle
+    \frac{\partial^2 \chi}{\partial c_i \partial c_j} = 0
+  \end{array}
+\end{eqnarray}
+
+
+\bibliographystyle{jplain}
+\bibliography{library,books,paper}
+
+\section{初期値}
+最適化の初期値をどのように設定するのか。
+少なくとも、軌道指数を決定した後ならば
+展開系数は線形方程式から計算できるはず。
+$\lambda =0$としてエラーの展開系数の微分だけを考える。
+まずは、複素数としての微分は、
+\begin{eqnarray}
+  \frac{\partial \varepsilon}{\partial c_i} &=&
+  \Braket{\chi - \phi, \frac{\partial \chi}{\partial c_i}} \\ &=&
+  \Braket{\sum_j c_ju_j - \varphi, u_i} \\ &=&
+  \sum_j c_j^* \Braket{u_j, u_i} - \Braket{\phi, u_i} 
+\end{eqnarray}
+このままでは見難いので、複素共役をとる。
+\begin{eqnarray}
+  \sum_j \Braket{u_i, u_j} c_j = \Braket{u_i, \phi}
+\end{eqnarray}
+つまり、線形方程式を解けばいい。
+
+\end{document}

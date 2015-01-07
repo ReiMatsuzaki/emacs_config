@@ -1,0 +1,51 @@
+* todo
+** complare accuracy of exp
+** compare accuracy of (STO,GTO)
+** write Newton method code
+** write STO-GTO least square code
+
+* memo
+** accuracy in double-double precision
+*** exp
+
+    it seems that the result of exp(x) sometimes wrong
+    accuracy.
+   
+** path setting
+
+   いろいろな、pathを設定しないとbuildできない。
+
+   CPLUS_INCLUDE_PATH : mpack, gtest, qd
+   LD_LIBRARY_PATH    : mpack, gtest, qd
+   LD_LIBRARY_PATH    : mpack, gtest, qd
+
+   で大丈夫。また、
+
+   STONG={direcotry of csto_ng}
+
+   としないとだめ。
+
+** build mpack
+   <2015-01-06 Tue 17:09>
+
+   
+   mpackを含めてcompileするときは、
+   
+   g++ -o $@ $< -lmlapack_dd_ref -lmblas_dd_ref -lqd
+   
+   などとして、_refがついているlibraryを指定すると、うまくいく。
+   why ?
+
+      
+* daily note
+** 1/6
+   c++ verでの拘束条件付きSTO-NG展開プログラムを
+   開発している。数値的なReferenceを得るために、
+  sageを導入した。これで、好きな場所で計算できる。
+  Mathematicaより使い勝手が良くない気がするけど、
+  簡単な計算が出来るだけでもかなり違うはず。
+
+  sageにてexp(x^2)erfc(x)の高精度リファレンスを作成した。
+  値は文字列の配列として、c headerファイルとして保存した。
+  c++のgtestからheaderを読みこめばよい。
+
