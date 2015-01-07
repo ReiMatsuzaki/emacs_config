@@ -18,6 +18,17 @@ using namespace std;
 
 namespace StongMath {
 
+// * Utils
+
+  int int_pow(int base, unsigned int expo) {
+
+    int acc = 1;
+    for(unsigned int i = 0; i < expo; i++) 
+      acc *= expo;
+    return(acc);
+    
+  }
+
 // * STO      
 
   
@@ -29,10 +40,10 @@ namespace StongMath {
     return pow(a, -1 - n) * factorial(n);
   }
   dd_complex STO_int(int n, dd_complex a) {
-    return pow(a, -1.0 - n) * (1.0 * factorial(n));
+    return pow(a, -1 - n) * (1.0 * factorial(n));
   }
   std::complex<double> STO_int(int n, std::complex<double> a) {
-    return pow(a, -1.0 - n) * (1.0 * factorial(n));
+    return pow(a, -1 - n) * (1.0 * factorial(n));
   }
 
 
@@ -43,29 +54,34 @@ namespace StongMath {
     F res;
     if(n % 2 == 0) {
       int nn = n/2;
+      int nn_1 = nn + 1;
       res = double_factorial(2*nn-1) * sqrt(M_PI) /
-	(pow(2, nn+1) * pow(sqrt(a), 2.0*nn+1.0));
+	(int_pow(2, nn_1) * 
+	 pow(sqrt(a), 2*nn+1));
     } else {
       int nn = (n-1)/2;
-      res = (factorial(nn) * 1.0) / (2.0 * pow(a, nn+1));
+      res = factorial(nn) / (2 * pow(a, nn+1));
     }
     return res;
   }
-  
-/*
+
+  /*
+  template<>
   double GTO_int(int n, double a) {
     double res;
     if(n % 2 == 0) {
       int nn = n/2;
       res = double_factorial(2*nn-1) * sqrt(M_PI) /
-	(pow(2, nn+1) * pow(sqrt(a), 2.0*nn+1.0));
+	(pow(2.0, nn+1) * 
+	 pow(sqrt(a), 2*nn+1));
     } else {
       int nn = (n-1)/2;
       res = (factorial(nn) * 1.0) / (2.0 * pow(a, nn+1));
     }
     return res;
   }
-*/
+  */
+
 
 // * STO-GTO  
 

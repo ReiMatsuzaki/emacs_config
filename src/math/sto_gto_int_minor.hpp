@@ -84,20 +84,51 @@ return (res);
 
 template<class F>
 F sto_gto_int_3(F as, F ag) {
+
+  F sqrtPi,pi,res, sqrt_ag, exp2erfcVal;
+  erfc_calc_data data;
+
+  sqrt_ag = sqrt(ag);
+  pi=value_pi<F>(); 
+  sqrtPi=sqrt(pi);
+  exp2_erfc(as/(2*sqrt_ag), exp2erfcVal, data);
+
+  res = (4*ag + pow(as,2))/(8*pow(ag,3)) 
+    -(as*(6*ag + pow(as,2)) * exp2erfcVal * sqrtPi) / 
+    (16 * sqrt_ag * ag * ag * ag);
+  
+
+ 
+/*
 F erfcVal, expVal, sqrtPi,pi,res;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
 expVal=exp(as*as/(4*ag));
 pi=value_pi<F>();
 sqrtPi=sqrt(pi);
-res = (4*ag + pow(as,2))/(8*pow(ag,3)) - (as*(6*ag + pow(as,2))*erfcVal*expVal*sqrtPi)/(16*pow(ag,3.5));
 
-return (res);
+res = (4*ag + pow(as,2))/(8*pow(ag,3)) - (as*(6*ag + pow(as,2))*erfcVal*expVal*sqrtPi)/(16*pow(ag,3.5));
+*/
+
+  return (res);
 }
 
 
 template<class F>
 F sto_gto_int_4(F as, F ag) {
+  F sqrtPi,pi,res, sqrt_ag, exp2erfcVal;
+  erfc_calc_data data;
+
+  sqrt_ag = sqrt(ag);
+  pi=value_pi<F>(); 
+  sqrtPi=sqrt(pi);
+  exp2_erfc(as/(2*sqrt_ag), exp2erfcVal, data);
+
+  res = (-2*sqrt(ag)*as*(10*ag + as*as)
+	 + (12*ag*ag + 12*ag*as*as + as*as*as*as)*exp2erfcVal*sqrtPi)/
+    (32*ag*ag*ag*ag*sqrt_ag);
+
+  /*
 F erfcVal, expVal, sqrtPi,pi,res;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
@@ -105,6 +136,7 @@ expVal=exp(as*as/(4*ag));
 pi=value_pi<F>();
 sqrtPi=sqrt(pi);
 res = (-2*sqrt(ag)*as*(10*ag + pow(as,2)) + (12*pow(ag,2) + 12*ag*pow(as,2) + pow(as,4))*erfcVal*expVal*sqrtPi)/(32*pow(ag,4.5));
+  */
 
 return (res);
 }
@@ -140,6 +172,21 @@ return (res);
 
 template<class F>
 F sto_gto_int_6(F as, F ag) {
+
+  F sqrtPi,pi,res, sqrt_ag, exp2erfcVal;
+  erfc_calc_data data;
+
+  sqrt_ag = sqrt(ag);
+  pi=value_pi<F>(); 
+  sqrtPi=sqrt(pi);
+  exp2_erfc(as/(2*sqrt_ag), exp2erfcVal, data);
+  
+  res = (-2*sqrt_ag*as*(6*ag + as*as)*(22*ag + as*as) +
+	 (120*ag*ag*ag + 180*ag*ag*as*as + 30*ag*pow(as,4) + 
+	  pow(as,6))*exp2erfcVal*sqrtPi)/
+    (128*sqrt_ag*ag*ag*ag*ag*ag*ag);
+
+  /*
 F erfcVal, expVal, sqrtPi,pi,res;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
@@ -147,6 +194,7 @@ expVal=exp(as*as/(4*ag));
 pi=value_pi<F>();
 sqrtPi=sqrt(pi);
 res = (-2*sqrt(ag)*as*(6*ag + pow(as,2))*(22*ag + pow(as,2)) + (120*pow(ag,3) + 180*pow(ag,2)*pow(as,2) + 30*ag*pow(as,4) + pow(as,6))*erfcVal*expVal*sqrtPi)/(128*pow(ag,6.5));
+  */
 
 return (res);
 }
@@ -154,6 +202,19 @@ return (res);
 
 template<class F>
 F sto_gto_int_7(F as, F ag) {
+
+  F sqrtPi,pi,res, sqrt_ag, exp2erfcVal;
+  erfc_calc_data data;
+
+  sqrt_ag = sqrt(ag);
+  pi=value_pi<F>(); 
+  sqrtPi=sqrt(pi);
+  exp2_erfc(as/(2*sqrt_ag), exp2erfcVal, data);
+  
+  res = (2*sqrt(ag)*(384*pow(ag,3) + 348*pow(ag,2)*pow(as,2) + 40*ag*pow(as,4) + pow(as,6)) - as*(840*pow(ag,3) + 420*pow(ag,2)*pow(as,2) + 42*ag*pow(as,4) + pow(as,6))*exp2erfcVal*sqrtPi)/
+    (256*sqrt_ag * ag* ag* ag* ag* ag* ag* ag);
+
+  /*
 F erfcVal, expVal, sqrtPi,pi,res;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
@@ -162,12 +223,27 @@ pi=value_pi<F>();
 sqrtPi=sqrt(pi);
 res = (2*sqrt(ag)*(384*pow(ag,3) + 348*pow(ag,2)*pow(as,2) + 40*ag*pow(as,4) + pow(as,6)) - as*(840*pow(ag,3) + 420*pow(ag,2)*pow(as,2) + 42*ag*pow(as,4) + pow(as,6))*erfcVal*expVal*sqrtPi)/(256*pow(ag,7.5));
 
+  */
+
 return (res);
 }
 
 
 template<class F>
 F sto_gto_int_8(F as, F ag) {
+  F sqrtPi,pi,res, sqrt_ag, exp2erfcVal;
+  erfc_calc_data data;
+
+  sqrt_ag = sqrt(ag);
+  pi=value_pi<F>(); 
+  sqrtPi=sqrt(pi);
+  exp2_erfc(as/(2*sqrt_ag), exp2erfcVal, data);
+
+  res = (-2*sqrt(ag)*as*(2232*pow(ag,3) + 740*pow(ag,2)*pow(as,2) + 54*ag*pow(as,4) + pow(as,6)) + (1680*pow(ag,4) + 3360*pow(ag,3)*pow(as,2) + 840*pow(ag,2)*pow(as,4) + 56*ag*pow(as,6) + pow(as,8))*exp2erfcVal*sqrtPi)/(512*sqrt_ag*pow(ag,8));
+
+
+  /*
+  
 F erfcVal, expVal, sqrtPi,pi,res;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
@@ -175,13 +251,26 @@ expVal=exp(as*as/(4*ag));
 pi=value_pi<F>();
 sqrtPi=sqrt(pi);
 res = (-2*sqrt(ag)*as*(2232*pow(ag,3) + 740*pow(ag,2)*pow(as,2) + 54*ag*pow(as,4) + pow(as,6)) + (1680*pow(ag,4) + 3360*pow(ag,3)*pow(as,2) + 840*pow(ag,2)*pow(as,4) + 56*ag*pow(as,6) + pow(as,8))*erfcVal*expVal*sqrtPi)/(512*pow(ag,8.5));
-
+  */
 return (res);
 }
 
 
 template<class F>
 F sto_gto_int_9(F as, F ag) {
+
+  F sqrtPi,pi,res, sqrt_ag, exp2erfcVal;
+  erfc_calc_data data;
+
+  sqrt_ag = sqrt(ag);
+  pi=value_pi<F>(); 
+  sqrtPi=sqrt(pi);
+  exp2_erfc(as/(2*sqrt_ag), exp2erfcVal, data);
+
+  res = (2*sqrt_ag*(6144*pow(ag,4) + 7800*pow(ag,3)*pow(as,2) + 1380*pow(ag,2)*pow(as,4) + 70*ag*pow(as,6) + pow(as,8)) - as*(15120*pow(ag,4) + 10080*pow(ag,3)*pow(as,2) + 1512*pow(ag,2)*pow(as,4) + 72*ag*pow(as,6) + pow(as,8))*exp2erfcVal*sqrtPi)/(1024*sqrt_ag*pow(ag,9));
+
+
+  /*
 F erfcVal, expVal, sqrtPi,pi,res;
 erfc_calc_data data;
 erfc(as/(2*sqrt(ag)),erfcVal,data);
@@ -189,11 +278,11 @@ expVal=exp(as*as/(4*ag));
 pi=value_pi<F>();
 sqrtPi=sqrt(pi);
 res = (2*sqrt(ag)*(6144*pow(ag,4) + 7800*pow(ag,3)*pow(as,2) + 1380*pow(ag,2)*pow(as,4) + 70*ag*pow(as,6) + pow(as,8)) - as*(15120*pow(ag,4) + 10080*pow(ag,3)*pow(as,2) + 1512*pow(ag,2)*pow(as,4) + 72*ag*pow(as,6) + pow(as,8))*erfcVal*expVal*sqrtPi)/(1024*pow(ag,9.5));
-
+  */
 return (res);
 }
 
-
+  /*
 template<class F>
 F sto_gto_int_10(F as, F ag) {
 F erfcVal, expVal, sqrtPi,pi,res;
@@ -206,7 +295,7 @@ res = (-2*sqrt(ag)*as*(46320*pow(ag,4) + 21120*pow(ag,3)*pow(as,2) + 2352*pow(ag
 
 return (res);
 }
-
+  */
 
 }
 #endif

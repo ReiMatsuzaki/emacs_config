@@ -21,6 +21,10 @@ CXXFLAGS_INC=-I${SRCDIR} ${LIBPATH}
 #CXXFLAGS_GTEST=-isystem ${GTEST_DIR}/include -pthread ${GTEST_DIR}/make/gtest_main.a
 
 
+clean:
+	rm run_utest*
+
+
 
 
 

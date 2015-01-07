@@ -16,6 +16,7 @@ TEST(STO, DoubleComplex) {
    
   std::complex<double> x(1.1, -2.3);
   std::complex<double> y(-0.030107181121109204859773817443366829 ,-0.138783712054900038514057631035327895);
+
   std::complex<double> z = STO_int(3, x);
   double eps = pow(10.0, -10);
   EXPECT_NEAR(y.real(), z.real(), eps);
@@ -109,7 +110,7 @@ TEST(STO_GTO, DoubleDouble) {
   dd_real two = 2;
   dd_real three =3;
   dd_real as, ag, y;
-  double eps = 10.0 * value_machine_eps<dd_real>();
+  double  eps = 10.0 * value_machine_eps<dd_real>();
   
   as = sqrt(two);
   ag = sqrt(three) / 10;

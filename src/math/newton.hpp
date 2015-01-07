@@ -91,7 +91,7 @@ class FindMinNewton {
 private:
 
   // ---- calculation setting ----
-  int n;        // variable size
+  unsigned int num;        // variable size
   double eps;   // convergence epsilon  
   int max_iter; // maximum iteration number
   
@@ -107,17 +107,17 @@ private:
 // * Member Function     
 // ** constructor
 
-public:
+public:  
   FindMinNewton(int _n, double _eps) :
-    n(_n), eps(_eps), max_iter(20) {
-    xs = new F[n];
-    xs_old = new F[n];
+    num(_n), eps(_eps), max_iter(20) {
+    xs = new F[num];
+    xs_old = new F[num];
     iter_count = 0;
   }
   FindMinNewton(int _n, double _eps, int _max) :
-    n(_n), eps(_eps), max_iter(_max) {
-    xs = new F[n];
-    xs_old = new F[n];
+    num(_n), eps(_eps), max_iter(_max) {
+    xs = new F[num];
+    xs_old = new F[num];
     iter_count = 0;
   }
 
@@ -131,7 +131,7 @@ public:
 public:
   void SetInitGuess(F* xs0) {
     
-    for(unsigned int i = 0; i < n; i++) {
+    for(unsigned int i = 0; i < num; i++) {
       xs[i] = xs0[i];
       xs_old[i] = xs[i];
     }
@@ -142,7 +142,7 @@ public:
 
 public:
   void GetCurrent(F* xs1) {
-    for(unsigned int i = 0; i < n; i++) 
+    for(unsigned int i = 0; i < num; i++) 
       xs1[i] = xs[i];
   }
   
@@ -152,26 +152,26 @@ public:
   void Update(F *hess, F *grad) {
 
     // variable for Rgesv in mpack
-    mpackint *ipiv = new mpackint[n];
+    mpackint *ipiv = new mpackint[num];
     mpackint info;
 
     // update vector
-    F *d = new F[n];
+    F *d = new F[num];
 
     // solve linear equation and compute update vector
-    for(unsigned int i = 0; i < n; i++) 
+    for(unsigned int i = 0; i < num; i++) 
       d[i] = grad[i];
-    Rgesv(n, 1, hess, n, ipiv, d, n, &info);
+    Rgesv(num, 1, hess, num, ipiv, d, num, &info);
 
     // update
-    for(unsigned int i = 0; i < n; i++)  {
+    for(unsigned int i = 0; i < num; i++)  {
       xs_old[i] = xs[i];
       xs[i] -= d[i];
     }
 
     // compute maximum of update and gradient
     dx_max = -1; grad_max = -1;
-    for(unsigned int i = 0; i < n; i++) {
+    for(unsigned int i = 0; i < num; i++) {
       F abs_dx = abs(d[i]);
       F abs_grad = abs(grad[i]);
       
