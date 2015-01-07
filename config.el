@@ -596,6 +596,7 @@
 		 (setenv "PATH"  (concat dir ":" (getenv "PATH")))
 		 (setq exec-path (append (list dir) exec-path)))
 ;	       (define-key eshell-mode-map (kbd "C-M-l") 'windmove-right)
+	       (define-key eshell-mode-map "\C-j" 'eshell-send-input)
 	       (define-key eshell-mode-map "\C-a" 'eshell-bol)
 	       (define-key eshell-mode-map "\C-p" 'eshell-previous-matching-input-from-input)
 	       (define-key eshell-mode-map "\C-n" 'eshell-next-matching-input-from-input))))
