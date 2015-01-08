@@ -1,6 +1,88 @@
-;; default font size
+;;; default font size
 (setq my-default-font-height 80)
 
+
+;;; elscreen
+
+(set-face-background 'elscreen-tab-other-screen-face "white")
+(set-face-foreground 'elscreen-tab-other-screen-face "Black")
+
+(set-face-background 'elscreen-tab-current-screen-face "Red")
+(set-face-foreground 'elscreen-tab-current-screen-face "White")
+
+(set-face-background 'elscreen-tab-background-face "black")
+
+(set-face-bold-p 'elscreen-tab-current-screen-face t)
+(set-face-bold-p 'elscreen-tab-other-screen-face t)
+(setq elscreen-tab-display-control nil)
+(setq elscreen-tab-display-kill-screen nil)
+
+
+;;; mode line
+
+(set-face-attribute 'mode-line-inactive nil
+                    :foreground "black"
+                    :background "white"
+		    :box nil)
+
+(set-face-attribute 'mode-line nil
+                    :foreground "white"
+                    :background "red"
+		    :box nil
+                    )
+
+(set-face-attribute 'mode-line-buffer-id nil
+		    :foreground "Black"
+                    :background "white"
+                    )
+
+;;; eshell
+
+(setq eshell-prompt-function
+      (lambda ()
+	(concat
+	 (user-login-name)
+	 "@" (substring (system-name) 0 6) 
+	 "[" 
+	 (if (string-match "/home/matsuzak" (eshell/pwd))
+	     (concat "~" (substring (eshell/pwd) 14))
+	   (eshell/pwd))
+	 "] \n$ ")))
+
+(defun system-name-for-yablab ()
+  (substring (system-name) 0 6))
+(defun i-current-direcotry-name()
+  (concat "["
+	  (if (string-match "/home/matsuzak" (eshell/pwd))
+	      (concat "~" (substring (eshell/pwd) 14)))
+	  "]"))
+
+(defun git-prompt ()
+  (shell-command-to-string 
+   (concat "bash " config-home "/run-git-prompt.sh")))
+
+(defmacro with-face (str &rest props)
+  `(propertize ,str 'face (list ,@props)))
+
+
+(setq eshell-prompt-function
+      (lambda ()
+	(concat
+	 (with-face (system-name-for-yablab)
+		    :foreground "magenta")
+	 (with-face (git-prompt)
+		    :foreground "green")
+	 (with-face (i-current-direcotry-name) 
+		    :foreground "yellow")
+	 "\n$ ")))
+
+
+(setq eshell-highlight-prompt nil)
+
+(setq eshell-prompt-regexp "^[$#] ")
+
+
+;;; old
 
 ;; doc
 (set-face-attribute 'font-lock-doc-face nil
@@ -29,13 +111,6 @@
 ;; pale color
 (make-face 'my-face-pale)
 (set-face-foreground 'my-face-pale "gray")
-
-;; tab or etc
-(setq my-color-tab-other-background "Blue")
-(setq my-color-tab-other-foreground "white")
-(setq my-color-tab-current-background "Blue")
-(setq my-color-tab-current-foreground "red")
-(setq my-color-back "azure4")
 
 ;; main-line
 (setq my-main-line-color-1 "LightSkyBlue4")
