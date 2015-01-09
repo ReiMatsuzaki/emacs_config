@@ -1,9 +1,9 @@
-;;; Comment
+;;;  Comment     
 ;
 ;  Minimal setting for Emacs. 
 ;
 ;
-;;; Basic
+;;;  Basic       
 ;;;; Basic Key
 
 ;; Binding C-h to backspace
@@ -127,8 +127,8 @@
 (defun describe-face-at-point ()
   "Return face used at point"
   (interactive)
-  (message "%s" (get-char-property (point) 'face)))
-;;; elscreen
+  (message "%s" (get-char-property (point) 'face)))  
+;;;  elscreen    
 ;;;; keys
 
 (setq elscreen-prefix-key "\C-q")
@@ -184,6 +184,7 @@
 ;;;;; key
 
 (global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+
 
 
 ;;;; with files
@@ -268,7 +269,7 @@
 
 
 
-;;; Window
+;;;  Window      
 ;;;; Win-control
 ;;;;; * load
 ;; depend on windmove.el
@@ -433,7 +434,7 @@
 (window-move-minor-mode t)
 
 
-;;; constrol
+;;;  constrol    
 ;;;; pop-win
 
 ; pop-win(package)
@@ -442,7 +443,7 @@
 (setq display-buffer-function 'popwin:display-buffer)
 
 
-;;; Edit
+;;;  Edit        
 ;;;; Git
 
 (require 'magit)
@@ -484,7 +485,7 @@
     (forward-line 1)))
 
 
-;;; Programming
+;;;  Programming 
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
@@ -980,6 +981,7 @@
 
 ;;;;; color control
 
+
 (defun my-cplus-color ()
   (interactive)
   (add-face-to-rexp-area "^ *// +\\* .*\n" 'face-sectioning)
@@ -996,17 +998,13 @@
 
 ;;;;; config
 
-
-
-
-
 (add-hook 'c++-mode-hook
 	  (lambda ()
 ;	    (hs-minor-mode)
 ;	    (fold-dwim-hide-all)
 
-	    (my-cplus-color)
-	    (add-hook 'after-save-hook 'my-cplus-color)
+;	    (my-cplus-color)
+;	    (add-hook 'after-save-hook 'my-cplus-color)
 
 ;;	    (set-face-background 'font-lock-comment-face "white")
 	    
@@ -1019,9 +1017,10 @@
 ;	    (define-key c++-mode-map (kbd "C-c o") 'fold-dwim-show-all)
 	    (define-key c++-mode-map (kbd "C-c w") 'fold-dwim-hide-all)	    
 	    
-	    (flymake-mode t)
-	    (linum-mode t)
-	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)))
+;	    (flymake-mode t)
+;	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)
+	    (linum-mode t)))
+	   
 
 
 ;;;;; auto insert

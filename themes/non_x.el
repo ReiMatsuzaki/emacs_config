@@ -1,8 +1,8 @@
-;;; default font size
+;;;; default font size
 (setq my-default-font-height 80)
 
 
-;;; elscreen
+;;;; elscreen
 
 (set-face-background 'elscreen-tab-other-screen-face "white")
 (set-face-foreground 'elscreen-tab-other-screen-face "Black")
@@ -18,7 +18,7 @@
 (setq elscreen-tab-display-kill-screen nil)
 
 
-;;; mode line
+;;;; mode line
 
 (set-face-attribute 'mode-line-inactive nil
                     :foreground "black"
@@ -36,7 +36,7 @@
                     :background "white"
                     )
 
-;;; eshell
+;;;; eshell
 
 (setq eshell-prompt-function
       (lambda ()
@@ -48,6 +48,7 @@
 	     (concat "~" (substring (eshell/pwd) 14))
 	   (eshell/pwd))
 	 "] \n$ ")))
+
 
 (defun system-name-for-yablab ()
   (substring (system-name) 0 6))
@@ -76,13 +77,35 @@
 		    :foreground "yellow")
 	 "\n$ ")))
 
+(setq eshell-prompt-function
+      (lambda ()
+	(concat
+	 (with-face (system-name-for-yablab)
+		    :foreground "magenta")
+	 (with-face (i-current-direcotry-name) 
+		    :foreground "yellow")
+	 "\n$ ")))
+
 
 (setq eshell-highlight-prompt nil)
 
 (setq eshell-prompt-regexp "^[$#] ")
 
 
-;;; old
+;;;; outshine
+
+(set-face-attribute 'outshine-level-1 nil
+		    :foreground "white"
+		    :background "color-166"
+		    :underline nil)
+(set-face-attribute 'outshine-level-2 nil
+                    :foreground "brightred"
+		    :underline t)
+(set-face-attribute 'outshine-level-3 nil
+		    :foreground "white"
+		    :underline t)
+
+;;;; old
 
 ;; doc
 (set-face-attribute 'font-lock-doc-face nil
@@ -105,8 +128,8 @@
 (set-face-underline-p 'face-sectioning nil)
 
 ;; cursor
-(setq my-ime-active-color "red")
-(setq my-ime-inactive-color "dodger blue")
+(setq my-ime-active-color "white")
+(setq my-ime-inactive-color "blue")
 
 ;; pale color
 (make-face 'my-face-pale)
