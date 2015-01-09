@@ -1,4 +1,4 @@
-;;; Basics
+;;;  Basics      
 ;;;; Configuration
 ;;;;; * Serial Number
 
@@ -270,7 +270,7 @@
 (require 'generic-x)
 
 
-;;; control
+;;;  control     
 ;;;; remote
 ;;;;; tramp via ftp
 ;; tramp via ftp
@@ -375,7 +375,7 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-;;; Edit
+;;;  Edit        
 ;;;; smart-chr
 ;; will be removed
 ;(add-to-list 'load-path (concat config-home "smartchr"))
@@ -465,7 +465,7 @@
 ;(set-face-background 'mmm-default-submode-face "Blue")
 
 ;;;; fold-dwim
-(require 'fold-dwim)
+
 ; fold-dwin(package)
 ;(require 'fold-dwim)
 ;(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
@@ -494,17 +494,6 @@
 
 ;;;; yasnippet
 
-; yasnippet(package)
-(require 'yasnippet)
-(yas-global-mode t)
-;(add-to-list 'load-path
-;	     "Y:/.emacs.d/snippets")
-(setq yas-snippet-dirs 
-      '(concat config-home "snippets"))
-(setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
-;(setq yas-snippet-dirs (expand-file-name "~/.emacs.d/elisp/snippets"))
-(add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
-;(add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp/snippets"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -540,7 +529,7 @@
 	 (overlay-put ov 'face adapting-face )))
      pp-list)))
 
-;;; programming
+;;;  programming 
 ;;;; haskell
 ;;;;; basic
 ; Haskell(package haskell, ghc)

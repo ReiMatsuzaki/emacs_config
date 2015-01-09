@@ -58,14 +58,6 @@
 	      (concat "~" (substring (eshell/pwd) 14)))
 	  "]"))
 
-(defun git-prompt ()
-  (shell-command-to-string 
-   (concat "bash " config-home "/run-git-prompt.sh")))
-
-(defmacro with-face (str &rest props)
-  `(propertize ,str 'face (list ,@props)))
-
-
 (setq eshell-prompt-function
       (lambda ()
 	(concat

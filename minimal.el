@@ -56,6 +56,9 @@
 (menu-bar-mode 1)
 (menu-bar-mode -1)
 
+;; non scroll bar
+(scroll-bar-mode 0)
+
 ;; scroll
 (setq scroll-conservatively 35
       scroll-margin 0
@@ -65,8 +68,6 @@
 (setq make-backup-files nil)
 (setq backup-inhibited t)
 (setq delete-auto-save-files t)
-
-
 
 ;;;; hippie
 
@@ -96,6 +97,23 @@
 
 
 ;;;; eshell
+;;;;; prompt
+
+(defmacro with-face (str &rest props)
+  `(propertize ,str 'face (list ,@props)))
+
+(defun git-prompt ()
+  (shell-command-to-string 
+   (concat "bash " config-home "/run-git-prompt.sh")))
+
+; (defun pwd-from-home ()
+;   "if current directory is /home/rei/local/src,
+; return ~/local/src."
+  
+
+
+
+;;;;; hook
 
 (add-hook 'eshell-mode-hook
 	  '(lambda ()
@@ -450,6 +468,20 @@
 (global-set-key (kbd "C-c g") 'magit-status)
 
 
+;;;; yasnippet
+
+(require 'yasnippet)
+(yas-global-mode t)
+(setq yas-snippet-dirs 
+      '(concat config-home "snippets"))
+(setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
+(add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
+
+
+;;;; fold-dwim
+
+(require 'fold-dwim)
+
 ;;;; flymake
 
 (require 'flymake)
@@ -739,13 +771,13 @@
 ;;;;; hook
 (add-hook 'TeX-mode-hook
 	  '(lambda ()
-	     (setq TeX-command-default "platex")
+	     (setq TeX-command-default "pLaTeX")
 	     (setq TeX-electric-escape nil)
 	     (setq LaTeX-math-abbrev-prefix ":")
 	     (setq TeX-math-close-double-dollar t)	     
 	     (setq TeX-insert-braces t)
-	     (auto-complete-mode)
-	     (ac-latex-mode-setup)
+;	     (auto-complete-mode)
+;	     (ac-latex-mode-setup)
 	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("vector")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("|{1}>" ("ket")))
 	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}|" ("bra")))
@@ -794,12 +826,6 @@
 	     (outline-minor-mode 1)
 ;	     (orgtbl-mode)
 	     (fold-dwim-hide-all)
-	     (set-face-foreground 
-	      'font-latex-sectioning-2-face my-sect-color-1)
-	     (set-face-foreground 
-	      'font-latex-sectioning-3-face my-sect-color-2)
-	     (set-face-foreground 
-	      'font-latex-sectioning-4-face my-sect-color-3)
 	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
 
