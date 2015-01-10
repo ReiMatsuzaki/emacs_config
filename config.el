@@ -64,7 +64,7 @@
   outorg
   multiple-cursors
   sage-shell-mode
-   )
+  )
 )
 
 ;;;; elscreen

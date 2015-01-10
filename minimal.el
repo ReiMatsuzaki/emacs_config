@@ -56,6 +56,9 @@
 (menu-bar-mode 1)
 (menu-bar-mode -1)
 
+;; no tool bar
+(tool-bar-mode -1)
+
 ;; non scroll bar
 (scroll-bar-mode 0)
 
@@ -392,6 +395,9 @@
 
 ;;;;; Key-Binding
 
+
+;; this code does not work.
+;; to activate these key bindings, copy above code to end of init.el.
 (global-set-key (kbd "C-x #") '(lambda ()
                            (interactive)				 
                            (split-window-horizontally-n 3)))
