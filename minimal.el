@@ -466,6 +466,13 @@
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
 
+;; delete compilation-mode popwin
+;; if this code is activated, compilation-mode buffer appear in the same  frame.
+;; This behavior is not my target. I have to stop to popup itself.
+;(delq (assoc 'compilation-mode popwin:special-display-config)
+;      popwin:special-display-config)
+
+
 
 ;;;  Edit        
 ;;;; Git
