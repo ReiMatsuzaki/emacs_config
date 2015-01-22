@@ -367,13 +367,7 @@
 (define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
 ;;(helm-mode 1)
 
-;;;; mutli-cursors
 
-(require 'multiple-cursors)
-
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;;;  Edit        
 ;;;; smart-chr
@@ -759,3 +753,199 @@
 
 ;;========Programming C++===============
 ;(goto-char 21220)
+
+
+
+
+;;;; org
+;;;;; config
+(setq org-startup-truncated t)
+(setq temporary-file-directory "~/tmp/")
+(setq org-export-latex-classes nil)
+(setq org-hide-leading-stars t)
+(add-to-list 'org-export-latex-classes
+  '("jsarticle"
+    "\\documentclass[a4j]{jsarticle}"
+    ("\\section{%s}" . "\\section*{%s}")
+    ("\\subsection{%s}" . "\\subsection*{%s}")
+    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(push '("*LaTeXt*" :height 20) popwin:special-display-config)
+; auto-complete ac-source-latex-commands (package:ac-math)
+
+;; modify tex file exported from org-mode
+
+;;;;; modify-tex-file-exported-from-org
+(defun modify-tex-file-exported-from-org ()
+  "tex file exported org cannot be compiled directory.
+   This is because of hypersetup, which is inculded.
+   In this function, delete these bad fragment in tex file."
+  (interactive)
+  (goto-char (point-min))
+  (re-search-forward "\\usepackage{hyperref}")
+  (move-to-column 0)
+  (insert "%")
+  (re-search-forward "hypersetup")
+  (move-to-column 0)
+  (insert "%")
+  (forward-line 1)
+  (insert "%")
+  (forward-line 1)
+  (insert "%")
+  (forward-line 1)
+  (insert "%"))
+
+;;;;; tex
+(defvar ps-latex)
+(defun org-export-dvi-by-modify-tex ()
+  "create dvi file and modify it, create dvi file."
+  (interactive)
+  (let (tex-file-name 
+	(tex-output-buffer (get-buffer-create "*LaTeX*"))
+	ps)
+    (org-export-as-latex 3)
+    (setq tex-file-name (concat (substring (buffer-file-name) 0 -3) "tex"))
+    (save-excursion
+      (set-buffer (find-file-noselect tex-file-name))
+      (modify-tex-file-exported-from-org)
+      (basic-save-buffer)
+      (kill-buffer nil))
+    (message "start platex")
+    (save-excursion
+      (set-buffer tex-output-buffer)
+      (erase-buffer))
+    (setq ps
+	  (start-process "*LaTeX" tex-output-buffer "platex" tex-file-name))
+    (message "done")))
+
+(defun org-retry-latex ()
+  "platex .tex"
+  (interactive)
+  (let ((fn (concat (substring (buffer-file-name) 0 -3) "tex")))
+    (start-process "*LaTeX2" nil "platex" fn))
+  (message "done"))
+
+(setq org-latex-to-pdf-process
+      '("platex %f"
+	"dvipdfmx %b.dvi"))
+
+
+;;;;; auto complete
+(if (window-system)
+    (progn
+      (require 'ac-math)
+      (add-to-list 'ac-modes 'org-mode)
+      (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+	(setq ac-sources
+	      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+		      ac-sources)))))
+
+;;latex-math-preview(from web)
+
+;;;;; math preview
+(autoload 'latex-math-preview-expression "latex-math-preview" nil t)
+(autoload 'latex-math-preview-insert-symbol "latex-math-preview" nil t)
+(autoload 'latex-math-preview-save-image-file "latex-math-preview" nil t)
+(autoload 'latex-math-preview-beamer-frame "latex-math-preview" nil t)
+;;;;; fold
+(defun org-fold-this-brunch ()
+  (interactive)
+  (outline-previous-visible-heading 1)
+  (org-cycle))
+;; default dir
+(setq org-directory "~/org/")
+;; TODO, agenda
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
+(setq org-log-done 'time)
+(setq org-agenda-files (list org-directory))
+
+;;;;; hook
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (ac-latex-mode-setup)
+	    (define-key org-mode-map (kbd "\C-c c") 'org-export-dvi-by-modify-tex)
+	    (define-key org-mode-map (kbd "\C-c p") 'latex-math-preview-expression)
+	    (define-key org-mode-map (kbd "\C-c r") 'helm-ref-tex-in-org)
+	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
+	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
+;	    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))   
+	    (turn-on-font-lock)
+	    (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
+
+; org-babel
+;(org-babel-do-load-languages
+; 'org-babel-load-languages
+; '((latex . t)
+;   (ruby . t)
+;   (sh . t)))
+ 
+
+
+;;;; gnuplot
+
+  ;gnuplot
+(require 'gnuplot-mode)
+
+;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
+;; (setq gnuplot-program "/sw/bin/gnuplot")
+
+;; ;; automatically open files ending with .gp or .gnuplot in gnuplot mode
+ (add-to-list 'auto-mode-alist
+              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
+
+;  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+;  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
+;  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode))
+;			           auto-mode-alist))
+
+;popwin
+(push '("*gnuplot*" :height 20) popwin:special-display-config)
+
+;auto insert
+(defun insert-gp-template ()
+  (interactive)
+  (yas/expand-snippet
+  "set term postscript eps enhanced color
+   set output '`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.eps'
+   set size 0.5,0.5
+   set grid
+   set key right
+   $0
+"
+  (point) (point)
+  ))
+(define-auto-insert "\\.gp$" 'insert-gp-template)
+
+
+
+
+;;;; mathematica script file
+
+(define-generic-mode mathematica-script-mode
+  ;; comment list
+  '("(*" "*)")
+  ;; key words list
+  '("@" "\\[" "\\]")
+  ;; color list
+  '(
+    ("@" . font-lock-keyword-face)
+    ("\\[" . font-lock-builtin-face)
+    ("\\]" . font-lock-builtin-face)
+    ("\\{" . font-lock-builtin-face)
+    ("\\}" . font-lock-builtin-face)
+    )
+  ;; file regexp list
+  '("\\.m$")
+  ;; init function list
+  nil
+  )
+
+
+
+
+
+
+

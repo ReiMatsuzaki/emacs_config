@@ -19,6 +19,31 @@
 (global-set-key (kbd "M-n") 'scroll-up-command)
 (global-set-key (kbd "M-p") 'scroll-down-command)
 
+;;;; move-global-minor-mode
+
+
+(defvar move-global-minor-mode-map
+  (let ((map (make-sparse-keymap)))
+    (setq windmove-wrap-around t)
+    (define-key map (kbd "M-j") 'windmove-down)
+    (define-key map (kbd "M-k") 'windmove-up)
+    (define-key map (kbd "M-l") 'windmove-right)
+    (define-key map (kbd "M-h") 'windmove-left)
+    (define-key map (kbd "M-h") 'windmove-left)
+    (define-key map (kbd "M-J") 'buffer-flip-down)
+    (define-key map (kbd "M-K") 'buffer-flip-up)
+    (define-key map (kbd "M-L") 'buffer-flip-right)
+    (define-key map (kbd "M-H") 'buffer-flip-left)
+    (define-key map (kbd "M-s") 'save-opening-buffer)
+    (define-key map (kbd "M-m") 'switch-to-opening-buffer)
+    map))
+
+
+(define-minor-mode move-global-minor-mode
+  "move minor mode"
+  :global t)
+
+(move-global-minor-mode t)
 
 ;;;; package manager
 
@@ -77,10 +102,10 @@
 (setq hippie-expand-try-functions-list
       '(try-complete-file-name-partially
 	try-complete-file-name
-	try-expand-all-abbrevs
-	try-expand-dabbrev
-	try-expand-dabbrev-all-buffers
-	try-expand-dabbrev-from-kill
+	try-expand-all-arevs
+	try-expand-darev
+	try-expand-darev-all-buffers
+	try-expand-darev-from-kill
 	try-complete-lisp-symbol-partially
 	try-complete-lisp-symbol))
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -148,12 +173,15 @@
 (defun describe-face-at-point ()
   "Return face used at point"
   (interactive)
-  (message "%s" (get-char-property (point) 'face)))  
+  (message "%s" (get-char-property (point) 'face)))
+
+
 ;;;  elscreen    
 ;;;; keys
 
 (setq elscreen-prefix-key "\C-q")
-
+(define-key move-global-minor-mode-map (kbd "M-]") 'elscreen-next)
+(define-key move-global-minor-mode-map (kbd "M-[") 'elscreen-previous)
 
 ;;;; start
 
@@ -352,13 +380,13 @@
     (when (equal cmd ?3)
       (wincon-construct
        'wincon-set-windows-three-holizon
-       `((file ,(lambda () (wincon-get-bbl-in-current-frame 'buffer-file-name)))
-	 (shell wincon-get-bbl-eshell-for-current-screen))))
+       `((file ,(lambda () (wincon-get-l-in-current-frame 'buffer-file-name)))
+	 (shell wincon-get-l-eshell-for-current-screen))))
     (when (equal cmd ?4)
       (wincon-construct
        'wincon-set-windows-2121
-       `((file ,(lambda () (wincon-get-bbl-in-current-frame 'buffer-file-name)))
-	 (shell wincon-get-bbl-eshell-for-current-screen))))
+       `((file ,(lambda () (wincon-get-l-in-current-frame 'buffer-file-name)))
+	 (shell wincon-get-l-eshell-for-current-screen))))
     (when (not (equal cmd ?g))
       (buffer-control-ui))))
 
@@ -431,31 +459,6 @@
   (message "there is no opening-buufer")))
 
 
-;;;; window-move-minor-mode
-
-
-(defvar window-move-minor-mode-map
-  (let ((map (make-sparse-keymap)))
-    (setq windmove-wrap-around t)
-    (define-key map (kbd "C-M-j") 'windmove-down)
-    (define-key map (kbd "C-M-k") 'windmove-up)
-    (define-key map (kbd "C-M-l") 'windmove-right)
-    (define-key map (kbd "M-DEL") 'windmove-left)
-    (define-key map (kbd "C-M-H") 'windmove-left)
-    (define-key map (kbd "M-J") 'buffer-flip-down)
-    (define-key map (kbd "M-K") 'buffer-flip-up)
-    (define-key map (kbd "M-L") 'buffer-flip-right)
-    (define-key map (kbd "M-H") 'buffer-flip-left)
-    (define-key map (kbd "C-M-s") 'save-opening-buffer)
-    (define-key map (kbd "C-M-m") 'switch-to-opening-buffer)
-    map))
-
-
-(define-minor-mode window-move-minor-mode
-  "window move minor mode"
-  :global t)
-
-(window-move-minor-mode t)
 
 
 ;;;  constrol    
@@ -463,8 +466,8 @@
 
 ; pop-win(package)
 
-(require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
+;(require 'popwin)
+;(setq display-buffer-function 'popwin:display-buffer)
 
 ;; delete compilation-mode popwin
 ;; if this code is activated, compilation-mode buffer appear in the same  frame.
@@ -472,6 +475,32 @@
 ;(delq (assoc 'compilation-mode popwin:special-display-config)
 ;      popwin:special-display-config)
 
+
+
+;;;; mutli-cursors/smartrep
+
+(require 'multiple-cursors)
+(require 'smartrep)
+
+(global-set-key (kbd "C-c l") 'mc/edit-lines)
+(global-set-key (kbd "C-c r") 'mc/mark-all-in-region)
+
+(global-unset-key "\C-t")
+
+(smartrep-define-key global-map "C-t"
+  '(("C-t" . 'mc/mark-next-like-this)
+    ("n"   . 'mc/mark-next-like-this)
+    ("p"   . 'mc/mark-previous-like-this)
+    ("m"   . 'mc/mark-more-like-this-extended)
+    ("u"   . 'mc/unmark-next-like-this)
+    ("U"   . 'mc/unmark-previous-like-this)
+    ("s"   . 'mc/skip-to-next-like-this)
+    ("S"   . 'mc/skip-to-previous-like-this)
+    ("*"   . 'mc/mark-all-like-this)
+    ("d"   . 'mc/mark-all-like-this-dwim)
+    ("i"   . 'mc/insert-numbers)
+    ("o"   . 'mc/sort-regions)
+    ("O"   . 'mc/reverse-regions)))
 
 
 ;;;  Edit        
@@ -514,6 +543,8 @@
 	     (define-key hs-minor-mode-map (kbd "C-c f") 'hs-toggle-hiding)
 	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
 	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
+
+
 ;;;; outshine
 ;;;;; require
 
@@ -552,10 +583,6 @@
 	     (setq eldoc-idle-delay 0.2)
 	     (setq eldoc-minor-mode-string "")
 	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)))
-
-
-
-
 ;;;; ruby 
 ;;;;; rsense
 ; rsense(package)
@@ -595,15 +622,15 @@
 	      (hs-hide-block)
 	      (forward-line 1)
 	      )
-  (goto-char (point-min))
-)
+  (goto-char (point-min)))
+
 (defun hs-hide-def ()
   (interactive)
   (end-of-line)
   (re-search-backward "^ *def")
   (end-of-line)
-  (hs-toggle-hiding)
-  )
+  (hs-toggle-hiding))
+  
 (add-hook 'ruby-mode-hook
 	  (lambda ()
 	    (hs-minor-mode 1)
@@ -641,7 +668,7 @@
 
 ;;;;; basic
 ; ruby-inf
-;; Copy/Cut/Paste:Ruby on Emacs : http://goo.gl/AaaGp
+;; Copy/Cut/Paste:Ruby on Emacs : http://goo.Gp
 
 (autoload 'ruby-mode "ruby-mode"
 "Mode for editing ruby source files" t)
@@ -656,6 +683,9 @@
 ;(add-hook 'ruby-mode-hook
 ;	  '(lambda ()
 ;	     (inf-ruby-keys)))
+
+
+
 
 
 
@@ -706,302 +736,6 @@
 	     ))
 (setq auto-mode-alist
       (cons (cons "\\.f95$" 'f90-mode) auto-mode-alist))
-
-;;;; auctex
-;;;;; fold
-
-;auctex(package)
-;(setq dum-list '(("[f]" ("footnoe" "footnote2")) ("[i]" ("index" "in")) (1 ("section" "subsection" "part" "paragraph"))))
-;; TEXROOT  C:\w32tex\share\texmf\fonts;C:\w32tex\share\texmf-local\fonts
-;; TEXPK    ^r\tfm\\^s^tfm;^r\pk\\^s.^dpk;^r\vf\\^s.vf;^r\ovf\\^s.ovf;^r\tfm\\^s.tfm
-;; TEXFONTS ^r\tfm\\
-
-;; get folding relations which fold "fold-str"
-(defun filter-LaTeX-fold-spec-list (fold-str)
-  (let ((filter (lambda (x) (string-match fold-str (caadr x))))
-	(fold-list-list (list 
-			 LaTeX-fold-env-spec-list 
-			 LaTeX-fold-math-spec-list
-			 LaTeX-fold-macro-spec-list)))
-    (mapcar (lambda (fold-list) 
-	      (remove-if-not filter fold-list))
-	    fold-list-list)))
-
-(defun modify-TeX-fold-spec-list ()
-  (let ((key1 1))
-    (delete "subsection" (car (cdr (assoc key1 TeX-fold-macro-spec-list))))
-    (add-to-list 'TeX-fold-macro-spec-list '("  {1}" ("subsection")))))
-
-;(modify-TeX-fold-spec-list)
-;(print TeX-fold-macro-spec-list)
-
-;;;;; doc view 
-
-; revert doc view from other buffer
-
-;(defun my-doc-view-revert-from-other-buffer ()
-;  (interactive)
-;  (let ((tex-buf-name (buffer-name (current-buffer))))
-;    (if (string-match "\\.tex$" tex-buf-name)
-;	(let ((dvi-buf-name (concat (substring tex-buf-name 0 -4) ".dvi")))
-;	  (progn
-;	    (switch-to-buffer dvi-buf-name)
-;	    (revert-buffer))))))
-
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
-
-;;;;; config
-
-(load "tex-site")
-(setq auto-mode-alist
-      (append '(("\\.tex$" . japanese-latex-mode)
-		("\\.ltx$" . japanese-latex-mode)) auto-mode-alist))
-(setq TeX-parse-self t) ; Enable parse on load.
-(setq TeX-auto-save t) ; Enable parse on save.
-(setq TeX-math-close-double-dollar t) ; $->$$ ?
-;(setq TeX-command-list (list "platex" "dviout"))
-;(setq-default TeX-master nil)
-;(setq TeX-default-mode 'japanese-latex-mode)
-;auto insert
-(define-auto-insert "\\.tex$" "tex.tex")
-
-(load (expand-file-name (concat config-home "tex.el")))
-;(load (expand-file-name "~/.emacs.d/elisp/tex.el"))
-
-;;;;; key binding
-(defun auctex-define-keys ()
-  (progn
-    (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
-    (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
-    (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
-    (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
-    (define-key outline-minor-mode-map (kbd "C-c b") 'TeX-fold-buffer)    
-;    (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
-;    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))
-;    (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))
-))
-
-;;;;; hook
-(add-hook 'TeX-mode-hook
-	  '(lambda ()
-	     (setq TeX-command-default "pLaTeX")
-	     (setq TeX-electric-escape nil)
-	     (setq LaTeX-math-abbrev-prefix ":")
-	     (setq TeX-math-close-double-dollar t)	     
-	     (setq TeX-insert-braces t)
-;	     (auto-complete-mode)
-;	     (ac-latex-mode-setup)
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("vector")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("|{1}>" ("ket")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}|" ("bra")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("Braket")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("braket")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("~{1}" ("tilde")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("-{1}" ("bar")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})/({2})" ("frac")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathrm")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathbf")))	     
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("boldsymbol")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathbf")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))	     
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
-;	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
-;	     (add-to-list 'LaTeX-fold-math-spec-list '("[[1]" ("left[")))
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("right)")))
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})" ("braces")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("{{1}}" ("bracem")))
-	     (add-to-list 'LaTeX-fold-math-spec-list '("[{1}]" ("braceb")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("rights")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("lefts")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("rightb")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("[" ("leftb")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("rightm")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("leftm")))
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("right\}")))
-;	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("left\{")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("\[" ("begin{eqnarray}")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("\]" ("end{eqnarray}")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("[a" ("begin{array}")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("a]" ("end{array}")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("[i" ("begin{itemize}")))
-	     (add-to-list 'LaTeX-fold-macro-spec-list '("i]" ("end{itemize}")))
-	     (add-to-list 'LaTeX-fold-env-spec-list  '("fig" ("figure")))
-	     (add-to-list 'LaTeX-fold-env-spec-list  '("tbl" ("table")))
-;	     (modify-TeX-fold-spec-list)
-	     (auctex-define-keys)
-	     (turn-on-reftex)
-	     (LaTeX-math-mode 1)
-	     (tex-fold-mode 1)
-	     (TeX-fold-buffer)
-	     (TeX-fold-buffer)
-	     (outline-minor-mode 1)
-;	     (orgtbl-mode)
-	     (fold-dwim-hide-all)
-	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
-
-
-;;;; org
-;;;;; config
-(setq org-startup-truncated t)
-(setq temporary-file-directory "~/tmp/")
-(setq org-export-latex-classes nil)
-(setq org-hide-leading-stars t)
-(add-to-list 'org-export-latex-classes
-  '("jsarticle"
-    "\\documentclass[a4j]{jsarticle}"
-    ("\\section{%s}" . "\\section*{%s}")
-    ("\\subsection{%s}" . "\\subsection*{%s}")
-    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-    ("\\paragraph{%s}" . "\\paragraph*{%s}")
-    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-(push '("*LaTeXt*" :height 20) popwin:special-display-config)
-; auto-complete ac-source-latex-commands (package:ac-math)
-
-;; modify tex file exported from org-mode
-
-;;;;; modify-tex-file-exported-from-org
-(defun modify-tex-file-exported-from-org ()
-  "tex file exported org cannot be compiled directory.
-   This is because of hypersetup, which is inculded.
-   In this function, delete these bad fragment in tex file."
-  (interactive)
-  (goto-char (point-min))
-  (re-search-forward "\\usepackage{hyperref}")
-  (move-to-column 0)
-  (insert "%")
-  (re-search-forward "hypersetup")
-  (move-to-column 0)
-  (insert "%")
-  (forward-line 1)
-  (insert "%")
-  (forward-line 1)
-  (insert "%")
-  (forward-line 1)
-  (insert "%"))
-
-;;;;; tex
-(defvar ps-latex)
-(defun org-export-dvi-by-modify-tex ()
-  "create dvi file and modify it, create dvi file."
-  (interactive)
-  (let (tex-file-name 
-	(tex-output-buffer (get-buffer-create "*LaTeX*"))
-	ps)
-    (org-export-as-latex 3)
-    (setq tex-file-name (concat (substring (buffer-file-name) 0 -3) "tex"))
-    (save-excursion
-      (set-buffer (find-file-noselect tex-file-name))
-      (modify-tex-file-exported-from-org)
-      (basic-save-buffer)
-      (kill-buffer nil))
-    (message "start platex")
-    (save-excursion
-      (set-buffer tex-output-buffer)
-      (erase-buffer))
-    (setq ps
-	  (start-process "*LaTeX" tex-output-buffer "platex" tex-file-name))
-    (message "done")))
-
-(defun org-retry-latex ()
-  "platex .tex"
-  (interactive)
-  (let ((fn (concat (substring (buffer-file-name) 0 -3) "tex")))
-    (start-process "*LaTeX2" nil "platex" fn))
-  (message "done"))
-
-(setq org-latex-to-pdf-process
-      '("platex %f"
-	"dvipdfmx %b.dvi"))
-
-
-;;;;; auto complete
-(if (window-system)
-    (progn
-      (require 'ac-math)
-      (add-to-list 'ac-modes 'org-mode)
-      (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-	(setq ac-sources
-	      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-		      ac-sources)))))
-
-;;latex-math-preview(from web)
-
-;;;;; math preview
-(autoload 'latex-math-preview-expression "latex-math-preview" nil t)
-(autoload 'latex-math-preview-insert-symbol "latex-math-preview" nil t)
-(autoload 'latex-math-preview-save-image-file "latex-math-preview" nil t)
-(autoload 'latex-math-preview-beamer-frame "latex-math-preview" nil t)
-;;;;; fold
-(defun org-fold-this-brunch ()
-  (interactive)
-  (outline-previous-visible-heading 1)
-  (org-cycle))
-;; default dir
-(setq org-directory "~/org/")
-;; TODO, agenda
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
-(setq org-log-done 'time)
-(setq org-agenda-files (list org-directory))
-
-;;;;; hook
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (ac-latex-mode-setup)
-	    (define-key org-mode-map (kbd "\C-c c") 'org-export-dvi-by-modify-tex)
-	    (define-key org-mode-map (kbd "\C-c p") 'latex-math-preview-expression)
-	    (define-key org-mode-map (kbd "\C-c r") 'helm-ref-tex-in-org)
-	    (define-key org-mode-map (kbd "\C-c i") 'org-fold-this-brunch)
-	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)
-;	    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))   
-	    (turn-on-font-lock)
-	    (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
-
-; org-babel
-;(org-babel-do-load-languages
-; 'org-babel-load-languages
-; '((latex . t)
-;   (ruby . t)
-;   (sh . t)))
- 
-;;;; gnuplot
-
-  ;gnuplot
-(require 'gnuplot-mode)
-
-;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
-;; (setq gnuplot-program "/sw/bin/gnuplot")
-
-;; ;; automatically open files ending with .gp or .gnuplot in gnuplot mode
- (add-to-list 'auto-mode-alist
-              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
-
-;  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-;  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
-;  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode))
-;			           auto-mode-alist))
-
-;popwin
-(push '("*gnuplot*" :height 20) popwin:special-display-config)
-
-;auto insert
-(defun insert-gp-template ()
-  (interactive)
-  (yas/expand-snippet
-  "set term postscript eps enhanced color
-   set output '`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.eps'
-   set size 0.5,0.5
-   set grid
-   set key right
-   $0
-"
-  (point) (point)
-  ))
-(define-auto-insert "\\.gp$" 'insert-gp-template)
-
 
 
 
@@ -1067,29 +801,139 @@
 (define-auto-insert "\\.cpp" "cpp_template.cpp")
 
 
-;;;; mathematica script file
+;;;; auctex
+;;;;; fold
 
-(define-generic-mode mathematica-script-mode
-  ;; comment list
-  '("(*" "*)")
-  ;; key words list
-  '("@" "\\[" "\\]")
-  ;; color list
-  '(
-    ("@" . font-lock-keyword-face)
-    ("\\[" . font-lock-builtin-face)
-    ("\\]" . font-lock-builtin-face)
-    ("\\{" . font-lock-builtin-face)
-    ("\\}" . font-lock-builtin-face)
-    )
-  ;; file regexp list
-  '("\\.m$")
-  ;; init function list
-  nil
-  )
+;auctex(package)
+;(setq dum-list '(("[f]" ("footnoe" "footnote2")) ("[i]" ("index" "in")) (1 ("section" "subsection" "part" "paragraph"))))
+;; TEXROOT  C:\w32tex\share\texmf\fonts;C:\w32tex\share\texmf-local\fonts
+;; TEXPK    ^r\tfm\\^s^tfm;^r\pk\\^s.^dpk;^r\vf\\^s.vf;^r\ovf\\^s.ovf;^r\tfm\\^s.tfm
+;; TEXFONTS ^r\tfm\\
 
+;; get folding relations which fold "fold-str"
+(defun filter-LaTeX-fold-spec-list (fold-str)
+  (let ((filter (lambda (x) (string-match fold-stdr x))))
+	(fold-list-list (list 
+			 LaTeX-fold-env-spec-list 
+			 LaTeX-fold-math-spec-list
+			 LaTeX-fold-macro-spec-list)))
+    (mapcar (lambda (fold-list) 
+	      (remove-if-not filter fold-list))
+	    fold-list-list))
 
+(defun modify-TeX-fold-spec-list ()
+  (let ((key1 1))
+    (delete "subsection" (car (cdr (assoc key1 TeX-fold-macro-spec-list))))
+    (add-to-list 'TeX-fold-macro-spec-list '("  {1}" ("subsection")))))
 
+;(modify-TeX-fold-spec-list)
+;(print TeX-fold-macro-spec-list)
+
+;;;;; doc view 
+
+; revert doc view from other buffer
+
+;(defun my-doc-view-revert-from-other-buffer ()
+;  (interactive)
+;  (let ((tex-buf-name (buffer-name (current-buffer))))
+;    (if (string-match "\\.tex$" tex-buf-name)
+;	(let ((dvi-buf-name (concat (substring tex-buf-name 0 -4) ".dvi")))
+;	  (progn
+;	    (switch-to-buffer dvi-buf-name)
+;	    (revert-buffer))))))
+
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+;;;;; config
+
+(load "tex-site")
+(setq auto-mode-alist
+      (append '(("\\.tex$" . japanese-latex-mode)
+		("\\.ltx$" . japanese-latex-mode)) auto-mode-alist))
+(setq TeX-parse-self t) ; Enable parse on load.
+(setq TeX-auto-save t) ; Enable parse on save.
+(setq TeX-math-close-double-dollar t) ; $->$$ ?
+;(setq TeX-command-list (list "platex" "dviout"))
+;(setq-default TeX-master nil)
+;(setq TeX-default-mode 'japanese-latex-mode)
+;auto insert
+(define-auto-insert "\\.tex$" "tex.tex")
+
+(load (expand-file-name (concat config-home "tex.el")))
+;(load (expand-file-name "~/.emacs.d/elisp/tex.el"))
+
+;;;;; key binding
+(defun auctex-define-keys ()
+  (progn
+    (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
+    (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
+    (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
+    (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
+    (define-key outline-minor-mode-map (kbd "C-c b") 'TeX-fold-buffer)    
+;    (define-key TeX-mode-map (kbd "$") (smartchr '("$`!!'$" "$")))
+;    (define-key TeX-mode-map (kbd "y") (smartchr '("y" "\\" "\\\\")))
+;    (define-key TeX-mode-map (kbd "d") (smartchr '("d" "$`!!'$")))
+))
+
+;;;;; hook
+(add-hook 'TeX-mode-hook
+	  '(lambda ()
+	     (setq TeX-command-default "pLaTeX")
+	     (setq TeX-electric-escape nil)
+	     (setq LaTeX-math-arev-prefix ":")
+	     (setq TeX-math-close-double-dollar t)	     
+	     (setq TeX-insert-braces t)
+;	     (auto-complete-mode)
+;	     (ac-latex-mode-setup)
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("vector")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("|{1}>" ("ket")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}|" ("bra")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("Braket")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("<{1}>" ("braket")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("~{1}" ("tilde")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("-{1}" ("bar")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})/({2})" ("frac")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathrm")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathbf")))	     
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("boldsymbol")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("^{1}" ("hat")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{1}" ("mathbf")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("√({1})" ("sqrt")))	     
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("right]")))
+;	     (add-to-list 'LaTeX-fold-math-spec-list '("[" ("left[")))
+;	     (add-to-list 'LaTeX-fold-math-spec-list '("[[1]" ("left[")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("right)")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("left(")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("({1})" ("braces")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("{{1}}" ("bracem")))
+	     (add-to-list 'LaTeX-fold-math-spec-list '("[{1}]" ("braceb")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '(")" ("rights")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("(" ("lefts")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("]" ("rightb")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("[" ("leftb")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("rightm")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("leftm")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("}" ("right\}")))
+;	     (add-to-list 'LaTeX-fold-macro-spec-list '("{" ("left\{")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("\[" ("begin{eqnarray}")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("\]" ("end{eqnarray}")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("[a" ("begin{array}")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("a]" ("end{array}")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("[i" ("begin{itemize}")))
+	     (add-to-list 'LaTeX-fold-macro-spec-list '("i]" ("end{itemize}")))
+	     (add-to-list 'LaTeX-fold-env-spec-list  '("fig" ("figure")))
+	     (add-to-list 'LaTeX-fold-env-spec-list  '("tbl" ("table")))
+;	     (modify-TeX-fold-spec-list)
+	     (auctex-define-keys)
+	     (turn-on-reftex)
+	     (LaTeX-math-mode 1)
+	     (tex-fold-mode 1)
+	     (TeX-fold-buffer)
+	     (TeX-fold-buffer)
+	     (outline-minor-mode 1)
+;	     (orgtbl-mode)
+	     (fold-dwim-hide-all)
+	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
 
 
