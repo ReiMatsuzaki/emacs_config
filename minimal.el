@@ -9,15 +9,13 @@
 ;; Binding C-h to backspace
 (keyboard-translate ?\C-h ?\C-?)
 
-;; compile
-(global-set-key "\C-cc"  'compile)
-
 ;; bs-show
 (global-set-key "\C-x\C-b" 'bs-show)
 
 ;; scroll
 (global-set-key (kbd "M-n") 'scroll-up-command)
 (global-set-key (kbd "M-p") 'scroll-down-command)
+
 
 ;;;; move-global-minor-mode
 
@@ -68,6 +66,9 @@
 (global-unset-key (kbd "C-x C-c"))
 (defalias 'exit 'save-buffers-kill-emacs)
 
+;; bind C-c C-x as server edit
+(global-set-key (kbd "C-x C-c") 'server-edit)
+
 ;; ffap. Extention of C-x C-f
 (ffap-bindings)
 
@@ -102,16 +103,29 @@
 (setq hippie-expand-try-functions-list
       '(try-complete-file-name-partially
 	try-complete-file-name
-	try-expand-all-arevs
-	try-expand-darev
-	try-expand-darev-all-buffers
-	try-expand-darev-from-kill
+	try-expand-all-abbrevs
+	try-expand-dabbrev
+	try-expand-dabbrev-all-buffers
+	try-expand-dabbrev-from-kill
 	try-complete-lisp-symbol-partially
 	try-complete-lisp-symbol))
 (global-set-key (kbd "M-/") 'hippie-expand)
 
-
 ;;;; compile
+;;;;; autoload
+
+;(autoload 'mode-compile "mode-compile" 
+;  "Command to compile current buffer file based on the major mode" t)
+;(autoload 'mode-compile-kill "mode-compile" nil t)
+
+
+;;;;; key
+
+(global-set-key "\C-cc" 'compile)
+(global-set-key "\C-ck" 'mode-compile-kill)
+
+
+;;;;; font-lock for compilation mode
 
 (add-hook 'compilation-mode-hook
 	  '(lambda ()
@@ -122,6 +136,9 @@
 	       (add-to-list 
 		'compilation-mode-font-lock-keywords
 		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
+
+
+
 
 
 ;;;; eshell
@@ -153,7 +170,8 @@
 	       (define-key eshell-mode-map "\C-j" 'eshell-send-input)
 	       (define-key eshell-mode-map "\C-a" 'eshell-bol)
 	       (define-key eshell-mode-map "\C-p" 'eshell-previous-matching-input-from-input)
-	       (define-key eshell-mode-map "\C-n" 'eshell-next-matching-input-from-input))))
+	       (define-key eshell-mode-map "\C-n" 'eshell-next-matching-input-from-input)
+	       )))
 
 
 ;(setq eshell-prompt-function
@@ -503,6 +521,7 @@
     ("O"   . 'mc/reverse-regions)))
 
 
+
 ;;;  Edit        
 ;;;; Git
 
@@ -523,6 +542,11 @@
 ;;;; fold-dwim
 
 (require 'fold-dwim)
+
+(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
+(define-key global-map (kbd "C-c a") 'fold-dwim-show-all)
+(define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
+
 
 ;;;; flymake
 
@@ -689,6 +713,20 @@
 
 
 
+;;;; python
+
+;(setq auto-mode-alist
+;      (cons '("\\.py" . python-mode) auto-mode-alist))
+;(autoload 'python-mode "python-mode" "Python editting mode." t)
+
+
+(add-hook 'python-mode-hook
+	  '(lambda()
+	     (outline-minor-mode)
+	     (outshine-hook-function)
+	     (linum-mode t)))
+
+
 ;;;; fortran 90/95
 ;;;;; hideshow
 (defun hs-hide-function-or-subroutine ()
@@ -786,9 +824,6 @@
 
 	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
 
-	    (define-key c++-mode-map (kbd "C-c f") 'fold-dwim-toggle)
-;	    (define-key c++-mode-map (kbd "C-c o") 'fold-dwim-show-all)
-	    (define-key c++-mode-map (kbd "C-c w") 'fold-dwim-hide-all)	    
 	    
 ;	    (flymake-mode t)
 ;	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)
@@ -799,6 +834,39 @@
 ;;;;; auto insert
 
 (define-auto-insert "\\.cpp" "cpp_template.cpp")
+
+
+;;;; gnuplot
+
+
+(require 'gnuplot-mode)
+
+;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
+;; (setq gnuplot-program "/sw/bin/gnuplot")
+
+;; ;; automatically open files ending with .gp or .gnuplot in gnuplot mode
+ (add-to-list 'auto-mode-alist
+              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
+
+;  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+;  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
+;  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode))
+;			           auto-mode-alist))
+
+;auto insert
+(defun insert-gp-template ()
+  (interactive)
+  (yas/expand-snippet
+  "set term postscript eps enhanced color
+   set output '`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.eps'
+   set size 0.5,0.5
+   set grid
+   set key right
+   $0
+"
+  (point) (point)
+  ))
+(define-auto-insert "\\.gp$" 'insert-gp-template)
 
 
 ;;;; auctex

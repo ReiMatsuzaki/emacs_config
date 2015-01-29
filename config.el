@@ -884,41 +884,6 @@
  
 
 
-;;;; gnuplot
-
-  ;gnuplot
-(require 'gnuplot-mode)
-
-;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
-;; (setq gnuplot-program "/sw/bin/gnuplot")
-
-;; ;; automatically open files ending with .gp or .gnuplot in gnuplot mode
- (add-to-list 'auto-mode-alist
-              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
-
-;  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-;  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
-;  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode))
-;			           auto-mode-alist))
-
-;popwin
-(push '("*gnuplot*" :height 20) popwin:special-display-config)
-
-;auto insert
-(defun insert-gp-template ()
-  (interactive)
-  (yas/expand-snippet
-  "set term postscript eps enhanced color
-   set output '`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.eps'
-   set size 0.5,0.5
-   set grid
-   set key right
-   $0
-"
-  (point) (point)
-  ))
-(define-auto-insert "\\.gp$" 'insert-gp-template)
-
 
 
 

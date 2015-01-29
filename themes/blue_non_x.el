@@ -4,7 +4,6 @@
 
 ;;;; basic
 
-
 (set-face-background 'region "brightblack")
 (set-face-attribute 'isearch-lazy-highlight-face nil
                     :foreground "black"
@@ -18,14 +17,52 @@
 (set-face-attribute 'minibuffer-prompt nil
 		    :foreground "cyan")
 
+(defface hlline-face
+  '((((class color)
+      (background dark))
+    (:background "gray10"))
+    (((class color)
+      (background light))
+     (:background "gray10"))
+    (t
+     ()))
+ "*Face used by hl-line.")
+
+(setq hl-line-face 'hlline-face)
+(global-hl-line-mode)
+
+
+
+;;;; my-color
+
+(setq my-blue-light "color-87")
+(setq my-blue-dark "color-26")
+
+(setq my-green-light "color-83")
+(setq my-green-dark "color-22")
+
+(setq my-orange-dark "color-130")
+(setq my-orange-light "color-223")
+
+(setq my-gray-dark "color-239")
+(setq my-gray-light "color-253")
+
+
 
 ;;;; elscreen
 
-(set-face-background 'elscreen-tab-other-screen-face "brightblack")
-(set-face-foreground 'elscreen-tab-other-screen-face "white")
 
-(set-face-background 'elscreen-tab-current-screen-face "Red")
-(set-face-foreground 'elscreen-tab-current-screen-face "White")
+(set-face-attribute 'elscreen-tab-other-screen-face nil
+		    :background my-green-light
+		    :foreground my-green-dark
+		    :underline nil)
+
+(set-face-attribute 'elscreen-tab-current-screen-face nil
+		    :background my-green-dark
+		    :foreground my-green-light
+		    :underline nil)
+
+
 
 (set-face-background 'elscreen-tab-background-face "black")
 
@@ -44,100 +81,85 @@
 
 
 (set-face-attribute 'mode-line-inactive nil
-                    :foreground "color-124"
-                    :background "color-173"
+                    :foreground my-green-dark
+                    :background my-green-light
 		    :box nil)
 
 (set-face-attribute 'mode-line nil
-                    :foreground "white"
-                    :background "red"
+                    :foreground my-green-light
+                    :background my-green-dark
 		    :box nil
                     )
 
 (set-face-attribute 'mode-line-buffer-id nil
-		    :foreground "color-124"
-                    :background "color-173"
+		    :foreground my-gray-dark
+                    :background my-gray-light
                     )
 
 
-;;;; eshell
 
-(setq eshell-prompt-function
-      (lambda ()
-	(concat
-	 (user-login-name)
-	 "@" (substring (system-name) 0 6) 
-	 "[" 
-	 (if (string-match "/home/matsuzak" (eshell/pwd))
-	     (concat "~" (substring (eshell/pwd) 14))
-	   (eshell/pwd))
-	 "] \n$ ")))
+
+;;;; eshell
+;;;;; prompt
 
 
 (defun system-name-for-yablab ()
   (substring (system-name) 0 6))
-(defun i-current-direcotry-name()
-  (concat "["
-	  (if (string-match "/home/matsuzak" (eshell/pwd))
-	      (concat "~" (substring (eshell/pwd) 14)))
-	  "]"))
 
 (setq eshell-prompt-function
       (lambda ()
 	(concat
 	 (with-face (system-name-for-yablab)
 		    :foreground "magenta")
-	 (with-face (git-prompt)
-		    :foreground "green")
-	 (with-face (i-current-direcotry-name) 
+	 (with-face (eshell/pwd)
 		    :foreground "yellow")
 	 "\n$ ")))
-
-(setq eshell-prompt-function
-      (lambda ()
-	(concat
-	 (with-face (system-name-for-yablab)
-		    :foreground "magenta")
-	 (with-face (i-current-direcotry-name) 
-		    :foreground "yellow")
-	 "\n$ ")))
-
 
 (setq eshell-highlight-prompt nil)
-
 (setq eshell-prompt-regexp "^[$#] ")
+
+
+;;;;; font
+
+(add-hook 'eshell-mode-hook
+	  '(lambda ()
+	     (set-face-foreground 'eshell-ls-directory my-green-light)
+	     (set-face-foreground 'eshell-ls-executable "orange")
+	     (set-face-foreground 'eshell-ls-symlink my-blue-light)))
 
 
 ;;;; outshine
 
 
 (set-face-attribute 'outshine-level-1 nil
-		    :foreground "white"
-		    :background "color-88"
+		    :foreground my-green-dark
+		    :background my-green-light
 		    :underline nil)
 (set-face-attribute 'outshine-level-2 nil
-                    :foreground "brightred"
+                    :foreground my-green-light
+		    :background nil
 		    :underline t)
 (set-face-attribute 'outshine-level-3 nil
-		    :foreground "white"
+		    :foreground my-gray-light
 		    :underline t)
+
 
 ;;;; font-lock
 
 
 (set-face-foreground 'font-lock-string-face "color-172")  ;; color-172 is orange similar
 
-(set-face-foreground 'font-lock-keyword-face "cyan")
-(set-face-foreground 'font-lock-builtin-face "cyan")
+(set-face-foreground 'font-lock-keyword-face "yellow")
+(set-face-foreground 'font-lock-builtin-face "yellow")
 (set-face-foreground 'font-lock-constant-face "purple")
 
-(set-face-foreground 'font-lock-comment-face "red")
+(set-face-foreground 'font-lock-comment-face my-green-light)
 (set-face-foreground 'font-lock-warning-face "red")
 
 
 (set-face-foreground 'font-lock-function-name-face "color-159")
-(set-face-foreground 'font-lock-variable-name-face "color-210")
-(set-face-foreground 'font-lock-type-face "yellow")
+(set-face-foreground 'font-lock-variable-name-face my-blue-light)
+(set-face-foreground 'font-lock-type-face my-blue-dark)
 		    
 ;;;; old
 
