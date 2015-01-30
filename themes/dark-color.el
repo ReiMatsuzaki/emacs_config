@@ -1,4 +1,5 @@
-;; dark color setting
+;; == dark color ==
+;;;; basic
 
 ;; use color-theme as basic color configuration
 (color-theme-initialize)
