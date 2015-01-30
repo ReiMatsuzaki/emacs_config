@@ -194,147 +194,6 @@
   (message "%s" (get-char-property (point) 'face)))
 
 
-;;;  elscreen    
-;;;; keys
-
-(setq elscreen-prefix-key "\C-q")
-(define-key move-global-minor-mode-map (kbd "M-]") 'elscreen-next)
-(define-key move-global-minor-mode-map (kbd "M-[") 'elscreen-previous)
-
-;;;; start
-
-(elscreen-start)
-
-
-;;;; tab
-
-(setq elscreen-display-tab 5)
-(add-hook 'after-init-hook
-	  (lambda()
-	    (elscreen-screen-nickname "main")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src1")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src2")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "lib1")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "lib2")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "el")
-	    (find-file "~/.emacs.d/init.el")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "org")
-	    ))
-
-;;;; with eshell
-;;;;; With Elscreen [utils]
-
-(defun eshell-current-elscreen-p (buf)
-  (let ((regx (concat "\\*eshell\\*<" 
-		      (number-to-string (elscreen-get-current-screen))
-		      ".>")))
-    (string-match regx (buffer-name buf))))
-
-
-;;;;; with Elscreen [eshell]
-
-(defun eshell-number-for-this-elscreen (index)
-  (+ (* 10 (elscreen-get-current-screen)) index))
-
-(defun eshell-for-this-elscreen (arg)
-  "elscreen n, (u count of C-u) -> eshell n-u"
-  (interactive "p")
-  (eshell (eshell-number-for-this-elscreen (/ arg 4))))
-
-
-;;;;; key
-
-(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
-
-
-
-;;;; with files
-;;;;; file name rule
-
-(defun name-for-this-elscreen (original-name)
-  (concat original-name "[" (number-to-string (elscreen-get-current-screen)) "]"))
-
-;;;;; find file
-
-(defadvice find-file (after add-elscreen-id activate)
-  (let ((buf-name (name-for-this-elscreen (buffer-name (current-buffer)))))
-    (rename-buffer buf-name)))
-
-(defadvice find-file-other-window (after add-elscreen-id activate)
-  (let ((buf-name (name-for-this-elscreen (buffer-name (current-buffer)))))
-    (rename-buffer buf-name)))
-
-;;;;; buffer-show (toggle all file <-> file in elscreen)
-
-(require 'bs)
-
-
-(defvar bs-toggle-status nil)
-(defun bs-toggle-files-configuration ()
-  (interactive)
-  (if bs-toggle-status
-      (bs-set-configuration bs-default-configuration)
-    (bs-set-configuration "files"))
-  (setq bs-toggle-status (not bs-toggle-status))
-  (bs--redisplay t))
-
-(define-key bs-mode-map "f" 'bs-toggle-files-configuration)
-
-(defadvice bs-show (after init-bs-show-status-variables activate)
-  (setq bs-toggle-status nil))
-
-;;;;; buffer-show (in elscreen or not)
-
-(defun is-not-buffer-for-elscreen (buf)
-  (let ((re-correct (concat "\\[" (number-to-string (elscreen-get-current-screen)) 
-			    "\\]$")))
-    (not (string-match re-correct (buffer-name buf)))))
-
-; define bs-configuration for elscreen.
-; bs-configuration are list whose elements are
-; (`bs-must-show-regexp', `bs-must-show-function',
-;`bs-dont-show-regexp', `bs-dont-show-function' `bs-buffer-sort-function'.)
-(setq bs-elscreen-configuration
-      '("elscreen" nil nil nil is-not-buffer-for-elscreen nil))
-
-; add elscreen bs-configuration to bs-configurations.
-(custom-set-variables 
- '(bs-configurations 
-   (cons bs-elscreen-configuration
-	 bs-configurations)))
-
-; set default configuration
-(custom-set-variables
- '(bs-default-configuration "elscreen"))
-
-;;;;; buffer-show (register)
-
-(defun register-string-to-num (str id)
-  (let ((orig-str 
-	 (if (string-match "^\\(.*\\)\\[[0-9]+\\]$" str)
-	     (match-string 1 str)
-	   str)))
-    (concat orig-str "[" (number-to-string id) "]")))
-;; (register-string-to-num "ss" 1)
-;; (register-string-to-num "ss[3]" 1)
-
-
-(defun register-buffer-for-this-elscreen ()
-  (interactive)
-  (let* ((name (buffer-name (current-buffer)))
-	 (name-new (register-string-to-num name (elscreen-get-current-screen))))
-    (rename-buffer name-new)))
-
-(global-set-key (kbd "C-q r") 'register-buffer-for-this-elscreen)
-
-
-
 
 ;;;  Window      
 ;;;; Win-control
@@ -519,6 +378,13 @@
     ("i"   . 'mc/insert-numbers)
     ("o"   . 'mc/sort-regions)
     ("O"   . 'mc/reverse-regions)))
+
+
+
+;;;; perspective
+
+(require 'perspective)
+(persp-mode 1)
 
 
 
