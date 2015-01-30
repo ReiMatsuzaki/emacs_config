@@ -29,24 +29,22 @@
 
 ;;;; elscreen
 
-
-(set-face-attribute 'elscreen-tab-other-screen-face nil
-		    :background (solarized-color-i 4)
-		    :foreground (solarized-color-i 0)
-		    :underline nil)
-
-(set-face-attribute 'elscreen-tab-current-screen-face nil
-		    :background (solarized-color-i 9)
-		    :foreground (solarized-color-i 0)
-		    :underline nil)
-
-(set-face-foreground 'elscreen-tab-background-face (solarized-color-i 2))
-
-
-(set-face-bold-p 'elscreen-tab-current-screen-face t)
-(set-face-bold-p 'elscreen-tab-other-screen-face t)
-(setq elscreen-tab-display-control nil)
-(setq elscreen-tab-display-kill-screen nil)
+(if (boundp 'elscreen-tab-other-screen-face)
+    (progn
+      (set-face-attribute 'elscreen-tab-other-screen-face nil
+			  :background (solarized-color-i 4)
+			  :foreground (solarized-color-i 0)
+			  :underline nil)
+      (set-face-attribute 'elscreen-tab-current-screen-face nil
+			  :background (solarized-color-i 9)
+			  :foreground (solarized-color-i 0)
+			  :underline nil)
+      (set-face-foreground 'elscreen-tab-background-face 
+			   (solarized-color-i 2))
+      (set-face-bold-p 'elscreen-tab-current-screen-face t)
+      (set-face-bold-p 'elscreen-tab-other-screen-face t)
+      (setq elscreen-tab-display-control nil)
+      (setq elscreen-tab-display-kill-screen nil)))
 
 
 ;;;; mode line
