@@ -41,7 +41,7 @@
   "move minor mode"
   :global t)
 
-(move-global-minor-mode t)
+; (move-global-minor-mode t)
 
 ;;;; package manager
 

@@ -5,7 +5,7 @@
 
 ;;;; basic
 
-(set-face-background 'region "brightblack")
+(set-face-background 'region "gray10")
 (set-face-attribute 'isearch-lazy-highlight-face nil
                     :foreground "black"
                     :background "yellow"
@@ -18,19 +18,19 @@
 (set-face-attribute 'minibuffer-prompt nil
 		    :foreground "cyan")
 
-(defface hlline-face
-  '((((class color)
-      (background dark))
-    (:background "gray10"))
-    (((class color)
-      (background light))
-     (:background "gray10"))
-    (t
-     ()))
- "*Face used by hl-line.")
+;(defface hlline-face
+;  '((((class color)
+;      (background dark))
+;    (:background "gray10"))
+;    (((class color)
+;      (background light))
+;     (:background "gray10"))
+;    (t
+;     ()))
+; "*Face used by hl-line.")
 
-(setq hl-line-face 'hlline-face)
-(global-hl-line-mode)
+;(setq hl-line-face 'hlline-face)
+;(global-hl-line-mode)
 
 
 
