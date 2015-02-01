@@ -16,6 +16,9 @@
 (global-set-key (kbd "M-n") 'scroll-up-command)
 (global-set-key (kbd "M-p") 'scroll-down-command)
 
+;; undefine C-z
+(global-unset-key (kbd "C-z"))
+
 
 ;;;; move-global-minor-mode
 
@@ -386,6 +389,11 @@
 (require 'perspective)
 (persp-mode 1)
 
+(global-set-key (kbd "C-c n")   'persp-next)
+(global-set-key (kbd "C-c C-n") 'persp-next)
+(global-set-key (kbd "C-c p")   'persp-prev)
+(global-set-key (kbd "C-c C-p") 'persp-prev)
+(global-set-key (kbd "C-c s")   'persp-switch)
 
 
 ;;;  Edit        

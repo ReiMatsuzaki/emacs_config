@@ -225,7 +225,7 @@ static char * arrow_right[] = {
 (make-face 'mode-line-color-3)
 (set-face-attribute 'mode-line-color-3 nil
                     :foreground color3
-                    :background color2)
+                    :background (solarized-color-i 7))
 
 (setq arrow-right-1 (create-image (right-xpm color1 color2) 'xpm t :ascent 'center))
 (setq arrow-right-2 (create-image (right-xpm color2 color3) 'xpm t :ascent 'center))
@@ -290,7 +290,7 @@ static char * arrow_right[] = {
 
 
 (set-face-attribute 'outshine-level-1 nil
-		    :foreground (solarized-color-i 0)
+		    :foreground (solarized-color-i 7)
 		    :background (solarized-color-i 14)
 		    :underline nil)
 (set-face-attribute 'outshine-level-2 nil
@@ -302,7 +302,11 @@ static char * arrow_right[] = {
 		    :underline t)
 
 
+;;;; linum
 
+(set-face-attribute 'linum nil
+		    :background (solarized-color-i 0)
+		    :foreground (solarized-color-i 5))
 
 ;;;; font-lock
 
