@@ -1,32 +1,4 @@
-;;; gui.el --- gui setting
-
-;; Copyright (C) 2015  Rei
-
-;; Author: Rei <rei@rei-VirtualBox-xubuntu>
-;; Keywords: 
-
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-;;; Commentary:
-
-;; 
-
-;;; Code:
-
-
-;;;  IME   
-
+;;;  IME      
 
 ;; need emacs-mozc package which can be installed via apt-get
 (require 'mozc)
@@ -36,6 +8,40 @@
 (setq mozc-candidate-style 'echo-area)
 
 (define-key global-map "\C-o" 'toggle-input-method)
+
+
+;;;  move     
+
+(defvar move-global-minor-mode-map
+  (let ((map (make-sparse-keymap)))
+    (setq windmove-wrap-around t)
+    (define-key map (kbd "M-j") 'windmove-down)
+    (define-key map (kbd "M-k") 'windmove-up)
+    (define-key map (kbd "M-l") 'windmove-right)
+    (define-key map (kbd "M-h") 'windmove-left)
+    (define-key map (kbd "M-h") 'windmove-left)
+    (define-key map (kbd "M-J") 'buffer-flip-down)
+    (define-key map (kbd "M-K") 'buffer-flip-up)
+    (define-key map (kbd "M-L") 'buffer-flip-right)
+    (define-key map (kbd "M-H") 'buffer-flip-left)
+    (define-key map (kbd "M-s") 'save-opening-buffer)
+    (define-key map (kbd "M-m") 'switch-to-opening-buffer)
+    map))
+
+(define-minor-mode move-global-minor-mode
+  "move minor mode"
+  :global t)
+
+(move-global-minor-mode t)
+
+
+;;;  eshell   
+
+(global-set-key (kbd "C-c t") 'eshell)
+
+
+;;;  elscreen 
+
 
 
 
