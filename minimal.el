@@ -576,6 +576,31 @@
 	     (linum-mode t)))
 
 
+;;;; wolfram
+
+
+(add-to-list 'load-path (expand-file-name (concat config-home "packages/wolfram-mode-master/")))
+(autoload 'wolfram-mode "wolfram-mode" nil t)
+(autoload 'run-wolfram "wolfram-mode"  nil t)
+(setq wolfram-program "/usr/local/bin/MathKernel")
+(add-to-list 'auto-mode-alist '("\\.m$" . wolfram-mode))
+
+(defun wolfram-insert-comment ()
+  (interactive)
+  (insert "(* *)")
+  (backward-char)
+  (backward-char))
+
+
+(add-hook 'wolfram-mode-hook
+	  '(lambda()
+	     (outline-minor-mode)
+	     (outshine-hook-function)
+	     (define-key wolfram-mode-map (kbd "C-c ;") 
+	       'wolfram-insert-comment)
+	     (linum-mode t)))
+
+
 ;;;; fortran 90/95
 ;;;;; hideshow
 (defun hs-hide-function-or-subroutine ()
