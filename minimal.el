@@ -106,18 +106,17 @@
 
 ;;;;; font-lock for compilation mode
 
-(add-hook 'compilation-mode-hook
-	  '(lambda ()
-	     (progn
-	       (add-to-list 
-		'compilation-mode-font-lock-keywords
-		'("\\(^\\[.*\\]\\)" (1 font-lock-function-name-face)))
-	       (add-to-list 
-		'compilation-mode-font-lock-keywords
-		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
 
-
+;(add-hook 'compilation-mode-hook
+;	  '(lambda ()
+;	     (progn
+;	       (add-to-list 
+;		'compilation-mode-font-lock-keywords
+;		'("\\(^\\[.*\\]\\)" (1 font-lock-function-name-face)))
+;	       (add-to-list 
+;		'compilation-mode-font-lock-keywords
+;		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
 
 ;;;; eshell
@@ -380,12 +379,12 @@
 
 ;;;; yasnippet
 
-(require 'yasnippet)
-(yas-global-mode t)
-(setq yas-snippet-dirs 
-      '(concat config-home "snippets"))
-(setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
-(add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
+;(require 'yasnippet)
+;(yas-global-mode t)
+;(setq yas-snippet-dirs 
+;      '(concat config-home "snippets"))
+;(setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
+;(add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
 
 
 ;;;; fold-dwim

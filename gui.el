@@ -1,13 +1,13 @@
 ;;;  IME      
 
 ;; need emacs-mozc package which can be installed via apt-get
-(require 'mozc)
-(set-language-environment "japanese")
-(setq default-input-method "japanese-mozc")
+;(require 'mozc)
+;(set-language-environment "japanese")
+;(setq default-input-method "japanese-mozc")
 ;(setq mozc-candidate-style 'overlay)
-(setq mozc-candidate-style 'echo-area)
+;(setq mozc-candidate-style 'echo-area)
 
-(define-key global-map "\C-o" 'toggle-input-method)
+;(define-key global-map "\C-o" 'toggle-input-method)
 
 
 ;;;  move     
