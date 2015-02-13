@@ -1,0 +1,8 @@
+#+TITLE: Full-matrix complex STO-NG expansion
+#+AUTHOR: Rei Matsuzaki
+#+OPTIONS: LaTeX:t toc:nil author:nil
+
+
+
+
+

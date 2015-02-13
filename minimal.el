@@ -108,15 +108,15 @@
 
 
 
-;(add-hook 'compilation-mode-hook
-;	  '(lambda ()
-;	     (progn
-;	       (add-to-list 
-;		'compilation-mode-font-lock-keywords
-;		'("\\(^\\[.*\\]\\)" (1 font-lock-function-name-face)))
-;	       (add-to-list 
-;		'compilation-mode-font-lock-keywords
-;		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
+(add-hook 'compilation-mode-hook
+	  '(lambda ()
+	     (progn
+	       (add-to-list 
+		'compilation-mode-font-lock-keywords
+		'("\\(^\\[.*\\]\\)" (1 font-lock-function-name-face)))
+	       (add-to-list 
+		'compilation-mode-font-lock-keywords
+		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
 
 ;;;; eshell
@@ -877,4 +877,46 @@
 	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
 
 
+
+
+;;;; org
+;;;;; config
+
+;; set locale as English
+(setq system-time-locale "C")
+
+(setq org-startup-truncated t)
+(setq org-export-latex-classes nil)
+(setq org-hide-leading-stars t)
+
+(defun org-fold-this-brunch ()
+  (interactive)
+  (outline-previous-visible-heading 1)
+  (org-cycle))
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (define-key org-mode-map (kbd "\C-c \C-a") 'org-agenda)
+	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
+	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
+
+
+(setq org-capture-templates
+      '(("p" "Project Task" entry 
+	 (file+headline
+	  (expand-file-name "~/Dropbox/org/project.org") "Inbox")
+	 "** TODO %?\n      %i\m      %a\n      %T")
+	("m" "memo" entry (file (expand-file-name "~/Dropbox/org/memo.org"))
+	 "* %?\n    %i     %a     %T")))
+
+(setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
+;; TODO, agenda
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
+
+(setq org-tag-alist '(("@LAB" . ?l) ("@HOME" . ?h) 
+		      ("SOURCE" . ?s) ("COMPUTE" . ?c) ("READ" . ?r) ("WRITE" . ?w)))
+
+(setq org-log-done 'time)
 
