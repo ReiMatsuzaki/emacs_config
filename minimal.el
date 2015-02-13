@@ -885,6 +885,8 @@
 ;; set locale as English
 (setq system-time-locale "C")
 
+
+
 (setq org-startup-truncated t)
 (setq org-export-latex-classes nil)
 (setq org-hide-leading-stars t)
@@ -894,12 +896,13 @@
   (outline-previous-visible-heading 1)
   (org-cycle))
 
+(global-set-key (kbd "C-c a ") 'org-agenda)
+(global-set-key (kbd "C-c m") 'org-capture)
+
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (define-key org-mode-map (kbd "\C-c \C-a") 'org-agenda)
 	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
-
 
 (setq org-capture-templates
       '(("p" "Project Task" entry 
@@ -909,9 +912,6 @@
 	("m" "memo" entry (file (expand-file-name "~/Dropbox/org/memo.org"))
 	 "* %?\n    %i     %a     %T")))
 
-(setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
-;; TODO, agenda
-
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
 
@@ -919,4 +919,16 @@
 		      ("SOURCE" . ?s) ("COMPUTE" . ?c) ("READ" . ?r) ("WRITE" . ?w)))
 
 (setq org-log-done 'time)
+
+;;;;; org-habit
+
+(require 'org-habit)
+
+;;;;; setting
+
+(setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
+(setq org-directory "~/Dropbox/org")
+(setq org-mobile-directory "~/Dropbox/mobileorg")
+(setq org-mobile-inbox-for-pull "~/Dropbox/mobileorg.org")
+
 
