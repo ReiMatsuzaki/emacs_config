@@ -913,7 +913,7 @@
 	 "* %?\n    %i     %a     %T")))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
+      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CALCEL(c)")))
 
 (setq org-tag-alist '(("@LAB" . ?l) ("@HOME" . ?h) 
 		      ("SOURCE" . ?s) ("COMPUTE" . ?c) ("READ" . ?r) ("WRITE" . ?w)))
