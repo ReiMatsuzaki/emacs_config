@@ -20,8 +20,8 @@
       (set-buffer-local-cursor-color "Red")
     (set-buffer-local-cursor-color nil)))
 
-(add-hook 'input-method-activate-hook
-	  (lambda () (mozc-change-cursor-color)))
+;(add-hook 'input-method-activate-hook
+;	  (lambda () (mozc-change-cursor-color)))
 
 
 
