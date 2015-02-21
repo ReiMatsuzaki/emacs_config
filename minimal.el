@@ -103,9 +103,6 @@
 ; (defun pwd-from-home ()
 ;   "if current directory is /home/rei/local/src,
 ; return ~/local/src."
-  
-
-
 
 ;;;;; hook
 
@@ -121,6 +118,8 @@
 	       (define-key eshell-mode-map "\C-p" 'eshell-previous-matching-input-from-input)
 	       (define-key eshell-mode-map "\C-n" 'eshell-next-matching-input-from-input)
 	       )))
+
+(global-set-key (kbd "C-c t") 'eshell)
 
 
 ;(setq eshell-prompt-function
@@ -303,58 +302,5 @@
 	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
 	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
 
-
-;;;  programming
-;;;; org
-;;;;; config
-
-;; set locale as English
-(setq system-time-locale "C")
-
-
-
-(setq org-startup-truncated nil)
-(setq org-export-latex-classes nil)
-(setq org-hide-leading-stars t)
-
-(defun org-fold-this-brunch ()
-  (interactive)
-  (outline-previous-visible-heading 1)
-  (org-cycle))
-
-(global-set-key (kbd "C-c a ") 'org-agenda)
-(global-set-key (kbd "C-c m") 'org-capture)
-
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
-	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
-
-(setq org-capture-templates
-      '(("p" "Project Task" entry 
-	 (file+headline
-	  (expand-file-name "~/Dropbox/org/project.org") "Inbox")
-	 "** TODO %?\n      %i\m      %a\n      %T")
-	("m" "memo" entry (file (expand-file-name "~/Dropbox/org/memo.org"))
-	 "* %?\n    %i     %a     %T")))
-
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CALCEL(c)")))
-
-(setq org-tag-alist '(("@LAB" . ?l) ("@HOME" . ?h) 
-		      ("SOURCE" . ?s) ("COMPUTE" . ?c) ("READ" . ?r) ("WRITE" . ?w)))
-
-(setq org-log-done 'time)
-
-;;;;; org-habit
-
-(require 'org-habit)
-
-;;;;; setting
-
-(setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
-(setq org-directory "~/Dropbox/org")
-(setq org-mobile-directory "~/Dropbox/mobileorg")
-(setq org-mobile-inbox-for-pull "~/Dropbox/mobileorg.org")
 
 

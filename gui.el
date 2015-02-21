@@ -68,9 +68,8 @@
 (move-global-minor-mode t)
 
 
-;;;  eshell   
 
-(global-set-key (kbd "C-c t") 'eshell)
+
 
 
      
