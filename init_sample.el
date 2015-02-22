@@ -10,6 +10,10 @@
       '("c:/Users/matsuzaki/gnupack_basic-11.00/home/.emacs.d/elisp/snippets"
 	"c:/Users/matsuzaki/AppData/Roaming/.emacs.d/elpa/yasnippet-20130218.2229/snippets"))
 
+; -- find-file -----------------
+(find-file (concat config-home "minimal.el"))
+(find-file "d:/gnupack_basic-11.00/home/.emacs.d/init.el")
+
 ;; -- org -----------------------
 (setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
 (setq org-directory "~/Dropbox/org")

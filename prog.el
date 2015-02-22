@@ -2,8 +2,14 @@
 ;;;; compile
 ;;;;; key
 
-(global-set-key "\C-cc" 'compile)
-(global-set-key "\C-ck" 'mode-compile-kill)
+;(global-set-key "\C-cc" 'compile)
+
+(require 'smart-compile)
+(global-set-key (kbd "C-c c") 'smart-compile)
+
+
+
+;(global-set-key "\C-ck" 'mode-compile-kill)
 
 
 ;;;;; font-lock for compilation mode
