@@ -2,23 +2,26 @@
 ;;;; Basic config
 
 ;; need emacs-mozc package which can be installed via apt-get
-(require 'mozc)
-(set-language-environment "japanese")
-(setq default-input-method "japanese-mozc")
-(setq mozc-candidate-style 'overlay)
+(when (locate-library "mozc")
+  (lambda ()
+    (require 'mozc)
+    (set-language-environment "japanese")
+    (setq default-input-method "japanese-mozc")
+    (setq mozc-candidate-style 'overlay)
+    (define-key global-map "\C-o" 'toggle-input-method)))
 ;(setq mozc-candidate-style 'echo-area)
 
 ;;;; Key bind 
 
-(define-key global-map "\C-o" 'toggle-input-method)
+
 ;(define-key global-map "\C-o" 'mozc-mode)
 
 ;;;; Change cursor color
 
-(defun mozc-change-cursor-color ()
-  (if mozc-mode
-      (set-buffer-local-cursor-color "Red")
-    (set-buffer-local-cursor-color nil)))
+;(defun mozc-change-cursor-color ()
+;  (if mozc-mode
+;      (set-buffer-local-cursor-color "Red")
+;    (set-buffer-local-cursor-color nil)))
 
 ;(add-hook 'input-method-activate-hook
 ;	  (lambda () (mozc-change-cursor-color)))

@@ -340,14 +340,7 @@
 (require 'w3m)
 ;;;; color-moccur
 
-; package
-(require 'color-moccur)
-(setq moccur-split-word t)
-(push '("*Moccur*" :height 20  :width  80 :position right) popwin:special-display-config)
-(set-face-attribute 'moccur-face nil
-                    :foreground "black"
-                    :background "yellow"
-                    )
+
 
 ;;;; helm
 

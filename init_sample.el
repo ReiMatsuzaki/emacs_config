@@ -5,11 +5,18 @@
 (load (concat config-home "gui.el"))
 (load (concat config-home "themes/support_blackboard.el"))
 
+;; -- yasnippet ---------------
+(setq yas-snippet-dirs
+      '("c:/Users/matsuzaki/gnupack_basic-11.00/home/.emacs.d/elisp/snippets"
+	"c:/Users/matsuzaki/AppData/Roaming/.emacs.d/elpa/yasnippet-20130218.2229/snippets"))
+
+;; -- org -----------------------
 (setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
 (setq org-directory "~/Dropbox/org")
 (setq org-mobile-directory "~/Dropbox/mobileorg")
 (setq org-mobile-inbox-for-pull "~/Dropbox/mobileorg.org")
 
+;; -- other buffer -------------
 (global-set-key (kbd "C-x #") '(lambda ()
                            (interactive)				 
                            (split-window-horizontally-n 3)))

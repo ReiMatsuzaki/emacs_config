@@ -52,7 +52,7 @@
 (ffap-bindings)
 
 ;; iswichb. Extention of C-x b
-(iswitchb-mode 1)
+;(iswitchb-mode 1)
 
 ;; hilight kakko
 (show-paren-mode t)

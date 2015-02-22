@@ -49,27 +49,6 @@
 ;(set-face-background 'flymake-warnline "yello")
 
 ;;;  Programming 
-;;;; elisp
-; lispxmp (package)
-; unit test package for emacs lisp 
-(require 'lispxmp)
-
-; ert-expectation (package)
-; unit test for emacs lisp
-; This is not work correctory.
-(require 'ert-expectations)
-
-; emacs lisp hook
-(add-hook 'emacs-lisp-mode-hook
-	  '(lambda ()
-	     (outline-minor-mode)
-	     (outshine-hook-function)
-	     (outshine-fold-to-level-1)
-;	     (define-windmove-key-bindings emacs-lisp-mode-map)
-	     (turn-on-eldoc-mode)
-	     (setq eldoc-idle-delay 0.2)
-	     (setq eldoc-minor-mode-string "")
-	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)))
 ;;;; ruby 
 ;;;;; rsense
 ; rsense(package)
