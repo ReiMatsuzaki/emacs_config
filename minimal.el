@@ -13,8 +13,8 @@
 (global-set-key "\C-x\C-b" 'bs-show)
 
 ;; scroll
-(global-set-key (kbd "M-n") 'scroll-up-command)
-(global-set-key (kbd "M-p") 'scroll-down-command)
+;(global-set-key (kbd "M-n") 'scroll-up-command)
+;(global-set-key (kbd "M-p") 'scroll-down-command)
 
 ;; undefine C-z
 (global-unset-key (kbd "C-z"))
@@ -144,7 +144,7 @@
 
 
 ;;;  Window      
-;;;; Win-control
+;;;;  Win-control   
 ;;;;; * load
 ;; depend on windmove.el
 ;; depend on hiwin.el
@@ -216,7 +216,7 @@
       (buffer-control-ui))))
 
 
-;;;; Window split
+;;;;  Window split  
 ;;;;; def (other-window-or-split)
 
 (defun other-window-or-split (num)
@@ -259,7 +259,7 @@
 				 (split-window-horizontally-n 4)))
 
 
-;;;; Window Kept and opening buffer
+;;;;  Kept and open 
 ;;;;; def
 
 (defvar opening-buffer nil)
@@ -288,13 +288,13 @@
 
 
 ;;;  Edit        
-;;;; auto insert
+;;;;  auto insert
 
 (auto-insert-mode)
 (setq auto-insert-directory (expand-file-name (concat config-home "insert")))
 
 
-;;;; hideshow
+;;;;  hideshow   
 
 (add-hook 'hs-minor-mode-hook
 	  '(lambda ()

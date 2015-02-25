@@ -3,48 +3,25 @@
 
 ;; need emacs-mozc package which can be installed via apt-get
 (when (locate-library "mozc")
-  (lambda ()
-    (require 'mozc)
-    (set-language-environment "japanese")
-    (setq default-input-method "japanese-mozc")
-    (setq mozc-candidate-style 'overlay)
-    (define-key global-map "\C-o" 'toggle-input-method)))
+  (progn
+   (require 'mozc)
+   (set-language-environment "japanese")
+   (setq default-input-method "japanese-mozc")
+   (setq mozc-candidate-style 'overlay)
+   (define-key global-map "\C-o" 'toggle-input-method)))
 ;(setq mozc-candidate-style 'echo-area)
 
-;;;; Key bind 
+;;;  Migemo
 
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
 
-;(define-key global-map "\C-o" 'mozc-mode)
-
-;;;; Change cursor color
-
-;(defun mozc-change-cursor-color ()
-;  (if mozc-mode
-;      (set-buffer-local-cursor-color "Red")
-;    (set-buffer-local-cursor-color nil)))
-
-;(add-hook 'input-method-activate-hook
-;	  (lambda () (mozc-change-cursor-color)))
-
-
-
-;;;  font     
-
-;(create-fontset-from-ascii-font "Ricty-13:weight=normal:slant=normal" nil "ricty")
-;(set-fontset-font "fontset-ricty"
-;		  'unicode
-;		  (font-spec :family "Ricty" :size 13)
-;		  nil
-;		  'append)
-;(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
-
-;(set-face-attribute 'default nil
-;		    :height 85)
-;(add-to-list 'default-frame-alist '(font . "ricty-13"))
-;(custom-set-faces
-; '(variable-pitch ((t (:family "Ricty"))))
-; '(fixed-pitch ((t (:family "Ricty")))))
-
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
 
 ;;;  move     
 
@@ -76,11 +53,3 @@
 
 
      
-;;;  elscreen 
-
-
-
-
-
-
-

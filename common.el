@@ -102,6 +102,19 @@
 (require 'org-habit)
 
 
+;;;;; org-babel
+
+; syntax high lighting in source blocks
+(setq org-src-fontify-natively t)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t )
+   (python . t)
+   (ruby . t)))
+
+
+
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
@@ -125,31 +138,23 @@
 
 
 
-;;;; color-moccur
-
-(require 'color-moccur)
-(setq moccur-split-word t)
-(set-face-attribute 'moccur-face nil
-                    :foreground "black"
-                    :background "yellow"
-                    )
-
 ;;;; helm
 ;;;;; require
 
 (when (require 'helm-config nil t)
   (helm-mode 1))
 (require 'helm-descbinds)
-(require 'helm-c-moccur)
+;(require 'helm-c-moccur)
 
 ;;;;; key bind
 
+(global-set-key (kbd "C-x C-f") 'find-file)
+
 (global-set-key (kbd "C-q") 'helm-mini)
 (global-set-key (kbd "C-c r") 'helm-recentf)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(define-key isearch-mode-map (kbd "M-o") 'helm-c-moccur-from-isearch)
 
 ;; ordinary completetion by TAB in helm-find-files
 (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
@@ -170,8 +175,87 @@
 		      (substring input-pattern 1)
 		    (concat ".*" input-pattern))))))
 
+;;;;; helm-migemo
+; rubikichi.com/2014/12/9/helm-migemo/
+(require 'helm-migemo)
+
+(eval-after-load "helm-migemo"
+  '(defun helm-compile-source--candidates-in-buffer (source)
+     (helm-aif (assoc 'candidates-in-buffer source)
+         (append source
+                 `((candidates
+                    . ,(or (cdr it)
+                           (lambda ()
+                             ;; Do not use `source' because other plugins
+                             ;; (such as helm-migemo) may change it
+                             (helm-candidates-in-buffer (helm-get-current-source)))))
+                   (volatile) (match identity)))
+       source)))
 
 
+;;;;; next/previout matching
+; rubikichi.com/2014/11/27/helm-next-error
+
+;; resumable helm/anything buffers
+(defvar helm-resume-goto-buffer-regexp
+  (rx (or (regexp "Helm Swoop") "helm imenu" (regexp "helm.+grep") "helm-ag"
+          "occur"
+          "*anything grep" "anything current buffer")))
+(defvar helm-resume-goto-function nil)
+(defun helm-initialize--resume-goto (resume &rest _)
+  (when (and (not (eq resume 'noresume))
+             (ignore-errors
+               (string-match helm-resume-goto-buffer-regexp helm-last-buffer)))
+    (setq helm-resume-goto-function
+          (list 'helm-resume helm-last-buffer))))
+(advice-add 'helm-initialize :after 'helm-initialize--resume-goto)
+(defun anything-initialize--resume-goto (resume &rest _)
+  (when (and (not (eq resume 'noresume))
+             (ignore-errors
+               (string-match helm-resume-goto-buffer-regexp anything-last-buffer)))
+    (setq helm-resume-goto-function
+          (list 'anything-resume anything-last-buffer))))
+(advice-add 'anything-initialize :after 'anything-initialize--resume-goto)
+
+;; next-error/previous-error
+(defun compilation-start--resume-goto (&rest _)
+  (setq helm-resume-goto-function 'next-error))
+(advice-add 'compilation-start :after 'compilation-start--resume-goto)
+(advice-add 'occur-mode :after 'compilation-start--resume-goto)
+(advice-add 'occur-mode-goto-occurrence :after 'compilation-start--resume-goto)
+(advice-add 'compile-goto-error :after 'compilation-start--resume-goto)
+
+
+(defun helm-resume-and- (key)
+  (unless (eq helm-resume-goto-function 'next-error)
+    (if (fboundp 'helm-anything-resume)
+        (setq helm-anything-resume-function helm-resume-goto-function)
+      (setq helm-last-buffer (cadr helm-resume-goto-function)))
+    (execute-kbd-macro
+     (kbd (format "%s %s RET"
+                  (key-description (car (where-is-internal
+                                         (if (fboundp 'helm-anything-resume)
+                                             'helm-anything-resume
+                                           'helm-resume))))
+                  key)))
+    (message "Resuming %s" (cadr helm-resume-goto-function))
+    t))
+(defun helm-resume-and-previous ()
+  "Relacement of `previous-error'"
+  (interactive)
+  (or (helm-resume-and- "C-p")
+      (call-interactively 'previous-error)))
+(defun helm-resume-and-next ()
+  "Relacement of `next-error'"
+  (interactive)
+  (or (helm-resume-and- "C-n")
+      (call-interactively 'next-error)))
+
+;; Replace: next-error / previous-error
+(require 'helm-config)
+(ignore-errors (helm-anything-set-keys))
+(global-set-key (kbd "M-n") 'helm-resume-and-next)
+(global-set-key (kbd "M-p") 'helm-resume-and-previous)
 
 
 ;;;; auto-complete

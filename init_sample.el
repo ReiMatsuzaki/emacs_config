@@ -1,3 +1,5 @@
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
 (setq config-home "~/source/emacs_config/")
 (load (concat config-home "minimal.el"))
 (load (concat config-home "common.el"))
