@@ -23,8 +23,9 @@
 ;(powerline-moe-theme)
 
 ;; ===== yasnippet =======
-(add-to-list 'yas-snippet-dirs
-	     (concat config-home "snippets"))
+;(add-to-list 'yas-snippet-dirs
+;	     (concat config-home "snippets"))
+(setq yas-snippet-dirs (list (concat config-home "snippets")))
 
 ;; ===== blackboard ======
 (add-to-list 'custom-theme-load-path 
@@ -53,7 +54,7 @@
 				 (interactive)
 				 (split-window-horizontally-n 4)))
 
-(custom-set-faces '(default ((t (:height 110)))))
+(custom-set-faces '(default ((t (:height 100)))))
  
 (set-fontset-font
  nil 'japanese-jisx0208
