@@ -36,6 +36,7 @@
 ;; -- org -----------------------
 (setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
 (setq org-directory "~/Dropbox/org")
+(setq org-reveal-root "/home/rei/Documents/slide/reveal.js")
 
 ; -- find-file -----------------
 (find-file (concat config-home "minimal.el"))

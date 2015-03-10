@@ -115,6 +115,12 @@
 
 
 
+;;;;; ox-reveal
+
+;; create reveal.js from org
+(load-library "ox-reveal")
+(setq org-reveal-mathjax t)
+
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 

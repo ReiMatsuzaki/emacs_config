@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: latex_eq
+# key: bl
+# --
+#+begin_src latex
+\begin{eqnarray*}
+$0
+\end{eqnarray*}
+#+end_src
