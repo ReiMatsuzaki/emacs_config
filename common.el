@@ -121,6 +121,22 @@
 (load-library "ox-reveal")
 (setq org-reveal-mathjax t)
 
+;;;;; export html when saving
+
+(defun save-with-exporting-html ()
+  (interactive)
+  (basic-save-buffer)
+  (org-html-export-to-html))
+
+(defvar save-with-html-minor-mode-map
+  (let ((kmap (make-sparse-keymap)))
+    (define-key kmap (kbd "C-x C-s") 'save-with-exporting-html)
+    kmap))
+
+(define-minor-mode save-with-html-minor-mode
+  "export html when save org file"
+  :global nil)
+
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
@@ -218,12 +234,12 @@
 ;(defun anything-initialize--resume-goto (resume &rest _)
 ;  (when (and (not (eq resume 'noresume))
 ;             (ignore-errors
-;;;;               (string-match helm-resume-goto-buffer-regexp anything-last-buffer)))
+;;;;;               (string-match helm-resume-goto-buffer-regexp anything-last-buffer)))
 ;    (setq helm-resume-goto-function
 ;          (list 'anything-resume anything-last-buffer))))
 ;(advice-add 'anything-initialize :after 'anything-initialize--resume-goto)
 ;
-;;; next-error/previous-error
+;;;;; next-error/previous-error
 ;(defun compilation-start--resume-goto (&rest _)
 ;  (setq helm-resume-goto-function 'next-error))
 ;(advice-add 'compilation-start :after 'compilation-start--resume-goto)
@@ -257,7 +273,7 @@
 ;  (or (helm-resume-and- "C-n")
 ;      (call-interactively 'next-error)))
 ;
-;;; Replace: next-error / previous-error
+;;;;; Replace: next-error / previous-error
 ;(require 'helm-config)
 ;(ignore-errors (helm-anything-set-keys))
 ;(global-set-key (kbd "M-n") 'helm-resume-and-next)
@@ -292,4 +308,11 @@
 
 
 
+
+
+;;;; web-mode
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist
+	     '("\\.html?$" . web-mode))
 

@@ -9,6 +9,9 @@
 (load (concat config-home "common.el"))
 (load (concat config-home "prog.el"))
 (load (concat config-home "gui.el"))
+(load (concat config-home "move.el"))
+
+(server-start)
 
 ;; ====== color theme ====
 ; Leuven-theme customize
