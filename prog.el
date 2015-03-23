@@ -24,7 +24,6 @@
 		'compilation-mode-font-lock-keywords
 		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
-
 ;;;; pop-win
 
 ; pop-win(package)
