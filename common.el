@@ -137,6 +137,40 @@
   "export html when save org file"
   :global nil)
 
+;;;;; org -> tex
+
+(require 'ox-latex)
+(require 'org-bibtex)
+
+; latex
+; %f : complete file name
+; %b : file name removed its extention
+; %o : output directory
+(setq org-latex-pdf-process
+      '("platex %f"
+	"platex %f"
+	"bibtex %b"
+	"platex %f"
+	"platex %f"
+	"dvipdfmx %b.dvi"))
+
+(add-to-list 'org-latex-classes
+	     '("thesis"
+	       "\\documentclass{jarticle}
+	       [NO-PACKAGES]
+	       [NO-DEFAULT_PACKAGES]
+\\usepackage[dvipdfmx]{graphicx}"
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
+
+
+
+
+
+
+
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
