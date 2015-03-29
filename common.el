@@ -26,14 +26,56 @@
 
 ;;;; perspective 
 
-(require 'perspective)
-(persp-mode 1)
+;(require 'perspective)
+;(persp-mode 1)
 
-(global-set-key (kbd "C-c n")   'persp-next)
-(global-set-key (kbd "C-c C-n") 'persp-next)
-(global-set-key (kbd "C-c p")   'persp-prev)
-(global-set-key (kbd "C-c C-p") 'persp-prev)
-(global-set-key (kbd "C-c s")   'persp-switch)
+;(global-set-key (kbd "C-c n")   'persp-next)
+;(global-set-key (kbd "C-c C-n") 'persp-next)
+;(global-set-key (kbd "C-c p")   'persp-prev)
+;(global-set-key (kbd "C-c C-p") 'persp-prev)
+;(global-set-key (kbd "C-c s")   'persp-switch)
+
+;;;; Elscreen
+;;;;; basic setting
+
+(setq elscreen-prefix-key "\C-q")
+(elscreen-start)
+(setq elscreen-display-tab 5)
+(setq elscreen-tab-display-control nil)
+
+;;;;; eshell utils
+
+(defun eshell-current-elscreen-p (buf)
+  (let ((regx (concat
+	       "\\*eshell\\*<"
+	       (number-to-string (elscreen-get-current-screen))
+	       ".>")))
+    (string-match regx (buffer-name buf))))
+
+
+(defun eshell-number-for-this-elscreen (index)
+  (+ (* 10 (elscreen-get-current-screen)) index))
+
+(defun eshell-for-this-elscreen (arg)
+  (interactive "p")
+  (eshell (eshell-number-for-this-elscreen (/ arg 4))))
+
+;;;;; key bind
+
+(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+
+
+;;;;; start
+
+(add-hook 'after-init-hook
+	  (lambda ()
+	    (elscreen-screen-nickname "main")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "src1")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "src2")))
+
+
 ;;;; Git
 
 (require 'magit)
@@ -80,97 +122,6 @@
 	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
 
-(setq org-capture-templates
-      '(("t" "Task" entry 
-	 (file+headline (expand-file-name (concat org-directory "/task.org")) "Task")
-	 "* TODO %?\n   %T")
-	("m" "Memo" entry 
-	 (file+headline (expand-file-name (concat org-directory "/task.org")) "Memo")
-	 "* %?\n    %i    %T")))
-
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CALCEL(c)")))
-
-(setq org-tag-alist '(("@LAB" . ?l) ("@HOME" . ?h) 
-		      ("THINKING" . ?t) ("COMPUTER" . ?c) ("READ" . ?r) ("WRITE" . ?w)))
-
-(setq org-log-done 'time)
-
-
-;;;;; org-habit
-
-(require 'org-habit)
-
-
-;;;;; org-babel
-
-; syntax high lighting in source blocks
-(setq org-src-fontify-natively t)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t )
-   (python . t)
-   (ruby . t)))
-
-
-
-;;;;; ox-reveal
-
-;; create reveal.js from org
-(load-library "ox-reveal")
-(setq org-reveal-mathjax t)
-
-;;;;; export html when saving
-
-(defun save-with-exporting-html ()
-  (interactive)
-  (basic-save-buffer)
-  (org-html-export-to-html))
-
-(defvar save-with-html-minor-mode-map
-  (let ((kmap (make-sparse-keymap)))
-    (define-key kmap (kbd "C-x C-s") 'save-with-exporting-html)
-    kmap))
-
-(define-minor-mode save-with-html-minor-mode
-  "export html when save org file"
-  :global nil)
-
-;;;;; org -> tex
-
-(require 'ox-latex)
-(require 'org-bibtex)
-
-; latex
-; %f : complete file name
-; %b : file name removed its extention
-; %o : output directory
-(setq org-latex-pdf-process
-      '("platex %f"
-	"platex %f"
-	"bibtex %b"
-	"platex %f"
-	"platex %f"
-	"dvipdfmx %b.dvi"))
-
-(add-to-list 'org-latex-classes
-	     '("thesis"
-	       "\\documentclass{jarticle}
-	       [NO-PACKAGES]
-	       [NO-DEFAULT_PACKAGES]
-\\usepackage[dvipdfmx]{graphicx}"
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-
-
-
-
-
-
-
-
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
@@ -206,7 +157,7 @@
 
 (global-set-key (kbd "C-x C-f") 'find-file)
 
-(global-set-key (kbd "C-q") 'helm-mini)
+; (global-set-key (kbd "C-q") 'helm-mini)
 (global-set-key (kbd "C-c r") 'helm-recentf)
 
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
@@ -231,24 +182,6 @@
 		      (substring input-pattern 1)
 		    (concat ".*" input-pattern))))))
 
-;;;;; helm-migemo
-; rubikichi.com/2014/12/9/helm-migemo/
-(require 'helm-migemo)
-
-(eval-after-load "helm-migemo"
-  '(defun helm-compile-source--candidates-in-buffer (source)
-     (helm-aif (assoc 'candidates-in-buffer source)
-         (append source
-                 `((candidates
-                    . ,(or (cdr it)
-                           (lambda ()
-                             ;; Do not use `source' because other plugins
-                             ;; (such as helm-migemo) may change it
-                             (helm-candidates-in-buffer (helm-get-current-source)))))
-                   (volatile) (match identity)))
-       source)))
-
-
 ;;;;; next/previout matching
 ; rubikichi.com/2014/11/27/helm-next-error
 
@@ -268,7 +201,7 @@
 ;(defun anything-initialize--resume-goto (resume &rest _)
 ;  (when (and (not (eq resume 'noresume))
 ;             (ignore-errors
-;;;;;               (string-match helm-resume-goto-buffer-regexp anything-last-buffer)))
+;;               (string-match helm-resume-goto-buffer-regexp anything-last-buffer)))
 ;    (setq helm-resume-goto-function
 ;          (list 'anything-resume anything-last-buffer))))
 ;(advice-add 'anything-initialize :after 'anything-initialize--resume-goto)
@@ -340,13 +273,9 @@
 (define-key yas-minor-mode-map (kbd "C-c y")
   'yas-new-snippet)
 
-
-
-
-
 ;;;; web-mode
 
-(require 'web-mode)
-(add-to-list 'auto-mode-alist
-	     '("\\.html?$" . web-mode))
+;(require 'web-mode)
+;(add-to-list 'auto-mode-alist
+;	     '("\\.html?$" . web-mode))
 

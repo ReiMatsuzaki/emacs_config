@@ -76,25 +76,22 @@
 
 ;;;; elscreen
 
+(set-face-attribute 'elscreen-tab-other-screen-face nil
+		    :background my-light
+		    :foreground my-dark
+		    :underline nil)
 
-;(set-face-attribute 'elscreen-tab-other-screen-face nil
-;		    :background my-light
-;		    :foreground my-dark
-;		    :underline nil)
-;
-;(set-face-attribute 'elscreen-tab-current-screen-face nil
-;		    :background my-dark
-;		    :foreground my-light
-;		    :underline nil)
-;
-;
-;
-;(set-face-background 'elscreen-tab-background-face "black")
-;
-;(set-face-bold-p 'elscreen-tab-current-screen-face t)
-;(set-face-bold-p 'elscreen-tab-other-screen-face t)
-;(setq elscreen-tab-display-control nil)
-;(setq elscreen-tab-display-kill-screen nil)
+(set-face-attribute 'elscreen-tab-current-screen-face nil
+		    :background my-dark
+		    :foreground my-light
+		    :underline nil)
+
+(set-face-background 'elscreen-tab-background-face "black")
+
+(set-face-bold-p 'elscreen-tab-current-screen-face t)
+(set-face-bold-p 'elscreen-tab-other-screen-face t)
+(setq elscreen-tab-display-control nil)
+(setq elscreen-tab-display-kill-screen nil)
 
 
 ;;;; mode line
