@@ -283,16 +283,16 @@
 
 (add-hook 'c++-mode-hook
 	  (lambda ()
-;	    (hs-minor-mode)
-;	    (fold-dwim-hide-all)
+	    (hs-minor-mode)
+	    (fold-dwim-hide-all)
 
 ;	    (my-cplus-color)
 ;	    (add-hook 'after-save-hook 'my-cplus-color)
 
 ;;	    (set-face-background 'font-lock-comment-face "white")
 	    
-	    (outline-minor-mode)
-	    (outshine-hook-function)
+;	    (outline-minor-mode)
+;	    (outshine-hook-function)
 
 	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
 

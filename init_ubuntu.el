@@ -58,7 +58,7 @@
 				 (interactive)
 				 (split-window-horizontally-n 4)))
 
-(custom-set-faces '(default ((t (:height 100)))))
+(custom-set-faces '(default ((t (:height 90)))))
  
 (set-fontset-font
  nil 'japanese-jisx0208
