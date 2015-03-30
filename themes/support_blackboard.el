@@ -19,6 +19,31 @@
 		    :height 1.1
 		    :underline nil)
 
+;;;; Elscreen
+(set-face-attribute 'elscreen-tab-other-screen-face nil
+		    :background "red"
+		    :foreground "black"
+		    :underline nil)
+
+(set-face-attribute 'elscreen-tab-current-screen-face nil
+		    :background "blue"
+		    :foreground 
+		    :underline nil)
+
+(set-face-background 'elscreen-tab-background-face 
+		     "#181a26")
+
+(set-face-bold-p 'elscreen-tab-current-screen-face t)
+(set-face-bold-p 'elscreen-tab-other-screen-face t)
+(setq elscreen-tab-display-control nil)
+(setq elscreen-tab-display-kill-screen nil)
+
+(set-face-bold-p 'elscreen-tab-current-screen-face t)
+(set-face-bold-p 'elscreen-tab-other-screen-face t)
+(setq elscreen-tab-display-control nil)
+(setq elscreen-tab-display-kill-screen nil)
+
+
 
 
 

@@ -1,6 +1,10 @@
 ;; ====== before =====
 (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
 
+;; ====== Find File 1 ======
+(find-file "~/.emacs.d/init.el")
+(find-file (concat config-home "init_ubuntu.el"))
+
 ;; ====== main =====
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -10,6 +14,7 @@
 (load (concat config-home "prog.el"))
 (load (concat config-home "gui.el"))
 (load (concat config-home "move.el"))
+(load (concat config-home "themes/"
 
 (server-start)
 
@@ -17,23 +22,15 @@
 ; Leuven-theme customize
 (setq org-fontify-whole-heading-line t)
 
-; moe-theme
-;(require 'powerline)
-;(require 'moe-theme)
-;(moe-light)   ;; chose moe-light or moe-dark
-;(setq moe-theme-resize-org-title '(3.0 2.0 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
-;(moe-theme-set-color 'orange)
-;(powerline-moe-theme)
-
 ;; ===== yasnippet =======
 ;(add-to-list 'yas-snippet-dirs
 ;	     (concat config-home "snippets"))
 (setq yas-snippet-dirs (list (concat config-home "snippets")))
 
 ;; ===== blackboard ======
-(add-to-list 'custom-theme-load-path 
-	     "~/local/themes/emacs-blackboard")
-(load-theme 'blackboard t)
+;(add-to-list 'custom-theme-load-path 
+;	     "~/local/themes/emacs-blackboard")
+;(load-theme 'blackboard t)
 ;(load (concat config-home "themes/support_blackboard.el"))
 
 ;; -- org -----------------------
@@ -43,7 +40,7 @@
 
 ; -- find-file -----------------
 (find-file (concat config-home "minimal.el"))
-(find-file "~/.emacs.d/init.el")
+
 
 ;; ~/src/config/emacs_config/minimal.el
 ;; ~/src/config/emacs_config/themes/soft-color.el
@@ -58,7 +55,7 @@
 				 (interactive)
 				 (split-window-horizontally-n 4)))
 
-(custom-set-faces '(default ((t (:height 90)))))
+(custom-set-faces '(default ((t (:height 110)))))
  
 (set-fontset-font
  nil 'japanese-jisx0208
