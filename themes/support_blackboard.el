@@ -21,13 +21,13 @@
 
 ;;;; Elscreen
 (set-face-attribute 'elscreen-tab-other-screen-face nil
-		    :background "red"
-		    :foreground "black"
+		    :background "#14151E"
+		    :foreground "white"
 		    :underline nil)
 
 (set-face-attribute 'elscreen-tab-current-screen-face nil
-		    :background "blue"
-		    :foreground 
+		    :background "#14151E"
+		    :foreground "purple"
 		    :underline nil)
 
 (set-face-background 'elscreen-tab-background-face 

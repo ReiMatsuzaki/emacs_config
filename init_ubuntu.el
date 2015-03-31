@@ -14,7 +14,7 @@
 (load (concat config-home "prog.el"))
 (load (concat config-home "gui.el"))
 (load (concat config-home "move.el"))
-(load (concat config-home "themes/"
+(load (concat config-home "themes/support_blackboard.el"))
 
 (server-start)
 
