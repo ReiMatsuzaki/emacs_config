@@ -73,8 +73,13 @@
 	    (elscreen-create)
 	    (elscreen-screen-nickname "src1")
 	    (elscreen-create)
-	    (elscreen-screen-nickname "src2")))
-
+	    (elscreen-screen-nickname "src2")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "el")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "note")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "agnd")))
 
 ;;;; Git
 

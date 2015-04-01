@@ -27,7 +27,7 @@
 
 (set-face-attribute 'elscreen-tab-current-screen-face nil
 		    :background "#14151E"
-		    :foreground "purple"
+		    :foreground "#c397d8"
 		    :underline nil)
 
 (set-face-background 'elscreen-tab-background-face 

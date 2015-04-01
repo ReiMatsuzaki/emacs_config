@@ -7,9 +7,10 @@
    (require 'mozc)
    (set-language-environment "japanese")
    (setq default-input-method "japanese-mozc")
-   (setq mozc-candidate-style 'overlay)
+;   (setq mozc-candidate-style 'overlay)
+   (setq mozc-candidate-style 'echo-area)
    (define-key global-map "\C-o" 'toggle-input-method)))
-;(setq mozc-candidate-style 'echo-area)
+
 
 ;;;  Migemo
 
