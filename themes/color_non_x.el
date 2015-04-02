@@ -36,8 +36,6 @@
 
 ;;;; my-color
 
-
-
 (setq my-blue-light "color-87")
 (setq my-blue-dark "color-26")
 
@@ -101,7 +99,6 @@
 ;                    :background "white"
 ;		    :box nil)
 
-
 (set-face-attribute 'mode-line-inactive nil
                     :foreground my-dark
                     :background my-light
@@ -117,9 +114,6 @@
 		    :foreground nil
                     :background nil
                     )
-
-
-
 
 ;;;; eshell
 ;;;;; prompt
@@ -171,20 +165,18 @@
 
 ;;;; font-lock
 
+;(set-face-foreground 'font-lock-string-face "color-172")  ;; color-172 is orange similar
+;(set-face-foreground 'font-lock-keyword-face "yellow")
+;(set-face-foreground 'font-lock-builtin-face "yellow")
+;(set-face-foreground 'font-lock-constant-face "purple")
 
-(set-face-foreground 'font-lock-string-face "color-172")  ;; color-172 is orange similar
-
-(set-face-foreground 'font-lock-keyword-face "yellow")
-(set-face-foreground 'font-lock-builtin-face "yellow")
-(set-face-foreground 'font-lock-constant-face "purple")
-
-(set-face-foreground 'font-lock-comment-face my-light)
-(set-face-foreground 'font-lock-warning-face "red")
+;(set-face-foreground 'font-lock-comment-face my-light)
+;(set-face-foreground 'font-lock-warning-face "red")
 
 
-(set-face-foreground 'font-lock-function-name-face "color-159")
-(set-face-foreground 'font-lock-variable-name-face "cyan")
-(set-face-foreground 'font-lock-type-face "magenta")
+;(set-face-foreground 'font-lock-function-name-face "color-159")
+;(set-face-foreground 'font-lock-variable-name-face "cyan")
+;(set-face-foreground 'font-lock-type-face "magenta")
 		    
 ;;;; old
 
