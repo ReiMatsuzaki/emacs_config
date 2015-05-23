@@ -1,5 +1,5 @@
 ;; ====== before =====
-(setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
+;; (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
 
 ;; ====== Find File 1 ======
 (find-file "~/.emacs.d/init.el")

@@ -38,10 +38,11 @@
 ;;;; Elscreen
 ;;;;; basic setting
 
-(setq elscreen-prefix-key "\C-q")
-(elscreen-start)
-(setq elscreen-display-tab 5)
-(setq elscreen-tab-display-control nil)
+;(require 'elscreen)
+;(setq elscreen-prefix-key "\C-q")
+;(elscreen-start)
+;(setq elscreen-display-tab 5)
+;(setq elscreen-tab-display-control nil)
 
 ;;;;; eshell utils
 
@@ -62,24 +63,25 @@
 
 ;;;;; key bind
 
-(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+;(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+(global-set-key (kbd "C-c t") 'eshell)
 
 
 ;;;;; start
 
-(add-hook 'after-init-hook
-	  (lambda ()
-	    (elscreen-screen-nickname "main")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src1")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src2")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "el")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "note")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "agnd")))
+;(add-hook 'after-init-hook
+;	  (lambda ()
+;	    (elscreen-screen-nickname "main")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "src1")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "src2")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "el")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "note")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "agnd")))
 
 ;;;; Git
 
@@ -130,32 +132,31 @@
 ;;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
-(require 'lispxmp)
+; (require 'lispxmp)
 
 ; ert-expectation (package)
 ; unit test for emacs lisp
 ; This is not work correctory.
-(require 'ert-expectations)
+; (require 'ert-expectations)
 
 ; emacs lisp hook
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)
-	     (outshine-hook-function)
-	     (outshine-fold-to-level-1)
+;	     (outshine-hook-function)
+;	     (outshine-fold-to-level-1)
 	     (turn-on-eldoc-mode)
 	     (setq eldoc-idle-delay 0.2)
 	     (setq eldoc-minor-mode-string "")
-	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)))
-
-
+;	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
+	     ))
 
 ;;;; helm
 ;;;;; require
 
 (when (require 'helm-config nil t)
   (helm-mode 1))
-(require 'helm-descbinds)
+;(require 'helm-descbinds)
 ;(require 'helm-c-moccur)
 
 ;;;;; key bind
@@ -267,16 +268,13 @@
     (setq ad-return-value
 	  (remove-if contain-japanese ad-return-value))))
 
-
-
 ;;;; yasnippet
-
 (require 'yasnippet)
-(yas-global-mode 1)
+;(yas-global-mode 1)
 
 ;; new snippet
-(define-key yas-minor-mode-map (kbd "C-c y")
-  'yas-new-snippet)
+;(define-key yas-minor-mode-map (kbd "C-c y")
+;  'yas-new-snippet)
 
 ;;;; web-mode
 
