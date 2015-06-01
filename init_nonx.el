@@ -12,7 +12,6 @@
 (load (concat config-home "minimal.el"))
 (load (concat config-home "common.el"))
 (load (concat config-home "prog.el"))
-;(load (concat config-home "gui.el"))
 (load (concat config-home "move.el"))
 (server-start)
 
