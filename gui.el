@@ -28,6 +28,8 @@
 
 ;;;; helm-migemo
 ; rubikichi.com/2014/12/9/helm-migemo/
+(when (locate-library "helm-migemo")
+  (progn 
 (require 'helm-migemo)
 
 (eval-after-load "helm-migemo"
@@ -41,13 +43,7 @@
                              ;; (such as helm-migemo) may change it
                              (helm-candidates-in-buffer (helm-get-current-source)))))
                    (volatile) (match identity)))
-       source)))
-
-
-
-
-
-     
+       source)))))
 
 ;;;  org
 ;;;;; main

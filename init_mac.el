@@ -9,8 +9,9 @@
 (setq config-home "~/src/git/emacs_config/")
 (load (concat config-home "minimal.el"))
 (load (concat config-home "common.el"))
-;(load (concat config-home "prog.el"))
-;(load (concat config-home "gui.el"))
+(load (concat config-home "move.el"))
+(load (concat config-home "prog.el"))
+(load (concat config-home "gui.el"))
 ;(load (concat config-home "themes/support_blackboard.el"))
 
 ;; -- disable Ctrl+o in mac -----

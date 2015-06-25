@@ -38,11 +38,12 @@
 ;;;; Elscreen
 ;;;;; basic setting
 
-;(require 'elscreen)
-;(setq elscreen-prefix-key "\C-q")
-;(elscreen-start)
-;(setq elscreen-display-tab 5)
-;(setq elscreen-tab-display-control nil)
+(require 'elscreen)
+(setq elscreen-prefix-key "\C-q")
+(elscreen-start)
+(setq elscreen-display-tab 5)
+(setq elscreen-tab-display-control nil)
+(setq elscreen-tab-display-kill-screen nil)
 
 ;;;;; eshell utils
 
@@ -63,25 +64,25 @@
 
 ;;;;; key bind
 
-;(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
-(global-set-key (kbd "C-c t") 'eshell)
+(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+;(global-set-key (kbd "C-c t") 'eshell)
 
 
 ;;;;; start
 
-;(add-hook 'after-init-hook
-;	  (lambda ()
-;	    (elscreen-screen-nickname "main")
-;	    (elscreen-create)
-;	    (elscreen-screen-nickname "src1")
-;	    (elscreen-create)
-;	    (elscreen-screen-nickname "src2")
-;	    (elscreen-create)
-;	    (elscreen-screen-nickname "el")
-;	    (elscreen-create)
-;	    (elscreen-screen-nickname "note")
-;	    (elscreen-create)
-;	    (elscreen-screen-nickname "agnd")))
+(add-hook 'after-init-hook
+	  (lambda ()
+	    (elscreen-screen-nickname "main")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "src1")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "src2")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "el")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "note")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "agnd")))
 
 ;;;; Git
 
