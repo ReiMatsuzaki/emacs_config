@@ -142,7 +142,6 @@
   (message "%s" (get-char-property (point) 'face)))
 
 
-
 ;;;  Window      
 ;;;;  Win-control   
 ;;;;; * load

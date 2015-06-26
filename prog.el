@@ -252,15 +252,26 @@
 ;;;; c/c++
 ;;;;; flymake
 
-(defun flymake-cc-init ()
-  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-         (local-file  (file-relative-name
-                       temp-file
-                       (file-name-directory buffer-file-name))))
-    (list "g++" (list "-std=c++11" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+;(defun flymake-cc-init ()
+;  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
+;                       'flymake-create-temp-inplace))
+;         (local-file  (file-relative-name
+;                       temp-file
+;                       (file-name-directory buffer-file-name))))
+;    (list "g++" (list "-std=c++11" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 
-(push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
+;(push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
+
+;;;;; fly check
+(require 'flycheck)
+(flycheck-define-checker c/c++
+  "A C/C++ checker using g++"
+  :command ("g++" "-Wall" "-Wextra" source)
+  :error-patterns ((error line-start
+			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
+		   (warning line-start
+			    (file-name) ":" line ":" "Warning" (message) line-end))
+  :modes (c-mode c++-mode))
 
 ;;;;; color control
 
@@ -285,16 +296,9 @@
 	  (lambda ()
 	    (hs-minor-mode)
 	    (fold-dwim-hide-all)
-
-;	    (my-cplus-color)
-;	    (add-hook 'after-save-hook 'my-cplus-color)
-
-;;	    (set-face-background 'font-lock-comment-face "white")
-	    
-;	    (outline-minor-mode)
-;	    (outshine-hook-function)
-
 	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
+	    (flycheck-select-checker 'c/c++)
+	    (flycheck-mode t)
 
 	    
 ;	    (flymake-mode t)
