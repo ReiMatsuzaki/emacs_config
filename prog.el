@@ -297,14 +297,14 @@
 	    (hs-minor-mode)
 	    (fold-dwim-hide-all)
 	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
-	    (flycheck-select-checker 'c/c++)
-	    (flycheck-mode t)
+	    ;(flycheck-select-checker 'c/c++)
+	    ;(flycheck-mode t)
 
 	    
 ;	    (flymake-mode t)
 ;	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)
 	    (linum-mode t)))
-	   
+
 
 
 ;;;;; auto insert
