@@ -250,6 +250,12 @@
 
 
 ;;;; c/c++
+;;;;; refactoring
+
+;(require 'srefactor)
+
+;(define-key c++-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
+
 ;;;;; flymake
 
 ;(defun flymake-cc-init ()
