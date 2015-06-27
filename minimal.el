@@ -65,7 +65,8 @@
 (tool-bar-mode -1)
 
 ;; non scroll bar
-(scroll-bar-mode 0)
+(if window-system
+    (scroll-bar-mode 0))
 
 ;; scroll
 (setq scroll-conservatively 35
@@ -140,7 +141,6 @@
   "Return face used at point"
   (interactive)
   (message "%s" (get-char-property (point) 'face)))
-
 
 
 ;;;  Window      
