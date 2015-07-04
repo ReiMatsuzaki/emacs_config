@@ -300,6 +300,7 @@
 	  '(lambda ()
 	     (define-key hs-minor-mode-map (kbd "C-c f") 'hs-toggle-hiding)
 	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
+	     (define-key hs-minor-mode-map (kbd "C-c l") 'hs-hide-level)
 	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
 
 

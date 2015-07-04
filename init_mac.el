@@ -12,7 +12,7 @@
 (load (concat config-home "move.el"))
 (load (concat config-home "prog.el"))
 (load (concat config-home "gui.el"))
-;(load (concat config-home "themes/support_blackboard.el"))
+(load (concat config-home "themes/support_blackboard.el"))
 
 ;; -- disable Ctrl+o in mac -----
 (global-unset-key (kbd "C-o"))

@@ -296,12 +296,33 @@
   (beginning-of-line)
   (insert "// \*"))
 
+;;;;; hide for c++
+
+(defun hs-hide-under (re f)
+  "hide under sentence represented by regular expression re"
+  (goto-char (point-min))
+  (while (re-search-forward re nil t)
+    (progn
+      (hs-show-block)
+      (next-line)
+      (funcall f))))
+
+(defun hs-hide-for-c++  ()
+  (interactive)
+  "hide functions under namespace for c++ code"
+  (let ((hide-1 (lambda () (hs-hide-level 1)))
+	(current-point (point)))
+    (hs-hide-under "namespace +{" 'hs-hide-block)
+    (hs-hide-under "namespace +.+ *{" hide-1)
+    (hs-hide-under "class +.+ *{" hide-1)
+    (goto-char current-point)))
+
 ;;;;; config
 
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
-	    (fold-dwim-hide-all)
+	    (hs-hide-for-c++)
 	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
 	    ;(flycheck-select-checker 'c/c++)
 	    ;(flycheck-mode t)
