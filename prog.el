@@ -155,9 +155,19 @@
 ;	  '(lambda ()
 ;	     (inf-ruby-keys)))
 
+;;;; Haskell
 
-
-
+(require 'haskell-mode)
+(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+(add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(add-hook 'haskell-mode-hook
+	  (lambda () 
+	    (turn-on-haskell-indentation)
+	    (turn-on-haskell-doc-mode)
+	    (ghc-init)
+	    (haskell-indent-mode)))
 
 
 ;;;; python
@@ -169,9 +179,12 @@
 
 (add-hook 'python-mode-hook
 	  '(lambda()
-	     (outline-minor-mode)
-	     (outshine-hook-function)
-	     (linum-mode t)))
+;	     (outline-minor-mode)
+;	     (outshine-hook-function)
+	     (hs-minor-mode t)
+	     (linum-mode t)
+	     (hs-hide-all)))
+
 
 
 ;;;; wolfram
@@ -247,6 +260,10 @@
 (setq auto-mode-alist
       (cons (cons "\\.f95$" 'f90-mode) auto-mode-alist))
 
+
+;;;; scala
+(require 'scala-mode2)
+(add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
 
 ;;;; c/c++

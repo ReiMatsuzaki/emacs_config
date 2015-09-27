@@ -12,7 +12,7 @@
 (load (concat config-home "move.el"))
 (load (concat config-home "prog.el"))
 (load (concat config-home "gui.el"))
-(load (concat config-home "themes/support_blackboard.el"))
+(load (concat config-home "themes/support_leuven.el"))
 
 ;; -- disable Ctrl+o in mac -----
 (global-unset-key (kbd "C-o"))
@@ -38,7 +38,7 @@
 				 (interactive)
 				 (split-window-horizontally-n 4)))
 
-;(custom-set-faces
-; '(default ((t (:height 90 )))))
+; (custom-set-faces '(default ((t (:height 110 )))))
+; (custom-set-faces '(default ((t (:height 100 )))))
 ;(menu-bar-mode 1)
 ;(menu-bar-mode -1)
