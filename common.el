@@ -1,10 +1,58 @@
+;;; package -- Summary
+;;; Commentary:
+;
+;  Minimal setting for Emacs. 
+;
+;
+;;; Code:
+
+;;; Basics
+;;;; redo+
+
+(when (require 'redo+ nil t)
+  (define-key global-map (kbd "C-'") 'redo))
+
+;;;; smartparens
+(require 'smartparens-config)
+(smartparens-global-mode t)
+
+;;;; anzu
+(require 'anzu)
+(global-anzu-mode t)
+(setq anzu-search-threshold 1000)
+(setq anzu-minimum-input-length 3)
+(global-set-key (kbd "C-c r") 'anzu-query-replace)
+(global-set-key (kbd "C-c R") 'anzu-query-replace-regexp)
+
+;;;; fold-dwim
+
+(require 'fold-dwim)
+
+(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
+(define-key global-map (kbd "C-c q") 'fold-dwim-show-all)
+(define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
+
+;;;; neotree
+
+(require 'neotree)
+(global-set-key (kbd "M-[") 'neotree-show)
+(global-set-key (kbd "M-]") 'neotree-hide)
+(setq neo-create-file-auto-open t)
+(setq neo-keymap-style 'concise)
+(setq neo-smart-open t)
+(setq neo-theme 'classic)
+
+;;;; markdown
+(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.md'" . markdown-mode))
+
 ;;;; mutli-cursors/smartrep
 
 (require 'multiple-cursors)
 (require 'smartrep)
 
 (global-set-key (kbd "C-c l") 'mc/edit-lines)
-(global-set-key (kbd "C-c r") 'mc/mark-all-in-region)
+;(global-set-key (kbd "C-c r") 'mc/mark-all-in-region)
 
 (global-unset-key "\C-t")
 
@@ -23,20 +71,20 @@
     ("o"   . 'mc/sort-regions)
     ("O"   . 'mc/reverse-regions)))
 
+;;;; Git
 
-;;;; perspective 
+(require 'magit)
+(global-set-key (kbd "C-c g") 'magit-status)
 
-;(require 'perspective)
-;(persp-mode 1)
 
-;(global-set-key (kbd "C-c n")   'persp-next)
-;(global-set-key (kbd "C-c C-n") 'persp-next)
-;(global-set-key (kbd "C-c p")   'persp-prev)
-;(global-set-key (kbd "C-c C-p") 'persp-prev)
-;(global-set-key (kbd "C-c s")   'persp-switch)
+;;; EIN
 
-;;;; Elscreen
-;;;;; basic setting
+(require 'ein)
+;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
+;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
+
+;;; Elscreen
+;;;; basic setting
 
 (require 'elscreen)
 (setq elscreen-prefix-key "\C-q")
@@ -45,7 +93,7 @@
 (setq elscreen-tab-display-control nil)
 (setq elscreen-tab-display-kill-screen nil)
 
-;;;;; eshell utils
+;;;; eshell utils
 
 (defun eshell-current-elscreen-p (buf)
   (let ((regx (concat
@@ -62,21 +110,27 @@
   (interactive "p")
   (eshell (eshell-number-for-this-elscreen (/ arg 4))))
 
-;;;;; key bind
+;;;; key bind
 
 (global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
 ;(global-set-key (kbd "C-c t") 'eshell)
 
 
-;;;;; start
+;;;; start
 
 (add-hook 'after-init-hook
 	  (lambda ()
 	    (elscreen-screen-nickname "main")
 	    (elscreen-create)
+	    (elscreen-screen-nickname "www")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "ein")
+	    (elscreen-create)
 	    (elscreen-screen-nickname "src1")
 	    (elscreen-create)
 	    (elscreen-screen-nickname "src2")
+	    (elscreen-create)
+	    (elscreen-screen-nickname "src3")
 	    (elscreen-create)
 	    (elscreen-screen-nickname "el")
 	    (elscreen-create)
@@ -84,20 +138,8 @@
 	    (elscreen-create)
 	    (elscreen-screen-nickname "agnd")))
 
-;;;; Git
 
-(require 'magit)
-(global-set-key (kbd "C-c g") 'magit-status)
-
-;;;; fold-dwim
-
-(require 'fold-dwim)
-
-(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
-(define-key global-map (kbd "C-c q") 'fold-dwim-show-all)
-(define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
-
-;;;; outshine
+;;; outshine
 
 (require 'outshine)
 (defun outshine-fold-to-level-1  ()
@@ -107,7 +149,7 @@
     (outline-hide-more)
     (forward-line 1)))
 
-;;;; org
+;;; org
 ;;;;; config
 
 ;; set locale as English
@@ -130,7 +172,7 @@
 	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
 
-;;;; elisp
+;;; elisp
 ; lispxmp (package)
 ; unit test package for emacs lisp 
 ; (require 'lispxmp)
@@ -152,20 +194,18 @@
 ;	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
 	     ))
 
-;;;; helm
-;;;;; require
+;;; helm
+;;;; require
 
 (when (require 'helm-config nil t)
   (helm-mode 1))
-;(require 'helm-descbinds)
-;(require 'helm-c-moccur)
 
-;;;;; key bind
+;;;; key bind
 
 (global-set-key (kbd "C-x C-f") 'find-file)
 
 ; (global-set-key (kbd "C-q") 'helm-mini)
-(global-set-key (kbd "C-c r") 'helm-recentf)
+;(global-set-key (kbd "C-c r") 'helm-recentf)
 
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -173,87 +213,27 @@
 ;; ordinary completetion by TAB in helm-find-files
 (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
-;;;;; configure regular expression search
+;;;; configure regular expression search
 ; this code is copied from the web site
 ; d.hatena.ne.jp/a_bicky/20140104/1388822688
 
-(defadvice helm-ff-transform-fname-for-completion (around my-transform activate)
-  "Transform the pattern to reflect my intention"
-  (let* ((pattern (ad-get-arg 0))
-	 (input-pattern (file-name-nondirectory pattern))
-	 (dirname (file-name-directory pattern)))
-    (setq input-pattern (replace-regexp-in-string "\\." "\\\\." input-pattern))
-    (setq ad-return-value
-	  (concat dirname
-		  (if (string-match "\\^" input-pattern)
-		      (substring input-pattern 1)
-		    (concat ".*" input-pattern))))))
+;(defadvice helm-ff-transform-fname-for-completion (around my-transform activate)
+;  "Transform the pattern to reflect my intention"
+;  (let* ((pattern (ad-get-arg 0))
+;	 (input-pattern (file-name-nondirectory pattern))
+;	 (dirname (file-name-directory pattern)))
+;    (setq input-pattern (replace-regexp-in-string "\\." "\\\\." input-pattern))
+;    (setq ad-return-value
+;	  (concat dirname
+;		  (if (string-match "\\^" input-pattern)
+;		      (substring input-pattern 1)
+;		    (concat ".*" input-pattern))))))
 
-;;;;; next/previout matching
-; rubikichi.com/2014/11/27/helm-next-error
+;;;; helm-swoop
 
-;; resumable helm/anything buffers
-;(defvar helm-resume-goto-buffer-regexp
-;  (rx (or (regexp "Helm Swoop") "helm imenu" (regexp "helm.+grep") "helm-ag"
-;          "occur"
-;          "*anything grep" "anything current buffer")))
-;(defvar helm-resume-goto-function nil)
-;(defun helm-initialize--resume-goto (resume &rest _)
-;  (when (and (not (eq resume 'noresume))
-;             (ignore-errors
-;               (string-match helm-resume-goto-buffer-regexp helm-last-buffer)))
-;    (setq helm-resume-goto-function
-;          (list 'helm-resume helm-last-buffer))))
-;(advice-add 'helm-initialize :after 'helm-initialize--resume-goto)
-;(defun anything-initialize--resume-goto (resume &rest _)
-;  (when (and (not (eq resume 'noresume))
-;             (ignore-errors
-;;               (string-match helm-resume-goto-buffer-regexp anything-last-buffer)))
-;    (setq helm-resume-goto-function
-;          (list 'anything-resume anything-last-buffer))))
-;(advice-add 'anything-initialize :after 'anything-initialize--resume-goto)
-;
-;;;;; next-error/previous-error
-;(defun compilation-start--resume-goto (&rest _)
-;  (setq helm-resume-goto-function 'next-error))
-;(advice-add 'compilation-start :after 'compilation-start--resume-goto)
-;(advice-add 'occur-mode :after 'compilation-start--resume-goto)
-;(advice-add 'occur-mode-goto-occurrence :after 'compilation-start--resume-goto)
-;(advice-add 'compile-goto-error :after 'compilation-start--resume-goto)
-;
-;
-;(defun helm-resume-and- (key)
-;  (unless (eq helm-resume-goto-function 'next-error)
-;    (if (fboundp 'helm-anything-resume)
-;        (setq helm-anything-resume-function helm-resume-goto-function)
-;      (setq helm-last-buffer (cadr helm-resume-goto-function)))
-;    (execute-kbd-macro
-;     (kbd (format "%s %s RET"
-;                  (key-description (car (where-is-internal
-;                                         (if (fboundp 'helm-anything-resume)
-;                                             'helm-anything-resume
-;                                           'helm-resume))))
-;                  key)))
-;    (message "Resuming %s" (cadr helm-resume-goto-function))
-;    t))
-;(defun helm-resume-and-previous ()
-;  "Relacement of `previous-error'"
-;  (interactive)
-;  (or (helm-resume-and- "C-p")
-;      (call-interactively 'previous-error)))
-;(defun helm-resume-and-next ()
-;  "Relacement of `next-error'"
-;  (interactive)
-;  (or (helm-resume-and- "C-n")
-;      (call-interactively 'next-error)))
-;
-;;;;; Replace: next-error / previous-error
-;(require 'helm-config)
-;(ignore-errors (helm-anything-set-keys))
-;(global-set-key (kbd "M-n") 'helm-resume-and-next)
-;(global-set-key (kbd "M-p") 'helm-resume-and-previous)
+;; setting for helm-swoop is written in gui.el
 
-;;;; auto-complete
+;;; auto-complete
 
 (require 'auto-complete)
 (require 'auto-complete-config)
@@ -269,15 +249,14 @@
     (setq ad-return-value
 	  (remove-if contain-japanese ad-return-value))))
 
-;;;; yasnippet
+;;; yasnippet
 (require 'yasnippet)
-;(yas-global-mode 1)
+(yas/global-mode 1)
+(define-key yas/minor-mode-map (kbd "C-c i") 'yas/insert-snippet)
+(define-key yas/minor-mode-map (kbd "C-c n") 'yas/new-snippet)
+(define-key yas/minor-mode-map (kbd "C-c v") 'yas/visit-snippet-file)
 
-;; new snippet
-;(define-key yas-minor-mode-map (kbd "C-c y")
-;  'yas-new-snippet)
-
-;;;; web-mode
+;;; web-mode
 
 ;(require 'web-mode)
 ;(add-to-list 'auto-mode-alist

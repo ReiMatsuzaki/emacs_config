@@ -5,6 +5,10 @@
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 
+;; yasnippet 
+(setq yas-snippet-dirs (list (concat config-home "snippets")
+			     "~/.emacs.d/elpa/yasnippet-0.6.1/snippets"))
+
 ; read files
 (setq config-home "~/src/git/emacs_config/")
 (load (concat config-home "minimal.el"))
@@ -17,8 +21,7 @@
 ;; -- disable Ctrl+o in mac -----
 (global-unset-key (kbd "C-o"))
 
-;; -- yasnippet ---------------
-(setq yas-snippet-dirs (list (concat config-home "snippets")))
+
 
 ; -- find-file -----------------
 (find-file (concat config-home "minimal.el"))
@@ -27,8 +30,6 @@
 ;; -- org -----------------------
 (setq org-agenda-files (list (expand-file-name "~/Dropbox/org")))
 (setq org-directory "~/Dropbox/org")
-(setq org-mobile-directory "~/Dropbox/mobileorg")
-(setq org-mobile-inbox-for-pull "~/Dropbox/mobileorg.org")
 
 ;; -- other buffer -------------
 (global-set-key (kbd "C-x #") '(lambda ()
@@ -38,6 +39,7 @@
 				 (interactive)
 				 (split-window-horizontally-n 4)))
 
+; (custom-set-faces '(default ((t (:height 120 )))))
 ; (custom-set-faces '(default ((t (:height 110 )))))
 ; (custom-set-faces '(default ((t (:height 100 )))))
 ;(menu-bar-mode 1)

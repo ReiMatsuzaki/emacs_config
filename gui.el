@@ -26,24 +26,36 @@
     (load-library "migemo")
     (migemo-init)))
 
+;;; Search
 ;;;; helm-migemo
 ; rubikichi.com/2014/12/9/helm-migemo/
 (when (locate-library "helm-migemo")
   (progn 
-(require 'helm-migemo)
+    (require 'helm-migemo)
 
-(eval-after-load "helm-migemo"
-  '(defun helm-compile-source--candidates-in-buffer (source)
-     (helm-aif (assoc 'candidates-in-buffer source)
-         (append source
-                 `((candidates
-                    . ,(or (cdr it)
-                           (lambda ()
-                             ;; Do not use `source' because other plugins
-                             ;; (such as helm-migemo) may change it
-                             (helm-candidates-in-buffer (helm-get-current-source)))))
-                   (volatile) (match identity)))
-       source)))))
+    (eval-after-load "helm-migemo"
+      '(defun helm-compile-source--candidates-in-buffer (source)
+	 (helm-aif (assoc 'candidates-in-buffer source)
+	     (append source
+		     `((candidates
+			. ,(or (cdr it)
+			       (lambda ()
+				 ;; Do not use `source' because other plugins
+				 ;; (such as helm-migemo) may change it
+				 (helm-candidates-in-buffer (helm-get-current-source)))))
+		       (volatile) (match identity)))
+	   source)))))
+
+
+;;;; ace-isearch
+
+(require 'ace-isearch)
+(global-ace-isearch-mode t)
+
+;;;; helm-swoop
+(require 'helm-swoop)
+(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
+(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
 
 ;;;  org
 ;;;;; main

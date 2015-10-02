@@ -1,8 +1,10 @@
-;;;  Comment     
+;;; package -- Summary
+;;; Commentary:
 ;
 ;  Minimal setting for Emacs. 
 ;
 ;
+;;; Code:
 ;;;  Basic       
 ;;;; Basic Key
 
@@ -12,15 +14,21 @@
 ;; bs-show
 (global-set-key "\C-x\C-b" 'bs-show)
 
-;; scroll
-;(global-set-key (kbd "M-n") 'scroll-up-command)
-;(global-set-key (kbd "M-p") 'scroll-down-command)
-
 ;; undefine C-z
 (global-unset-key (kbd "C-z"))
 
+;; 5 step key move
+(global-set-key (kbd "M-n") (kbd "C-u 5 C-n"))
+(global-set-key (kbd "M-p") (kbd "C-u 5 C-p"))
 
+;; compile
+(global-set-key (kbd "C-c c") 'compile)
 
+;; C-x SPC => Rectangle mark
+(cua-mode t)
+(setq cua-enable-cua-keys nil)
+(define-key cua-global-keymap [C-return] nil)
+(define-key global-map (kbd "C-x SPC") 'cua-set-rectangle-mark)
 
 ;;;; package manager
 
@@ -58,7 +66,6 @@
 (show-paren-mode t)
 
 ;; no menu bar
-(menu-bar-mode 1)
 (menu-bar-mode -1)
 
 ;; no tool bar
@@ -77,6 +84,16 @@
 (setq make-backup-files nil)
 (setq backup-inhibited t)
 (setq delete-auto-save-files t)
+
+
+
+
+;;;; uniquify
+
+;; simplify same name buffer
+(when (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-ignore-buffers-re "*[^*]+*"))
 
 ;;;; hippie
 
@@ -122,19 +139,6 @@
 
 (global-set-key (kbd "C-c t") 'eshell)
 
-
-;(setq eshell-prompt-function
-;      (lambda ()
-;	(concat
-;	 (user-login-name)
-;	 "@" (substring (system-name) 0 6) 
-;	 "[" 
-;	 (if (string-match "/home/matsuzak" (eshell/pwd))
-;	     (concat "~" (substring (eshell/pwd) 14))
-;	   (eshell/pwd))
-;	 "] ")))
-
-
 ;;;; describe-face-at-point
 
 (defun describe-face-at-point ()
@@ -142,6 +146,13 @@
   (interactive)
   (message "%s" (get-char-property (point) 'face)))
 
+
+;;;; tramp
+
+(require 'tramp)
+(setq tramp-default-method "scp")
+(setenv "TMPDIR" "/tmp")
+;/ssh:matsuzak@kokiib0.chem.keio.ac.jp:~/src/project/rescol/calc/h2_r14/run.py
 
 ;;;  Window      
 ;;;;  Win-control   
@@ -282,10 +293,6 @@
 	(switch-to-buffer opening-buffer)
 	(setq opening-buffer nil))
   (message "there is no opening-buufer")))
-
-
-
-
 
 ;;;  Edit        
 ;;;;  auto insert

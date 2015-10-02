@@ -1,4 +1,10 @@
-;;;  constrol    
+;;; package -- Summary
+;;; Commentary:
+;
+;  Minimal setting for Emacs. 
+;
+;
+;;;  Control    
 ;;;; compile
 ;;;;; key
 
@@ -24,33 +30,12 @@
 		'compilation-mode-font-lock-keywords
 		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
-;;;; pop-win
 
-; pop-win(package)
+;;;; flycheck
 
-;(require 'popwin)
-;(setq display-buffer-function 'popwin:display-buffer)
-
-;; delete compilation-mode popwin
-;; if this code is activated, compilation-mode buffer appear in the same  frame.
-;; This behavior is not my target. I have to stop to popup itself.
-;(delq (assoc 'compilation-mode popwin:special-display-config)
-;      popwin:special-display-config)
-
-
-
-;;;; yasnippet
-
-;(require 'yasnippet)
-;(yas-global-mode t)
-;(setq yas-snippet-dirs 
-;      '(concat config-home "snippets"))
-;(setq yas-snippet-dirs (expand-file-name (concat config-home "snippets")))
-;(add-to-list 'load-path (expand-file-name (concat config-home "snippets")))
-
-;;;; flymake
-
-(require 'flymake)
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+;(require 'flymake)
 ;(set-face-background 'flymake-warnline "yello")
 
 ;;;  Programming 
@@ -172,19 +157,13 @@
 
 ;;;; python
 
-;(setq auto-mode-alist
-;      (cons '("\\.py" . python-mode) auto-mode-alist))
-;(autoload 'python-mode "python-mode" "Python editting mode." t)
-
-
+;(require 'jedi)
+;(setq jedi:complete-dot t)
 (add-hook 'python-mode-hook
 	  '(lambda()
-;	     (outline-minor-mode)
-;	     (outshine-hook-function)
 	     (hs-minor-mode t)
 	     (linum-mode t)
 	     (hs-hide-all)))
-
 
 
 ;;;; wolfram
@@ -266,6 +245,19 @@
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
 
+;;;; elisp
+(add-hook 'emacs-lisp-mode-hook
+	  '(lambda ()
+	     (outline-minor-mode)
+	     (outshine-hook-function)
+	     (outshine-fold-to-level-1)
+	     (turn-on-eldoc-mode)
+	     (setq eldoc-idle-delay 0.2)
+	     (setq eldoc-minor-mode-string "")
+	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
+	     ))
+
+
 ;;;; c/c++
 ;;;;; refactoring
 
@@ -286,15 +278,15 @@
 ;(push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 
 ;;;;; fly check
-(require 'flycheck)
-(flycheck-define-checker c/c++
-  "A C/C++ checker using g++"
-  :command ("g++" "-Wall" "-Wextra" source)
-  :error-patterns ((error line-start
-			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
-		   (warning line-start
-			    (file-name) ":" line ":" "Warning" (message) line-end))
-  :modes (c-mode c++-mode))
+;(require 'flycheck)
+;(flycheck-define-checker c/c++
+;  "A C/C++ checker using g++"
+;  :command ("g++" "-Wall" "-Wextra" source)
+;  :error-patterns ((error line-start
+;			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
+;		   (warning line-start
+;			    (file-name) ":" line ":" "Warning" (message) line-end))
+;  :modes (c-mode c++-mode))
 
 ;;;;; color control
 
