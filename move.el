@@ -22,4 +22,6 @@
 
 (move-global-minor-mode t)
 
+;; C-x o bind to frame move
+(define-key global-map (kbd "C-x o") 'other-frame)
 

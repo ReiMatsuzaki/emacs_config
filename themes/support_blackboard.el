@@ -43,6 +43,28 @@
 (setq elscreen-tab-display-control nil)
 (setq elscreen-tab-display-kill-screen nil)
 
+(add-hook 'ein:notebook-multilang-mode-hook
+	  '(lambda ()
+	     (set-face-attribute 'ein:cell-heading-1 nil 
+	                        :foreground "#eceff1"    
+				:background "#455A64")
+	     (set-face-attribute 'ein:cell-heading-2 nil
+				 :foreground "#e1f5fe"   
+				 :background "#35575b")
+	     (set-face-attribute 'ein:cell-heading-3 nil 
+				 :foreground "#a5d6a7")))
+	     
+;(set-face-attribute 'ein:cell-heading-1 nil
+;		    :foreground "#eceff1"
+;		    :background "#455A64")
+
+;(set-face-attribute 'ein:cell-heading-2 nil
+;		    :foreground "#e1f5fe"
+;		    :background "#35575b")
+
+;(set-face-attribute 'ein:cell-heading-3 nil
+;		    :foreground "#a5d6a7")
+
 
 
 

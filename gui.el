@@ -1,4 +1,11 @@
-;;;  IME      
+;;; package -- Summary
+;;; Commentary:
+;
+;  GUI 
+;
+;
+;;; Code:
+;;; IME      
 ;;;; Basic config
 
 ;; need emacs-mozc package which can be installed via apt-get
@@ -12,7 +19,7 @@
    (define-key global-map "\C-o" 'toggle-input-method)))
 
 
-;;;  Migemo
+;;; Migemo
 
 (when (locate-library "migemo")
   (progn
@@ -49,24 +56,24 @@
 
 ;;;; ace-isearch
 
-(require 'ace-isearch)
-(global-ace-isearch-mode t)
+;(require 'ace-isearch)
+;(global-ace-isearch-mode t)
 
 ;;;; helm-swoop
 (require 'helm-swoop)
 (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
 (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
 
-;;;  org
-;;;;; main
+;;; org
+;;;; main
 
 (setq org-capture-templates
       '(("t" "Task" entry 
 	 (file+headline (expand-file-name (concat org-directory "/task.org")) "Task")
-	 "* TODO %?\n   %T")
+	 "* TODO %?\n   %U")
 	("m" "Memo" entry 
-	 (file+headline (expand-file-name (concat org-directory "/task.org")) "Memo")
-	 "* %?\n    %i    %T")))
+	 (file+headline (expand-file-name (concat org-directory "/memo.org")) "Memo")
+	 "* %?\n  %i%U")))
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CALCEL(c)")))
@@ -76,12 +83,12 @@
 
 (setq org-log-done 'time)
 
-;;;;; org-habit
+;;;; org-habit
 
 (require 'org-habit)
 
 
-;;;;; org-babel
+;;;; org-babel
 
 ; syntax high lighting in source blocks
 (setq org-src-fontify-natively t)
@@ -92,13 +99,13 @@
    (python . t)
    (ruby . t)))
 
-;;;;; ox-reveal
+;;;; ox-reveal
 
 ;; create reveal.js from org
 ;(load-library "ox-reveal")
 ;(setq org-reveal-mathjax t)
 
-;;;;; export html when saving
+;;;; export html when saving
 
 (defun save-with-exporting-html ()
   (interactive)
@@ -114,7 +121,7 @@
   "export html when save org file"
   :global nil)
 
-;;;;; org -> tex
+;;;; org -> tex
 
 (require 'ox-latex)
 (require 'org-bibtex)

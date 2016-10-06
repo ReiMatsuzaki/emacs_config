@@ -853,7 +853,7 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
 (setq org-log-done 'time)
-(setq org-agenda-files (list org-directory))
+;(setq org-agenda-files (list org-directory))
 
 ;;;;; hook
 (add-hook 'org-mode-hook
@@ -908,7 +908,6 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
 
 
 

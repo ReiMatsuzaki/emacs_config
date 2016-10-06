@@ -30,6 +30,11 @@
 (define-key cua-global-keymap [C-return] nil)
 (define-key global-map (kbd "C-x SPC") 'cua-set-rectangle-mark)
 
+;; text scale
+(define-key global-map (kbd "M-+") 'text-scale-increase)
+(define-key global-map (kbd "M-=") 'text-scale-increase)
+(define-key global-map (kbd "M--") 'text-scale-decrease)
+
 ;;;; package manager
 
 (require 'package)
@@ -113,6 +118,11 @@
 
 (defmacro with-face (str &rest props)
   `(propertize ,str 'face (list ,@props)))
+
+; avoid error message "Text read-only"
+; see http://qiita.com/acple@github/items/c195d7c64e30c28577fa
+(defadvice eshell-get-old-input (after eshell-read-only-korosu activate)
+  (setq ad-return-value (substring-no-properties ad-return-value)))
 
 (defun git-prompt ()
   (shell-command-to-string 
@@ -311,4 +321,12 @@
 	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
 
 
+
+;;;; Eshell
+(setq eshell-command-aliases-list
+      (append
+       (list
+	(list "f" "find-file $1")
+	(list "o" "find-file-other-window $1")
+	(list "grep" "/usr/bin/grep $1 $2"))))
 

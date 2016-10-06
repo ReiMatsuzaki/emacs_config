@@ -20,21 +20,32 @@
 
 ;;;;; font-lock for compilation mode
 
+;(add-hook 'compilation-mode-hook
+;	  '(lambda ()	     
+;	     (progn
+;	       (add-to-list 
+;		'compilation-mode-font-lock-keywords
+;		'("\\(^ *\\[.*\\]\\)" (1 font-lock-keyword-face)))
+;	       (add-to-list 
+;		'compilation-mode-font-lock-keywords
+;		'("\\(^ *\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
+
 (add-hook 'compilation-mode-hook
 	  '(lambda ()
-	     (progn
-	       (add-to-list 
-		'compilation-mode-font-lock-keywords
-		'("\\(^\\[.*\\]\\)" (1 font-lock-function-name-face)))
-	       (add-to-list 
-		'compilation-mode-font-lock-keywords
-		'("\\(^\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
-
+	     (setq compilation-mode-font-lock-keywords
+'((compilation--ensure-parse)
+ ("\\(^ *\\[ *FAILED *\\]\\)" (1 compilation-error-face))
+ ("\\(^ *\\[.*\\]\\)" (1 font-lock-function-name-face))
+ ("^[Cc]hecking \\(?:[Ff]or \\|[Ii]f \\|[Ww]hether \\(?:to \\)?\\)?\\(.+\\)\\.\\.\\. *\\(?:(cached) *\\)?\\(\\(yes\\(?: .+\\)?\\)\\|no\\|\\(.*\\)\\)$" (1 font-lock-variable-name-face) (2 (compilation-face ...)))
+ ("^\\([[:alnum:]_/.+-]+\\)\\(\\[\\([0-9]+\\)\\]\\)?[ 	]*:" (1 font-lock-keyword-face) (3 compilation-line-face nil t))
+ (" --?o\\(?:utfile\\|utput\\)?[= ]\\(\\S +\\)" . 1)
+ ("^Compilation \\(finished\\).*" (0 (quote ...) t) (1 compilation-info-face))
+ ("^Compilation \\(exited abnormally\\|interrupt\\|killed\\|terminated\\|segmentation fault\\)\\(?:.*with code \\([0-9]+\\)\\)?.*" (0 (quote ...) t) (1 compilation-error-face) (2 compilation-error-face nil t))))))
 
 ;;;; flycheck
 
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;(require 'flycheck)
+;(add-hook 'after-init-hook #'global-flycheck-mode)
 ;(require 'flymake)
 ;(set-face-background 'flymake-warnline "yello")
 
@@ -94,33 +105,33 @@
 	    (define-key ruby-mode-map (kbd "C-c f") 'hs-hide-def)
 	    (define-key ruby-mode-map (kbd "C-c w") 'hs-hide-whole-def)
 	    (define-key ruby-mode-map (kbd "C-c o") 'hs-show-all)
-	    (define-key ruby-mode-map (kbd "C-c d") 'credmp/flymake-display-err-minibuf)
+;	    (define-key ruby-mode-map (kbd "C-c d") 'credmp/flymake-display-err-minibuf)
 	    (hs-hide-all)
 	    ))
 
 ;;;;; flymake
 
 ;flymake-ruby(package)
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+;(require 'flymake-ruby)
+;(add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
-(defun credmp/flymake-display-err-minibuf ()
-  "Displays the error/warning for the current line in the minibuffer"
-  (interactive)
-  (let* ((line-no             (flymake-current-line-no))
-         (line-err-info-list  (nth 0 (flymake-find-err-info flymake-err-info line-no)))
-         (count               (length line-err-info-list))
-         )
-    (while (> count 0)
-      (when line-err-info-list
-        (let* ((file       (flymake-ler-file (nth (1- count) line-err-info-list)))
-               (full-file  (flymake-ler-full-file (nth (1- count) line-err-info-list)))
-               (text (flymake-ler-text (nth (1- count) line-err-info-list)))
-               (line       (flymake-ler-line (nth (1- count) line-err-info-list))))
-          (message "[%s] %s" line text)
-          )
-        )
-      (setq count (1- count)))))
+;(defun credmp/flymake-display-err-minibuf ()
+;  "Displays the error/warning for the current line in the minibuffer"
+;  (interactive)
+;  (let* ((line-no             (flymake-current-line-no))
+;         (line-err-info-list  (nth 0 (flymake-find-err-info flymake-err-info line-no)))
+;         (count               (length line-err-info-list))
+;         )
+;    (while (> count 0)
+;      (when line-err-info-list
+;        (let* ((file       (flymake-ler-file (nth (1- count) line-err-info-list)))
+;               (full-file  (flymake-ler-full-file (nth (1- count) line-err-info-list)))
+;               (text (flymake-ler-text (nth (1- count) line-err-info-list)))
+;               (line       (flymake-ler-line (nth (1- count) line-err-info-list))))
+;          (message "[%s] %s" line text)
+;          )
+;        )
+;      (setq count (1- count)))))
 
 ;;;;; basic
 ; ruby-inf
@@ -248,13 +259,13 @@
 ;;;; elisp
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda ()
-	     (outline-minor-mode)
-	     (outshine-hook-function)
-	     (outshine-fold-to-level-1)
-	     (turn-on-eldoc-mode)
-	     (setq eldoc-idle-delay 0.2)
-	     (setq eldoc-minor-mode-string "")
-	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
+;	     (outline-minor-mode)
+;	     (outshine-hook-function)
+;	     (outshine-fold-to-level-1)
+;	     (turn-on-eldoc-mode)
+;	     (setq eldoc-idle-delay 0.2)
+;	     (setq eldoc-minor-mode-string "")
+;	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
 	     ))
 
 
@@ -267,6 +278,12 @@
 
 ;;;;; flymake
 
+;(require 'flymake)
+
+;(add-hook 'c-mode-common-hook
+;          '(lambda ()
+;             (flymake-mode t)))
+
 ;(defun flymake-cc-init ()
 ;  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
 ;                       'flymake-create-temp-inplace))
@@ -278,15 +295,30 @@
 ;(push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 
 ;;;;; fly check
-;(require 'flycheck)
-;(flycheck-define-checker c/c++
-;  "A C/C++ checker using g++"
-;  :command ("g++" "-Wall" "-Wextra" source)
-;  :error-patterns ((error line-start
-;			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
-;		   (warning line-start
-;			    (file-name) ":" line ":" "Warning" (message) line-end))
-;  :modes (c-mode c++-mode))
+
+;(setq flycheck-clang-args )
+(require 'flycheck)
+
+(defun init-flycheck-for-c ()
+   (setq flycheck-clang-include-path
+	 (list
+	  (expand-file-name "/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/")
+;	  (expand-file-name "~/src/git/rescol/include")
+;           (expand-file-name "~/local/src/petsc-3.6.1/include")
+;           (expand-file-name "~/local/src/slepc-3.6.1/include")
+;           (expand-file-name "~/local/src/petsc-3.6.1/")
+;           (expand-file-name "~/local/src/petsc-3.6.1/complex/include")
+;           (expand-file-name "~/local/src/slepc-3.6.1/complex/include")
+)))
+
+(flycheck-define-checker c/c++
+  "A C/C++ checker using g++"
+  :command ("g++" "-Wall" "-Wextra" "-std=c++11" source)
+  :error-patterns ((error line-start
+			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
+		   (warning line-start
+			    (file-name) ":" line ":" "Warning" (message) line-end))
+  :modes (c-mode c++-mode))
 
 ;;;;; color control
 
@@ -328,24 +360,33 @@
 
 ;;;;; config
 
+(require 'auto-complete-c-headers)
+(require 'auto-complete-clang-async)
+(require 'ggtags)
+
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
 	    (hs-hide-for-c++)
-	    (define-key c++-mode-map (kbd "C-c o") 'my-cplus-insert-outsine-section)
-	    ;(flycheck-select-checker 'c/c++)
-	    ;(flycheck-mode t)
-
-	    
-;	    (flymake-mode t)
-;	    (define-key c++-mode-map (kbd "M-?") 'credmp/flymake-display-err-minibuf)
+            (flycheck-mode t)
+            (init-flycheck-for-c)
+            (setq ac-sources (append ac-sources '(ac-source-c-headers)))	    
 	    (linum-mode t)))
 
-
+(add-hook 'c-mode-hook
+	  (lambda ()
+            (flycheck-mode t)
+            (flycheck-select-checker 'c/c++-clang)
+            (init-flycheck-for-c)
+	    (hs-minor-mode)
+            (ggtags-mode 1)
+            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
+	    (linum-mode)))
 
 ;;;;; auto insert
 
 (define-auto-insert "\\.cpp" "cpp_template.cpp")
+(define-auto-insert "\\.h" "h_template.h")
 
 
 ;;;; gnuplot
