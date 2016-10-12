@@ -1,4 +1,4 @@
-; to prevent showing message in magit 
+; to prevent showing message in magit
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 ; set character coding as utf
@@ -6,12 +6,16 @@
 (set-default-coding-systems 'utf-8)
 
 ;; yasnippet 
-(setq yas-snippet-dirs (list (concat config-home "snippets")
-			     "~/.emacs.d/elpa/yasnippet-0.6.1/snippets"
-			     "~/.emacs.d/sinippets"))
+;(setq yas-snippet-dirs (list (concat config-home "snippets")
+;			     "~/.emacs.d/elpa/yasnippet-0.6.1/snippets"
+;			     "~/.emacs.d/sinippets"))
 
 ;; mac only
-(mac-auto-ascii-mode t)
+;(mac-auto-ascii-mode t)
+
+; from http://qiita.com/hayamiz/items/0f0b7a012ec730351678
+(when (eq system-type 'darwin)
+  (setq ns-command-modifier (quote meta)))
 
 ;; -- org -----------------------
 (setq org-directory "~/Note")
@@ -20,8 +24,8 @@
 ; read files
 (setq config-home "~/src/git/emacs_config/")
 (load (concat config-home "minimal.el"))
-(load (concat config-home "common.el"))
 (load (concat config-home "move.el"))
+(load (concat config-home "common.el"))
 (load (concat config-home "prog.el"))
 (load (concat config-home "gui.el"))
 (load (concat config-home "themes/support_blackboard.el"))

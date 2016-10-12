@@ -9,7 +9,11 @@
 ;;;; Basic Key
 
 ;; Binding C-h to backspace
-(keyboard-translate ?\C-h ?\C-?)
+;(keyboard-translate ?\C-h ?\C-?)
+(define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+
+;; other window
+(global-set-key (kbd "C-x o") 'other-window)
 
 ;; bs-show
 (global-set-key "\C-x\C-b" 'bs-show)
@@ -55,11 +59,11 @@
 (setq exec-path (cons (expand-file-name "~/local/bin") exec-path))
 
 ;; unbind C-c C-x and define exit command
-(global-unset-key (kbd "C-x C-c"))
+;(global-unset-key (kbd "C-x C-c"))
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; bind C-c C-x as server edit
-(global-set-key (kbd "C-x C-c") 'server-edit)
+;(global-set-key (kbd "C-x C-c") 'server-edit)
 
 ;; ffap. Extention of C-x C-f
 (ffap-bindings)
@@ -89,9 +93,6 @@
 (setq make-backup-files nil)
 (setq backup-inhibited t)
 (setq delete-auto-save-files t)
-
-
-
 
 ;;;; uniquify
 
@@ -158,10 +159,9 @@
 
 
 ;;;; tramp
-
-(require 'tramp)
-(setq tramp-default-method "scp")
-(setenv "TMPDIR" "/tmp")
+;(require 'tramp)
+;(setq tramp-default-method "scp")
+;(setenv "TMPDIR" "/tmp")
 ;/ssh:matsuzak@kokiib0.chem.keio.ac.jp:~/src/project/rescol/calc/h2_r14/run.py
 
 ;;;  Window      

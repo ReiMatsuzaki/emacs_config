@@ -6,6 +6,29 @@
 ;
 ;;; Code:
 
+;;; automatic install via Package manage
+(setq my-packages
+      '(smartparens
+	anzu
+	smartrep
+	fold-dwim
+	multiple-cursors
+	smartrep
+	magit
+	ein
+	outshine
+	helm
+	auto-complete
+	yasnippet
+	ace-link
+	key-chord))
+
+(require 'cl)
+(mapcar (lambda (x)
+	  (when (not (package-installed-p x))
+	    (package-install x)))
+	my-packages)
+
 ;;; Basics
 ;;;; redo+
 
@@ -40,29 +63,25 @@
     ("-" . shrink-window)))
 
 ;;;; fold-dwim
-
 (require 'fold-dwim)
-
 (define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
 (define-key global-map (kbd "C-c q") 'fold-dwim-show-all)
 (define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
 
 ;;;; neotree
-
-(require 'neotree)
-(global-set-key (kbd "M-[") 'neotree-show)
-(global-set-key (kbd "M-]") 'neotree-hide)
-(setq neo-create-file-auto-open t)
-(setq neo-keymap-style 'concise)
-(setq neo-smart-open t)
-(setq neo-theme 'classic)
+;(require 'neotree)
+;(global-set-key (kbd "M-[") 'neotree-show)
+;(global-set-key (kbd "M-]") 'neotree-hide)
+;(setq neo-create-file-auto-open t)
+;(setq neo-keymap-style 'concise)
+;(setq neo-smart-open t)
+;(setq neo-theme 'classic)
 
 ;;;; markdown
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.md'" . markdown-mode))
 
 ;;;; mutli-cursors/smartrep
-
 (require 'multiple-cursors)
 (require 'smartrep) 
 
@@ -93,7 +112,6 @@
 
 
 ;;; EIN
-
 (require 'ein)
 ;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
 ;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
@@ -144,12 +162,12 @@
 ;;; Elscreen
 ;;;; basic setting
 
-(require 'elscreen)
-(setq elscreen-prefix-key "\C-q")
-(elscreen-start)
-(setq elscreen-display-tab 5)
-(setq elscreen-tab-display-control nil)
-(setq elscreen-tab-display-kill-screen nil)
+;(require 'elscreen)
+;(setq elscreen-prefix-key "\C-q")
+;(elscreen-start)
+;(setq elscreen-display-tab 5)
+;(setq elscreen-tab-display-control nil)
+;(setq elscreen-tab-display-kill-screen nil)
 
 ;;;; eshell utils
 
@@ -169,37 +187,36 @@
   (eshell (eshell-number-for-this-elscreen (/ arg 4))))
 
 ;;;; key bind
-
 (global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
 ;(global-set-key (kbd "C-c t") 'eshell)
 
-(smartrep-define-key global-map "C-q"
-  '(("n" . elscreen-next)
-    ("p" . elscreen-previous)))
+;(smartrep-define-key global-map "C-q"
+;  '(("n" . elscreen-next)
+;    ("p" . elscreen-previous)))
 
 ;;;; start
 
-(add-hook 'after-init-hook
-	  (lambda ()
-	    (elscreen-screen-nickname "main")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src1")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src2")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "src3")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "prj1")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "prj2")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "prj3")
-	    (elscreen-create)	    
-	    (elscreen-screen-nickname "ein")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "el")
-	    (elscreen-create)
-	    (elscreen-screen-nickname "agnd")))
+;(add-hook 'after-init-hook
+;	  (lambda ()
+;	    (elscreen-screen-nickname "main")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "src1")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "src2")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "src3")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "prj1")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "prj2")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "prj3")
+;	    (elscreen-create)	    
+;	    (elscreen-screen-nickname "ein")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "el")
+;	    (elscreen-create)
+;	    (elscreen-screen-nickname "agnd")))
 
 
 ;;; outshine
@@ -473,7 +490,7 @@
 (key-chord-define-global "fj" 'view-mode)
 
 ;;; elviewer
-(require 'elviewer)
+;(require 'elviewer)
 
 ;;; End
 (provide 'common)

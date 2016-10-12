@@ -8,10 +8,26 @@
 ;;;; compile
 ;;;;; key
 
+(setq my-packages
+      '(flycheck
+	auto-complete
+	ggtags
+	key-chord
+	ac-c-headers
+	auctex
+	))
+
+(require 'cl)
+(mapcar (lambda (x)
+	  (when (not (package-installed-p x))
+	    (package-install x)))
+	my-packages)
+
+
 ;(global-set-key "\C-cc" 'compile)
 
-(require 'smart-compile)
-(global-set-key (kbd "C-c c") 'smart-compile)
+;(require 'smart-compile)
+;(global-set-key (kbd "C-c c") 'smart-compile)
 
 
 
@@ -153,17 +169,17 @@
 
 ;;;; Haskell
 
-(require 'haskell-mode)
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-(add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook
-	  (lambda () 
-	    (turn-on-haskell-indentation)
-	    (turn-on-haskell-doc-mode)
-	    (ghc-init)
-	    (haskell-indent-mode)))
+;(require 'haskell-mode)
+;(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+;(add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
+;(autoload 'ghc-init "ghc" nil t)
+;(autoload 'ghc-debug "ghc" nil t)
+;(add-hook 'haskell-mode-hook
+;	  (lambda () 
+;	    (turn-on-haskell-indentation)
+;	    (turn-on-haskell-doc-mode)
+;	    (ghc-init)
+;	    (haskell-indent-mode)))
 
 
 ;;;; python
@@ -252,8 +268,8 @@
 
 
 ;;;; scala
-(require 'scala-mode2)
-(add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
+;(require 'scala-mode2)
+;(add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
 
 ;;;; elisp
@@ -360,9 +376,9 @@
 
 ;;;;; config
 
-(require 'auto-complete-c-headers)
-(require 'auto-complete-clang-async)
-(require 'ggtags)
+;(require 'auto-complete-c-headers)
+;(require 'auto-complete-clang-async)
+;(require 'ggtags)
 
 (add-hook 'c++-mode-hook
 	  (lambda ()
@@ -392,14 +408,14 @@
 ;;;; gnuplot
 
 
-(require 'gnuplot-mode)
+;(require 'gnuplot-mode)
 
 ;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
 ;; (setq gnuplot-program "/sw/bin/gnuplot")
 
 ;; ;; automatically open files ending with .gp or .gnuplot in gnuplot mode
- (add-to-list 'auto-mode-alist
-              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
+; (add-to-list 'auto-mode-alist
+;              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
 
 ;  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
 ;  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
@@ -407,19 +423,19 @@
 ;			           auto-mode-alist))
 
 ;auto insert
-(defun insert-gp-template ()
-  (interactive)
-  (yas/expand-snippet
-  "set term postscript eps enhanced color
-   set output '`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.eps'
-   set size 0.5,0.5
-   set grid
-   set key right
-   $0
-"
-  (point) (point)
-  ))
-(define-auto-insert "\\.gp$" 'insert-gp-template)
+;(defun insert-gp-template ()
+;  (interactive)
+;  (yas/expand-snippet
+;  "set term postscript eps enhanced color
+;   set output '`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.eps'
+;   set size 0.5,0.5
+;   set grid
+;   set key right
+;   $0
+;"
+;  (point) (point)
+;  ))
+;(define-auto-insert "\\.gp$" 'insert-gp-template)
 
 
 ;;;; auctex
@@ -466,7 +482,6 @@
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 ;;;;; config
-
 (load "tex-site")
 (setq auto-mode-alist
       (append '(("\\.tex$" . japanese-latex-mode)
