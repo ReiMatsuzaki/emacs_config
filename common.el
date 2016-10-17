@@ -8,9 +8,7 @@
 
 ;;; automatic install via Package manage
 (setq my-packages
-      '(smartparens
-	anzu
-	smartrep
+      '(anzu
 	fold-dwim
 	multiple-cursors
 	smartrep
@@ -20,8 +18,10 @@
 	helm
 	auto-complete
 	yasnippet
-	ace-link
-	key-chord))
+;	ace-link
+	auctex
+	magit
+	))
 
 (require 'cl)
 (mapcar (lambda (x)
@@ -36,9 +36,8 @@
   (define-key global-map (kbd "C-'") 'redo))
 
 ;;;; smartparens
-
-(require 'smartparens-config)
-(smartparens-global-mode t)
+;(require 'smartparens-config)
+;(smartparens-global-mode t)
 
 ;;;; anzu
 (require 'anzu)
@@ -392,10 +391,10 @@
 
 ;;;; ace jump
 
-(require 'ace-link)
-(eval-after-load 'eww 
-  '(define-key eww-mode-map "f" 'ace-link-eww))
-(ace-link-setup-default)
+;(require 'ace-link)
+;(eval-after-load 'eww 
+;  '(define-key eww-mode-map "f" 'ace-link-eww))
+;(ace-link-setup-default)
 
 ;;;; keybind
 
@@ -484,10 +483,10 @@
   (define-key view-mode-map " " 'scroll-up))
 (add-hook 'view-mode-hook 'view-mode-hook0)
 
-(require 'key-chord)
-(setq key-chord-two-keys-delay 0.04)
-(key-chord-mode 1)
-(key-chord-define-global "fj" 'view-mode)
+;(require 'key-chord)
+;(setq key-chord-two-keys-delay 0.04)
+;(key-chord-mode 1)
+;(key-chord-define-global "fj" 'view-mode)
 
 ;;; elviewer
 ;(require 'elviewer)

@@ -26,7 +26,17 @@
 (global-set-key (kbd "M-p") (kbd "C-u 5 C-p"))
 
 ;; compile
-(global-set-key (kbd "C-c c") 'compile)
+(defvar current-command "make check")
+(defun compile-1 (cmd)
+  (save-buffer)
+  (interactive (list (read-string "Command: " current-command)))
+  (setq curren-command cmd)
+  (compile curren-command)
+  (delete-other-windows))
+(global-set-key (kbd "C-c c") 'compile-1)
+(global-set-key (kbd "C-c C-c") 'compile-1)
+
+(global-linum-mode)
 
 ;; C-x SPC => Rectangle mark
 (cua-mode t)
@@ -329,4 +339,19 @@
 	(list "f" "find-file $1")
 	(list "o" "find-file-other-window $1")
 	(list "grep" "/usr/bin/grep $1 $2"))))
+
+
+;;;; hl line 
+(defface hlline-face
+  '((((class color)
+      (background dark))
+     (:background "color-234"))
+    (((class color)
+      (background light))
+      (:background "#CC0066"))
+      (t
+       ()))
+    "face used in hl-line")
+(setq hl-line-face 'hlline-face)
+(global-hl-line-mode t)
 

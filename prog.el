@@ -186,11 +186,59 @@
 
 ;(require 'jedi)
 ;(setq jedi:complete-dot t)
-(add-hook 'python-mode-hook
-	  '(lambda()
-	     (hs-minor-mode t)
-	     (linum-mode t)
-	     (hs-hide-all)))
+
+;; Add support for HideShow
+(defcustom py-hide-show-keywords '("def")
+  "*Keywords used by hide-show"
+  :type '(repeat string)
+  :group 'python)
+
+(defcustom py-hide-show-hide-docstrings t
+  "*If doc strings shall be hidden"
+  :type 'boolean
+  :group 'python)
+
+(add-to-list 'hs-special-modes-alist (list
+				      'python-mode (concat (if py-hide-show-hide-docstrings "^\\s-*\"\"\"\\|" "") (mapconcat 'identity (mapcar #'(lambda (x) (concat "^\\s-*" x "\\>")) py-hide-show-keywords ) "\\|")) nil "#"
+				      (lambda (arg)
+					(py-goto-beyond-block)
+					(skip-chars-backward " \t\n"))
+				                   nil))
+
+;(add-hook 'python-mode-hook
+;	  '(lambda()
+;	     ;(hs-minor-mode t)
+;	     (hs-hide-all)))
+
+;; outline mode
+(require 'outline-magic)
+(defun py-outline-level-old ()
+  (let (buffer-invisibility-spec)
+    (save-excursion
+      (skip-chars-forward "    ")
+      (current-column))))
+(defun py-outline-level ()
+  (interactive)
+  (let ((str nil))
+    (looking-at outline-regexp)
+    (setq str (buffer-substring-no-properties 
+	       (match-beginning 0) (match-end 0)))
+    (cond 
+     ((string-match "class" str) 1)
+     ((string-match "class" str) 2)
+     (t (+ 6 (length str))))))
+
+(defun my-python-outline-hook ()
+  ;(setq outline-regexp "[ \t]*# \\|[ \t]+\\(class\\|def\\) ")
+  (setq outline-regexp "[ \t]*\\(class\\|def\\) ")
+  (setq outline-level 'py-outline-level)
+  (outline-minor-mode t)
+  (hide-body)
+  (show-paren-mode 1)
+  )
+
+
+(add-hook 'python-mode-hook 'my-python-outline-hook)
 
 
 ;;;; wolfram
@@ -313,12 +361,12 @@
 ;;;;; fly check
 
 ;(setq flycheck-clang-args )
-(require 'flycheck)
+;(require 'flycheck)
 
-(defun init-flycheck-for-c ()
-   (setq flycheck-clang-include-path
-	 (list
-	  (expand-file-name "/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/")
+;(defun init-flycheck-for-c ()
+;   (setq flycheck-clang-include-path
+;	 (list
+;	  (expand-file-name "/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/")
 ;	  (expand-file-name "~/src/git/rescol/include")
 ;           (expand-file-name "~/local/src/petsc-3.6.1/include")
 ;           (expand-file-name "~/local/src/slepc-3.6.1/include")
@@ -327,31 +375,31 @@
 ;           (expand-file-name "~/local/src/slepc-3.6.1/complex/include")
 )))
 
-(flycheck-define-checker c/c++
-  "A C/C++ checker using g++"
-  :command ("g++" "-Wall" "-Wextra" "-std=c++11" source)
-  :error-patterns ((error line-start
-			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
-		   (warning line-start
-			    (file-name) ":" line ":" "Warning" (message) line-end))
-  :modes (c-mode c++-mode))
+;(flycheck-define-checker c/c++
+;  "A C/C++ checker using g++"
+;  :command ("g++" "-Wall" "-Wextra" "-std=c++11" source)
+;  :error-patterns ((error line-start
+;			  (file-name) ":" line ":" column ":" " Error:" (message) line-end)
+;		   (warning line-start
+;			    (file-name) ":" line ":" "Warning" (message) line-end))
+;  :modes (c-mode c++-mode))
 
 ;;;;; color control
 
 
-(defun my-cplus-color ()
-  (interactive)
-  (add-face-to-rexp-area "^ *// +\\* .*\n" 'face-sectioning)
+;(defun my-cplus-color ()
+;  (interactive)
+;  (add-face-to-rexp-area "^ *// +\\* .*\n" 'face-sectioning)
  ;; (add-face-to-rexp-area "^ *//> .*$\\(.*\n\\)*^//<.*$" 'face-literate-program-code)
 )
 
 
 ;;;;; section
 
-(defun my-cplus-insert-outsine-section ()
-  (interactive)
-  (beginning-of-line)
-  (insert "// \*"))
+;(defun my-cplus-insert-outsine-section ()
+;  (interactive)
+;  (beginning-of-line)
+;  (insert "// \*"))
 
 ;;;;; hide for c++
 
@@ -383,20 +431,20 @@
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
-	    (hs-hide-for-c++)
-            (flycheck-mode t)
-            (init-flycheck-for-c)
-            (setq ac-sources (append ac-sources '(ac-source-c-headers)))	    
+;	    (hs-hide-for-c++)
+;            (flycheck-mode t)
+;            (init-flycheck-for-c)
+;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))	    
 	    (linum-mode t)))
 
 (add-hook 'c-mode-hook
 	  (lambda ()
-            (flycheck-mode t)
-            (flycheck-select-checker 'c/c++-clang)
-            (init-flycheck-for-c)
+;            (flycheck-mode t)
+;            (flycheck-select-checker 'c/c++-clang)
+;            (init-flycheck-for-c)
 	    (hs-minor-mode)
-            (ggtags-mode 1)
-            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
+ ;           (ggtags-mode 1)
+;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
 	    (linum-mode)))
 
 ;;;;; auto insert
@@ -482,7 +530,7 @@
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 ;;;;; config
-(load "tex-site")
+;(load "tex-site")
 (setq auto-mode-alist
       (append '(("\\.tex$" . japanese-latex-mode)
 		("\\.ltx$" . japanese-latex-mode)) auto-mode-alist))
