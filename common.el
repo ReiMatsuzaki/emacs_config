@@ -12,8 +12,8 @@
 	fold-dwim
 	multiple-cursors
 	smartrep
-	magit
-	ein
+;	magit
+;	ein
 	outshine
 	helm
 	auto-complete
@@ -96,7 +96,7 @@
 
 ;;;; mutli-cursors/smartrep
 (require 'multiple-cursors)
-(require 'smartrep) 
+(require 'smartrep)
 
 (global-set-key (kbd "C-c l") 'mc/edit-lines)
 ;(global-set-key (kbd "C-c r") 'mc/mark-all-in-region)
@@ -120,12 +120,12 @@
 
 ;;;; Git
 
-(require 'magit)
-(global-set-key (kbd "C-c g") 'magit-status)
+;(require 'magit)
+;(global-set-key (kbd "C-c g") 'magit-status)
 
 
 ;;; EIN
-(require 'ein)
+;(require 'ein)
 ;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
 ;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
 
@@ -138,36 +138,36 @@
 ;	  (js-mode "{" "}" "/[*/]" nil)))
 
 
-(add-hook
- 'ein:notebook-multilang-mode-hook
- '(lambda ()
-    (outline-minor-mode t)
-    (define-key
-      ein:notebook-mode-map
-      (kbd "\C-c 1")
-      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 1)))    
-    (define-key
-      ein:notebook-mode-map
-      (kbd "\C-c 2")
-      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 2)))
-    (define-key
-      ein:notebook-mode-map
-      (kbd "\C-c 3")
-      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 3)))
-    (define-key ein:notebook-mode-map (kbd "M-n") (kbd "C-u 5 C-n"))
-    (define-key ein:notebook-mode-map (kbd "M-p") (kbd "C-u 5 C-p"))))
-
-(defun ein:worksheet-change-to-outlined-heading (level)
-  (ein:worksheet-change-cell-type
-   (ein:worksheet--get-ws-or-error)
-   (ein:worksheet-get-current-cell)
-   "heading" level)
-  (next-line)
-  (let ((count 0))
-    (while (< count level)
-      (insert "*")
-      (setq count (+ count 1))))
-  (insert " "))
+;(add-hook
+; 'ein:notebook-multilang-mode-hook
+; '(lambda ()
+;    (outline-minor-mode t)
+;    (define-key
+;      ein:notebook-mode-map
+;      (kbd "\C-c 1")
+;      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 1)))    
+;    (define-key
+;      ein:notebook-mode-map
+;      (kbd "\C-c 2")
+;      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 2)))
+;    (define-key
+;      ein:notebook-mode-map
+;      (kbd "\C-c 3")
+;      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 3)))
+;    (define-key ein:notebook-mode-map (kbd "M-n") (kbd "C-u 5 C-n"))
+;    (define-key ein:notebook-mode-map (kbd "M-p") (kbd "C-u 5 C-p"))))
+;
+;(defun ein:worksheet-change-to-outlined-heading (level)
+;  (ein:worksheet-change-cell-type
+;   (ein:worksheet--get-ws-or-error)
+;   (ein:worksheet-get-current-cell)
+;   "heading" level)
+;  (next-line)
+;  (let ((count 0))
+;    (while (< count level)
+;      (insert "*")
+;      (setq count (+ count 1))))
+;  (insert " "))
 
 
 ;(define-key (kbd "\C-c 1") 'org-time-stamp-inactive)
@@ -184,23 +184,23 @@
 
 ;;;; eshell utils
 
-(defun eshell-current-elscreen-p (buf)
-  (let ((regx (concat
-	       "\\*eshell\\*<"
-	       (number-to-string (elscreen-get-current-screen))
-	       ".>")))
-    (string-match regx (buffer-name buf))))
-
-
-(defun eshell-number-for-this-elscreen (index)
-  (+ (* 10 (elscreen-get-current-screen)) index))
-
-(defun eshell-for-this-elscreen (arg)
-  (interactive "p")
-  (eshell (eshell-number-for-this-elscreen (/ arg 4))))
+;(defun eshell-current-elscreen-p (buf)
+ ; (let ((regx (concat
+	;       "\\*eshell\\*<"
+	;       (number-to-string (elscreen-get-current-screen))
+	;       ".>")))
+    ;(string-match regx (buffer-name buf))))
+;
+;
+;(defun eshell-number-for-this-elscreen (index)
+;  (+ (* 10 (elscreen-get-current-screen)) index))
+;
+;(defun eshell-for-this-elscreen (arg)
+;  (interactive "p")
+;  (eshell (eshell-number-for-this-elscreen (/ arg 4))))
 
 ;;;; key bind
-(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+;(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
 ;(global-set-key (kbd "C-c t") 'eshell)
 
 ;(smartrep-define-key global-map "C-q"
@@ -233,7 +233,6 @@
 
 
 ;;; outshine
-
 (require 'outshine)
 (defun outshine-fold-to-level-1  ()
   (interactive)
@@ -335,7 +334,7 @@
 ; (global-set-key (kbd "C-q") 'helm-mini)
 ;(global-set-key (kbd "C-c r") 'helm-recentf)
 
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+;(global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
 ;; ordinary completetion by TAB in helm-find-files
@@ -384,9 +383,7 @@
 (define-key yas-minor-mode-map (kbd "C-c n") 'yas/new-snippet)
 (define-key yas-minor-mode-map (kbd "C-c v") 'yas/visit-snippet-file)
 (setq yas-snippet-dirs (list (concat config-home "snippets")))
-(setq yas-snippet-dirs (list (concat config-home "snippets")
-			     "~/.emacs.d/elpa/yasnippet-0.6.1/snippets"
-			     "~/.emacs.d/snippets"))
+
 (yas/global-mode 1)
 
 ;;; web-mode
