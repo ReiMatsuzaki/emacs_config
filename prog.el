@@ -9,7 +9,7 @@
 ;;;;; key
 
 (setq my-packages
-      '(flycheck
+      '(;flycheck
 	auto-complete
 	ggtags
 	key-chord

@@ -33,8 +33,9 @@
   (setq curren-command cmd)
   (compile curren-command)
   (delete-other-windows))
-(global-set-key (kbd "C-c c") 'compile-1)
-(global-set-key (kbd "C-c C-c") 'compile-1)
+;(global-set-key (kbd "C-c c") 'compile-1)
+;(global-set-key (kbd "C-c C-c") 'compile-1)
+(global-set-key (kbd "C-c c") 'compile)
 
 (global-linum-mode)
 

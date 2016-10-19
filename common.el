@@ -21,6 +21,7 @@
 ;	ace-link
 	auctex
 	magit
+	popwin
 	))
 
 (require 'cl)
@@ -30,6 +31,19 @@
 	my-packages)
 
 ;;; Basics
+;;;; popwin
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+
+;;;; chackle
+;(require 'shackle)
+;(setq shackle-rules
+;      '(
+;	(compilation-mode :frame nil)
+;	))
+;(shackle-mode 1)
+;(setq shackle-lighter "")
+
 ;;;; redo+
 
 (when (require 'redo+ nil t)
