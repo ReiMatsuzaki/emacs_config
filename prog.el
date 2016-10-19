@@ -373,7 +373,6 @@
 ;           (expand-file-name "~/local/src/petsc-3.6.1/")
 ;           (expand-file-name "~/local/src/petsc-3.6.1/complex/include")
 ;           (expand-file-name "~/local/src/slepc-3.6.1/complex/include")
-)))
 
 ;(flycheck-define-checker c/c++
 ;  "A C/C++ checker using g++"
@@ -391,8 +390,6 @@
 ;  (interactive)
 ;  (add-face-to-rexp-area "^ *// +\\* .*\n" 'face-sectioning)
  ;; (add-face-to-rexp-area "^ *//> .*$\\(.*\n\\)*^//<.*$" 'face-literate-program-code)
-)
-
 
 ;;;;; section
 
