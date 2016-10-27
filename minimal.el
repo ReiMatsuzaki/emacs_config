@@ -19,23 +19,29 @@
 (global-set-key "\C-x\C-b" 'bs-show)
 
 ;; undefine C-z
-(global-unset-key (kbd "C-z"))
+;(global-unset-key (kbd "C-z"))
 
 ;; 5 step key move
 (global-set-key (kbd "M-n") (kbd "C-u 5 C-n"))
 (global-set-key (kbd "M-p") (kbd "C-u 5 C-p"))
 
+
+;; my key map
+(defvar my-keymap (make-sparse-keymap) "my original key map")
+(define-key global-map (kbd "C-o") my-keymap)
+
 ;; compile
 (defvar current-command "make check")
 (defun compile-1 (cmd)
-  (save-buffer)
   (interactive (list (read-string "Command: " current-command)))
-  (setq curren-command cmd)
-  (compile curren-command)
+  (setq current-command cmd)
+  (compile current-command t)
   (delete-other-windows))
-(global-set-key (kbd "C-c c") 'compile-1)
-(global-set-key (kbd "C-c C-c") 'compile-1)
 
+(define-key my-keymap (kbd "C-c") 'compile-1)
+(define-key my-keymap (kbd "c") 'compile)
+
+;; linum mode
 (global-linum-mode)
 
 ;; C-x SPC => Rectangle mark
@@ -58,7 +64,7 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-
+;(define-key global-map (kbd "C-3") '(lambda (interactive) (digit-argument 3)))
 ;;;; Basic config
 
 ;; truncate-lines
@@ -323,12 +329,12 @@
 
 ;;;;  hideshow   
 
-(add-hook 'hs-minor-mode-hook
-	  '(lambda ()
-	     (define-key hs-minor-mode-map (kbd "C-c f") 'hs-toggle-hiding)
-	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
-	     (define-key hs-minor-mode-map (kbd "C-c l") 'hs-hide-level)
-	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
+;(add-hook 'hs-minor-mode-hook
+;	  '(lambda ()
+;	     (define-key hs-minor-mode-map (kbd "C-c f") 'hs-toggle-hiding)
+;	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
+;	     (define-key hs-minor-mode-map (kbd "C-c l") 'hs-hide-level)
+;	     (define-key hs-minor-mode-map (kbd "C-c a") 'hs-show-all)))
 
 
 
@@ -354,4 +360,5 @@
     "face used in hl-line")
 (setq hl-line-face 'hlline-face)
 (global-hl-line-mode t)
+
 

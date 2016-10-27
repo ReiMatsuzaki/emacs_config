@@ -12,8 +12,8 @@
 	fold-dwim
 	multiple-cursors
 	smartrep
-	magit
-	ein
+;	magit
+;	ein
 	outshine
 	helm
 	auto-complete
@@ -21,6 +21,7 @@
 ;	ace-link
 	auctex
 	magit
+	popwin
 	))
 
 (require 'cl)
@@ -30,6 +31,19 @@
 	my-packages)
 
 ;;; Basics
+;;;; popwin
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+
+;;;; chackle
+;(require 'shackle)
+;(setq shackle-rules
+;      '(
+;	(compilation-mode :frame nil)
+;	))
+;(shackle-mode 1)
+;(setq shackle-lighter "")
+
 ;;;; redo+
 
 (when (require 'redo+ nil t)
@@ -48,24 +62,27 @@
 (global-set-key (kbd "C-c R") 'anzu-query-replace-regexp)
 
 ;;;; window manage
-(require 'smartrep)
-(smartrep-define-key global-map "C-x"
-  '(("o" . other-window)
-    ("0" . delete-window)
-    ("1" . delete-other-windows)
-    ("2" . split-window-below)
-    ("3" . split-window-right)
-    ("{" . shrink-window-horizontally)
-    ("}" . enlarge-window-horizontally)
-    ("+" . balance-windows)
-    ("^" . enlarge-window)
-    ("-" . shrink-window)))
+;(require 'smartrep)
+;(smartrep-define-key global-map "C-x"
+;  '(("o" . other-window)
+;    ("0" . delete-window)
+;    ("1" . delete-other-windows)
+;    ("2" . split-window-below)
+;    ("3" . split-window-right)
+;    ("{" . shrink-window-horizontally)
+;    ("}" . enlarge-window-horizontally)
+;    ("+" . balance-windows)
+;    ("^" . enlarge-window)
+;    ("-" . shrink-window)))
 
 ;;;; fold-dwim
 (require 'fold-dwim)
-(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
-(define-key global-map (kbd "C-c q") 'fold-dwim-show-all)
-(define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
+(define-key my-keymap (kbd "C-f") 'fold-dwim-toggle)
+(define-key my-keymap (kbd "C-a") 'fold-dwim-show-all)
+(define-key my-keymap (kbd "C-w") 'fold-dwim-hide-all)
+;(define-key global-map (kbd "C-c f") 'fold-dwim-toggle)
+;(define-key global-map (kbd "C-c q") 'fold-dwim-show-all)
+;(define-key global-map (kbd "C-c w") 'fold-dwim-hide-all)
 
 ;;;; neotree
 ;(require 'neotree)
@@ -82,13 +99,12 @@
 
 ;;;; mutli-cursors/smartrep
 (require 'multiple-cursors)
-(require 'smartrep) 
+(require 'smartrep)
 
-(global-set-key (kbd "C-c l") 'mc/edit-lines)
+;(global-set-key (kbd "C-c l") 'mc/edit-lines)
 ;(global-set-key (kbd "C-c r") 'mc/mark-all-in-region)
-
+;(define-key my-keymap (kbd "C-l") 'mc/edit-lines)
 (global-unset-key "\C-t")
-
 (smartrep-define-key global-map "C-t"
   '(("C-t" . 'mc/mark-next-like-this)
     ("n"   . 'mc/mark-next-like-this)
@@ -106,12 +122,12 @@
 
 ;;;; Git
 
-(require 'magit)
-(global-set-key (kbd "C-c g") 'magit-status)
+;(require 'magit)
+;(global-set-key (kbd "C-c g") 'magit-status)
 
 
 ;;; EIN
-(require 'ein)
+;(require 'ein)
 ;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
 ;(define-key ein:notebook-python-mode-map [C-return] 'ein:worksheet-execute-cell)
 
@@ -124,36 +140,36 @@
 ;	  (js-mode "{" "}" "/[*/]" nil)))
 
 
-(add-hook
- 'ein:notebook-multilang-mode-hook
- '(lambda ()
-    (outline-minor-mode t)
-    (define-key
-      ein:notebook-mode-map
-      (kbd "\C-c 1")
-      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 1)))    
-    (define-key
-      ein:notebook-mode-map
-      (kbd "\C-c 2")
-      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 2)))
-    (define-key
-      ein:notebook-mode-map
-      (kbd "\C-c 3")
-      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 3)))
-    (define-key ein:notebook-mode-map (kbd "M-n") (kbd "C-u 5 C-n"))
-    (define-key ein:notebook-mode-map (kbd "M-p") (kbd "C-u 5 C-p"))))
-
-(defun ein:worksheet-change-to-outlined-heading (level)
-  (ein:worksheet-change-cell-type
-   (ein:worksheet--get-ws-or-error)
-   (ein:worksheet-get-current-cell)
-   "heading" level)
-  (next-line)
-  (let ((count 0))
-    (while (< count level)
-      (insert "*")
-      (setq count (+ count 1))))
-  (insert " "))
+;(add-hook
+; 'ein:notebook-multilang-mode-hook
+; '(lambda ()
+;    (outline-minor-mode t)
+;    (define-key
+;      ein:notebook-mode-map
+;      (kbd "\C-c 1")
+;      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 1)))    
+;    (define-key
+;      ein:notebook-mode-map
+;      (kbd "\C-c 2")
+;      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 2)))
+;    (define-key
+;      ein:notebook-mode-map
+;      (kbd "\C-c 3")
+;      (lambda () (interactive) (ein:worksheet-change-to-outlined-heading 3)))
+;    (define-key ein:notebook-mode-map (kbd "M-n") (kbd "C-u 5 C-n"))
+;    (define-key ein:notebook-mode-map (kbd "M-p") (kbd "C-u 5 C-p"))))
+;
+;(defun ein:worksheet-change-to-outlined-heading (level)
+;  (ein:worksheet-change-cell-type
+;   (ein:worksheet--get-ws-or-error)
+;   (ein:worksheet-get-current-cell)
+;   "heading" level)
+;  (next-line)
+;  (let ((count 0))
+;    (while (< count level)
+;      (insert "*")
+;      (setq count (+ count 1))))
+;  (insert " "))
 
 
 ;(define-key (kbd "\C-c 1") 'org-time-stamp-inactive)
@@ -170,23 +186,23 @@
 
 ;;;; eshell utils
 
-(defun eshell-current-elscreen-p (buf)
-  (let ((regx (concat
-	       "\\*eshell\\*<"
-	       (number-to-string (elscreen-get-current-screen))
-	       ".>")))
-    (string-match regx (buffer-name buf))))
-
-
-(defun eshell-number-for-this-elscreen (index)
-  (+ (* 10 (elscreen-get-current-screen)) index))
-
-(defun eshell-for-this-elscreen (arg)
-  (interactive "p")
-  (eshell (eshell-number-for-this-elscreen (/ arg 4))))
+;(defun eshell-current-elscreen-p (buf)
+ ; (let ((regx (concat
+	;       "\\*eshell\\*<"
+	;       (number-to-string (elscreen-get-current-screen))
+	;       ".>")))
+    ;(string-match regx (buffer-name buf))))
+;
+;
+;(defun eshell-number-for-this-elscreen (index)
+;  (+ (* 10 (elscreen-get-current-screen)) index))
+;
+;(defun eshell-for-this-elscreen (arg)
+;  (interactive "p")
+;  (eshell (eshell-number-for-this-elscreen (/ arg 4))))
 
 ;;;; key bind
-(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
+;(global-set-key (kbd "C-c t") 'eshell-for-this-elscreen)
 ;(global-set-key (kbd "C-c t") 'eshell)
 
 ;(smartrep-define-key global-map "C-q"
@@ -219,7 +235,6 @@
 
 
 ;;; outshine
-
 (require 'outshine)
 (defun outshine-fold-to-level-1  ()
   (interactive)
@@ -316,16 +331,11 @@
 ;;;; key bind
 
 (global-set-key (kbd "C-x C-f") 'find-file)
-(global-set-key (kbd "C-c d") 'helm-apropos)
-
-; (global-set-key (kbd "C-q") 'helm-mini)
-;(global-set-key (kbd "C-c r") 'helm-recentf)
-
+(define-key my-keymap (kbd "C-a") 'helm-apropos)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "M-x") 'helm-M-x)
 
 ;; ordinary completetion by TAB in helm-find-files
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+;(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
 ;;;; configure regular expression search
 ; this code is copied from the web site
@@ -370,9 +380,7 @@
 (define-key yas-minor-mode-map (kbd "C-c n") 'yas/new-snippet)
 (define-key yas-minor-mode-map (kbd "C-c v") 'yas/visit-snippet-file)
 (setq yas-snippet-dirs (list (concat config-home "snippets")))
-(setq yas-snippet-dirs (list (concat config-home "snippets")
-			     "~/.emacs.d/elpa/yasnippet-0.6.1/snippets"
-			     "~/.emacs.d/snippets"))
+
 (yas/global-mode 1)
 
 ;;; web-mode

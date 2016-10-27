@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ierr
+# key: ierr
+# insert error handle in PETSc
+# --
+ierr = $0; CHKERRQ(ierr);

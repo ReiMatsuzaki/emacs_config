@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pec
+# key: pec
+# insert declaration of PetscErrorCode
+# --
+PetscErrorCode ierr;
