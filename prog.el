@@ -428,7 +428,7 @@
 ;(require 'auto-complete-c-headers)
 ;(require 'auto-complete-clang-async)
 ;(require 'ggtags)
-
+(define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
