@@ -428,11 +428,12 @@
 ;(require 'auto-complete-c-headers)
 ;(require 'auto-complete-clang-async)
 ;(require 'ggtags)
-(define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
+
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
-	    (c-set-offset 'innamespace 0)
+	    (define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
+;	    (c-set-offset 'innamespace 0)
 	    (c-set-offset 'inextern-lang 0)
 ;	    (hs-hide-for-c++)
 ;            (flycheck-mode t)
@@ -446,7 +447,6 @@
 ;            (flycheck-select-checker 'c/c++-clang)
 ;            (init-flycheck-for-c)
 	    (hs-minor-mode)
-	    (c-set-offset 'innamespace 0)
 	    (c-set-offset 'inextern-lang 0)
  ;           (ggtags-mode 1)
 ;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
