@@ -330,6 +330,7 @@
 
 ;;;; key bind
 
+(global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'find-file)
 (define-key my-keymap (kbd "C-a") 'helm-apropos)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)

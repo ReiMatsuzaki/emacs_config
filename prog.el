@@ -428,21 +428,23 @@
 ;(require 'auto-complete-c-headers)
 ;(require 'auto-complete-clang-async)
 ;(require 'ggtags)
-(define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
+
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
 ;	    (hs-hide-for-c++)
 ;            (flycheck-mode t)
 ;            (init-flycheck-for-c)
-;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))	    
+					;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
+	    (define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
 	    (linum-mode t)))
 
 (add-hook 'c-mode-hook
 	  (lambda ()
 ;            (flycheck-mode t)
 ;            (flycheck-select-checker 'c/c++-clang)
-;            (init-flycheck-for-c)
+					;            (init-flycheck-for-c)
+	    (define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
 	    (hs-minor-mode)
  ;           (ggtags-mode 1)
 ;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
@@ -457,7 +459,7 @@
 ;;;; gnuplot
 
 
-;(require 'gnuplot-mode)
+(require 'gnuplot-mode)
 
 ;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
 ;; (setq gnuplot-program "/sw/bin/gnuplot")
@@ -552,6 +554,8 @@
   (progn
     (define-key TeX-mode-map (kbd "C-c r") 'helm-ref-tex)
     (define-key TeX-mode-map (kbd "C-c j") 'tex-pop-to-label)
+    (define-key TeX-mode-map (kbd "C-c w") 'TeX-fold-buffer)
+    (define-key TeX-mode-map (kbd "C-c f") 'TeX-fold-dwim)
     (define-key outline-minor-mode-map (kbd "C-c f") 'fold-dwim-toggle)
     (define-key outline-minor-mode-map (kbd "C-c w") 'fold-dwim-hide-all)
     (define-key outline-minor-mode-map (kbd "C-c b") 'TeX-fold-buffer)    

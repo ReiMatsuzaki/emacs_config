@@ -30,6 +30,9 @@
 (defvar my-keymap (make-sparse-keymap) "my original key map")
 (define-key global-map (kbd "C-o") my-keymap)
 
+;; yes/no -> y/n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; compile
 (defvar current-command "make check")
 (defun compile-1 (cmd)
