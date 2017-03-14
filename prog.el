@@ -432,6 +432,9 @@
 (add-hook 'c++-mode-hook
 	  (lambda ()
 	    (hs-minor-mode)
+	    (define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
+;	    (c-set-offset 'innamespace 0)
+	    (c-set-offset 'inextern-lang 0)
 ;	    (hs-hide-for-c++)
 ;            (flycheck-mode t)
 ;            (init-flycheck-for-c)
@@ -446,6 +449,7 @@
 					;            (init-flycheck-for-c)
 	    (define-key c++-mode-map (kbd "C-o C-l") 'hs-hide-level)
 	    (hs-minor-mode)
+	    (c-set-offset 'inextern-lang 0)
  ;           (ggtags-mode 1)
 ;            (setq ac-sources (append ac-sources '(ac-source-c-headers)))
 	    (linum-mode)))
