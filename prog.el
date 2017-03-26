@@ -47,17 +47,31 @@
 ;		'compilation-mode-font-lock-keywords
 ;		'("\\(^ *\\[ *FAILED *\\]\\)" (1 compilation-error-face))))))
 
-(add-hook 'compilation-mode-hook
-	  '(lambda ()
-	     (setq compilation-mode-font-lock-keywords
-'((compilation--ensure-parse)
- ("\\(^ *\\[ *FAILED *\\]\\)" (1 compilation-error-face))
- ("\\(^ *\\[.*\\]\\)" (1 font-lock-function-name-face))
- ("^[Cc]hecking \\(?:[Ff]or \\|[Ii]f \\|[Ww]hether \\(?:to \\)?\\)?\\(.+\\)\\.\\.\\. *\\(?:(cached) *\\)?\\(\\(yes\\(?: .+\\)?\\)\\|no\\|\\(.*\\)\\)$" (1 font-lock-variable-name-face) (2 (compilation-face ...)))
- ("^\\([[:alnum:]_/.+-]+\\)\\(\\[\\([0-9]+\\)\\]\\)?[ 	]*:" (1 font-lock-keyword-face) (3 compilation-line-face nil t))
- (" --?o\\(?:utfile\\|utput\\)?[= ]\\(\\S +\\)" . 1)
- ("^Compilation \\(finished\\).*" (0 (quote ...) t) (1 compilation-info-face))
- ("^Compilation \\(exited abnormally\\|interrupt\\|killed\\|terminated\\|segmentation fault\\)\\(?:.*with code \\([0-9]+\\)\\)?.*" (0 (quote ...) t) (1 compilation-error-face) (2 compilation-error-face nil t))))))
+(add-hook
+ 'compilation-mode-hook
+ '(lambda ()
+    (setq compilation-mode-font-lock-keywords
+	  '((compilation--ensure-parse)
+	    ("\\(^ *\\[ *FAILED *\\]\\)" (1 compilation-error-face))
+	    ("\\(^ *\\[.*\\]\\)" (1 font-lock-function-name-face))
+	    ("^[Cc]hecking \\(?:[Ff]or \\|[Ii]f \\|[Ww]hether \\(?:to \\)?\\)?\\(.+\\)\\.\\.\\. *\\(?:(cached) *\\)?\\(\\(yes\\(?: .+\\)?\\)\\|no\\|\\(.*\\)\\)$" (1 font-lock-variable-name-face) (2 (compilation-face ...)))
+	    ("^\\([[:alnum:]_/.+-]+\\)\\(\\[\\([0-9]+\\)\\]\\)?[ 	]*:" (1 font-lock-keyword-face) (3 compilation-line-face nil t))
+	    (" --?o\\(?:utfile\\|utput\\)?[= ]\\(\\S +\\)" . 1)
+	    ("^Compilation \\(finished\\).*" (0 (quote ...) t) (1 compilation-info-face))
+	    ("^Compilation \\(exited abnormally\\|interrupt\\|killed\\|terminated\\|segmentation fault\\)\\(?:.*with code \\([0-9]+\\)\\)?.*" (0 (quote ...) t) (1 compilation-error-face) (2 compilation-error-face nil t))))))
+
+;;;; GAMESS mode
+
+(define-derived-mode gamess-mode text-mode
+  "GAMESS"
+  "editing GAMESS input mode"
+  (setq gamess-font-lock-keywords
+	'(("^ *!.*$" . font-lock-comment-face)
+	  ("[A-Za-z0-9_]+=" . font-lock-keyword-face)
+	  (" \\$[A-Za-z0-9_]+" . font-lock-variable-name-face)))
+  (setq font-lock-defaults '(gamess-font-lock-keywords)))
+(add-to-list 'auto-mode-alist '("\\.inp\\'" . gamess-mode))
+
 
 ;;;; flycheck
 
@@ -266,6 +280,11 @@
 	       'wolfram-insert-comment)
 	     (linum-mode t)))
 
+;;;; fortran
+(add-hook 'fortran-mode-hook
+	  '(lambda()
+	     (hs-minor-mode 1)))
+(add-to-list 'auto-mode-alist '("\\.src\\'" . fortran-mode))
 
 ;;;; fortran 90/95
 ;;;;; hideshow

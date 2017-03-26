@@ -498,7 +498,8 @@
 ;(key-chord-define-global "fj" 'view-mode)
 
 ;;; elviewer
-;(require 'elviewer)
+					;(require 'elviewer)
+
 
 ;;; End
 (provide 'common)

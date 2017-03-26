@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: insert_write 
+# key: wri
+# insert write for fortran
+# --
+write(*, *) 
