@@ -361,7 +361,16 @@
       (t
        ()))
     "face used in hl-line")
-(setq hl-line-face 'hlline-face)
-(global-hl-line-mode t)
+;(setq hl-line-face 'hlline-face)
+;(global-hl-line-mode t)
+
+
+;;;; safe ctrl+w
+
+(defun safe-kill-region ()
+  (interactive)
+  (if (or (not transient-mark-mode) (region-active-p))
+      (kill-region (region-beginning) (region-end))))
+(global-set-key "\C-w" 'safe-kill-region)
 
 

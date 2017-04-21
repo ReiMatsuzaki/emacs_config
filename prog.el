@@ -302,6 +302,16 @@
     (hs-hide-block)
     (forward-line 1)
     (beginning-of-line)))
+
+;(setq hs-special-modes-alist
+;      '((python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#" #[257 "\300 \207" [python-nav-end-of-defun] 2 "(fn ARG)"] nil)
+;	(fortran-mode "\\(?:function\\|subroutine\\)" "end \\(function\\|subroutine)" "^[cC*!]" fortran-end-of-block nil)
+					;	(f90-mode "\\(?:recursive\\|function\\|subroutine\\)" "end \\(function\\|subroutine)" "^[!]" f90-end-of-block nil)))
+
+
+(add-to-list hs-special-modes-alist
+	     (f90-mode "\\(subroutine\\|function\\)" "end \\(subroutine\\|function\\)" "^[!]" f90-end-of-block nil))
+
 ;;;;; keybind
 ;(add-to-list 'ac-modes 'f90-mode)
 (add-hook 'f90-mode-hook
