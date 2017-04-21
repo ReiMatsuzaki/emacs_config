@@ -308,10 +308,6 @@
 ;	(fortran-mode "\\(?:function\\|subroutine\\)" "end \\(function\\|subroutine)" "^[cC*!]" fortran-end-of-block nil)
 					;	(f90-mode "\\(?:recursive\\|function\\|subroutine\\)" "end \\(function\\|subroutine)" "^[!]" f90-end-of-block nil)))
 
-
-(add-to-list hs-special-modes-alist
-	     (f90-mode "\\(subroutine\\|function\\)" "end \\(subroutine\\|function\\)" "^[!]" f90-end-of-block nil))
-
 ;;;;; keybind
 ;(add-to-list 'ac-modes 'f90-mode)
 (add-hook 'f90-mode-hook
@@ -327,11 +323,15 @@
 ;	      '((" \\([:ascii:]*\\)(" 1 'font-lock-function-name-face)))
 ;;	     (define-key f90-mode-map (kbd "C-c q") 'hs-toggle-hiding)
 ;;	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
-;;	     (define-key f90-mode-map (kbd "C-c o") 'hs-show-all)
+	     ;;	     (define-key f90-mode-map (kbd "C-c o") 'hs-show-all)
+	     (add-to-list hs-special-modes-alist
+	     (f90-mode "\\(subroutine\\|function\\)" "end \\(subroutine\\|function\\)" "^[!]" f90-end-of-block nil))
+
 	     (define-key f90-mode-map (kbd "C-c f") 'hs-hide-function-or-subroutine)
 	     (define-key f90-mode-map (kbd "C-c w") 'hs-hide-whole-function-and-subroutine)
 	     (define-key f90-mode-map (kbd "C-M-DEL") 'windmove-left)
 	     (hs-hide-whole-function-and-subroutine)
+	     
 ;	     (define-key f90-mode-map (kbd "C-C f") 'hs-toggle-hiding)
 ;	     (define-key f90-mode-map (kbd "C-C w") 'hs-hide-all)
 ;	     (setcar hs-special-modes-alist 
@@ -490,9 +490,7 @@
 
 
 ;;;; gnuplot
-
-
-(require 'gnuplot-mode)
+;(require 'gnuplot-mode)
 
 ;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
 ;; (setq gnuplot-program "/sw/bin/gnuplot")
