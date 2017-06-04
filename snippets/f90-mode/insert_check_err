@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: insert_check_err
+# key: cerr
+# insert ; check_err
+# --
+; check_err()

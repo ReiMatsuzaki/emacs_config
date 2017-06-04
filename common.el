@@ -251,7 +251,7 @@
 
 (setq org-startup-truncated nil)
 (setq org-export-latex-classes nil)
-(setq org-hide-leading-stars t)
+(setq org-hide-leading-stars nil)
 
 (defun org-fold-this-brunch ()
   "Fold brunch which the cursol is located."

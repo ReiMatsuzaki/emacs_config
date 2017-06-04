@@ -42,7 +42,8 @@
   (delete-other-windows))
 
 (define-key my-keymap (kbd "C-c") 'compile-1)
-(define-key my-keymap (kbd "c") 'compile)
+;(define-key my-keymap (kbd "C-c") 'compile)
+;(define-key my-keymap (kbd "c") 'compile)
 
 ;; linum mode
 (global-linum-mode)

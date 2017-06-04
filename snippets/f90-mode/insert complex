@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: insert complex
+# key: dco
+# insert complex for f90
+# --
+complex(kind(0d0)) 

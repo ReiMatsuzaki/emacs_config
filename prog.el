@@ -288,59 +288,52 @@
 
 ;;;; fortran 90/95
 ;;;;; hideshow
+; to be removed
 (defun hs-hide-function-or-subroutine ()
   (interactive)
   (end-of-line)
-  (if (re-search-backward "^ *\\(subroutine\\|function\\)" nil t)
+  (if (re-search-backward "^ *\\(subroutine\\|recursive\\|function\\|type\\)" nil t)
       (progn (end-of-line)
 	     (hs-toggle-hiding))))
+; to be removed
 (defun hs-hide-whole-function-and-subroutine ()
   (interactive)
   (goto-char (point-min))
-  (while (re-search-forward "^ *\\(subroutine\\|function\\)" nil t)
+  (while (re-search-forward "^ *\\(recursive\\|subroutine\\|function\\|type\\)" nil t)
     (beginning-of-line)    
     (hs-hide-block)
     (forward-line 1)
     (beginning-of-line)))
 
-;(setq hs-special-modes-alist
-;      '((python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#" #[257 "\300 \207" [python-nav-end-of-defun] 2 "(fn ARG)"] nil)
-;	(fortran-mode "\\(?:function\\|subroutine\\)" "end \\(function\\|subroutine)" "^[cC*!]" fortran-end-of-block nil)
-					;	(f90-mode "\\(?:recursive\\|function\\|subroutine\\)" "end \\(function\\|subroutine)" "^[!]" f90-end-of-block nil)))
-
 ;;;;; keybind
-;(add-to-list 'ac-modes 'f90-mode)
 (add-hook 'f90-mode-hook
 	  '(lambda()
 	     (hs-minor-mode 1)
-;	     (mapcar (lambda (mode)
-;		       (font-lock-add-keywords
-;			mode
-;			'(("= +\\(.*\\)(" 1 'font-lock-function-name-face))))
-;		     '(f90-mode))
-;	     (font-lock-add-keywords 
-;	      nil
-;	      '((" \\([:ascii:]*\\)(" 1 'font-lock-function-name-face)))
-;;	     (define-key f90-mode-map (kbd "C-c q") 'hs-toggle-hiding)
-;;	     (define-key hs-minor-mode-map (kbd "C-c w") 'hs-hide-all)
-	     ;;	     (define-key f90-mode-map (kbd "C-c o") 'hs-show-all)
-	     (add-to-list hs-special-modes-alist
-	     (f90-mode "\\(subroutine\\|function\\)" "end \\(subroutine\\|function\\)" "^[!]" f90-end-of-block nil))
-
-	     (define-key f90-mode-map (kbd "C-c f") 'hs-hide-function-or-subroutine)
-	     (define-key f90-mode-map (kbd "C-c w") 'hs-hide-whole-function-and-subroutine)
-	     (define-key f90-mode-map (kbd "C-M-DEL") 'windmove-left)
-	     (hs-hide-whole-function-and-subroutine)
-	     
-;	     (define-key f90-mode-map (kbd "C-C f") 'hs-toggle-hiding)
-;	     (define-key f90-mode-map (kbd "C-C w") 'hs-hide-all)
-;	     (setcar hs-special-modes-alist 
-;		   (cons '(f90-mode "subroutine\\|function\\|type" "end" "!" f90-end-of-block nil) hs-special-modes-alist))
-;	     (hs-hide-all)
-;;	     (flymake-mode t)
-;;	     (define-key f90-mode-map "\C-cd" 'credmp/flymake-display-err-minibuf)
-;;	     (setq ac-sources '(ac-source-yasnippet ac-source-words-in-same-mode-buffers))
+	     (rplacd (assoc
+		      'f90-mode hs-special-modes-alist)
+		     `(
+		       ,(rx (or "function" "subroutine" "recursive" "program"))
+		       ,(rx (or "end"))
+		       ,(rx (or "!"))
+		       f90-end-of-block))
 	     ))
+
+;; see https://coderwall.com/p/u-l0ra/ruby-code-folding-in-emacs
+;(eval-after-load "hideshow"  
+;  '(add-to-list 'hs-special-modes-alist
+;		`(f90-mode
+;		  ,(rx (or "function" "subroutine" "recursive" "type"))
+;		  ,(rx (or "end"))
+;		  ,(rx (or "!"))
+					;		  f90-end-of-block)))
+;(eval-after-load "hideshow"
+;  (rplacd (assoc
+;	   'f90-mode hs-special-modes-alist)
+;	  `(
+;	    (rx (or "function" "subroutine" "recursive" "type"))
+;	    ,(rx (or "end"))
+;	    ,(rx (or "!"))
+;	    f90-end-of-block)))
 (setq auto-mode-alist
       (cons (cons "\\.f95$" 'f90-mode) auto-mode-alist))
 
@@ -353,6 +346,7 @@
 ;;;; elisp
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda ()
+
 ;	     (outline-minor-mode)
 ;	     (outshine-hook-function)
 ;	     (outshine-fold-to-level-1)

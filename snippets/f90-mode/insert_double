@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: insert_double
+# key: dou
+# --
+double precision 
