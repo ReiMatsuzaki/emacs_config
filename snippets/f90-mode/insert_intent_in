@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: insert_intent_in
+# key: iin
+# --
+intent(in) :: 
