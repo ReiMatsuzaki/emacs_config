@@ -13,9 +13,8 @@
 	auto-complete
 	ggtags
 	key-chord
-	ac-c-headers
 	auctex
-	outline-magic
+;	outline-magic
 	))
 
 (require 'cl)
@@ -226,7 +225,7 @@
 ;	     (hs-hide-all)))
 
 ;; outline mode
-(require 'outline-magic)
+;(require 'outline-magic)
 (defun py-outline-level-old ()
   (let (buffer-invisibility-spec)
     (save-excursion

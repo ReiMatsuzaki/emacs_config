@@ -58,15 +58,14 @@
 (define-key global-map (kbd "M-+") 'text-scale-increase)
 (define-key global-map (kbd "M-=") 'text-scale-increase)
 (define-key global-map (kbd "M--") 'text-scale-decrease)
-
 ;;;; package manager
 
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
+;(require 'package)
+;(add-to-list 'package-archives
+;	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;(add-to-list 'package-archives
+;	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+;(package-initialize)
 
 ;(define-key global-map (kbd "C-3") '(lambda (interactive) (digit-argument 3)))
 ;;;; Basic config

@@ -20,7 +20,7 @@
 	yasnippet
 ;	ace-link
 	auctex
-	magit
+;	magit
 	popwin
 	))
 
