@@ -14,6 +14,7 @@
 	ggtags
 	key-chord
 	auctex
+	flycheck
 ;	outline-magic
 	))
 
@@ -73,8 +74,8 @@
 
 
 ;;;; flycheck
-
 ;(require 'flycheck)
+;(global-flycheck-mode)
 ;(add-hook 'after-init-hook #'global-flycheck-mode)
 ;(require 'flymake)
 ;(set-face-background 'flymake-warnline "yello")
@@ -308,6 +309,39 @@
 (add-hook 'f90-mode-hook
 	  '(lambda()
 	     (hs-minor-mode 1)
+	     (flycheck-mode 1)
+	     (flycheck-define-checker fortran-gfortran
+  "An Fortran syntax checker using GCC.
+
+Uses GCC's Fortran compiler gfortran.  See URL
+`https://gcc.gnu.org/onlinedocs/gfortran/'."
+  :command ("gfortran"
+            "-cpp"
+	    "-ffree-line-length-512"
+            "-fsyntax-only"
+            "-fshow-column"
+            "-fno-diagnostics-show-caret" ; Do not visually indicate the source location
+            "-fno-diagnostics-show-option" ; Do not show the corresponding
+                                        ; warning group
+            ;; Fortran has similar include processing as C/C++
+            "-iquote" (eval (flycheck-c/c++-quoted-include-directory))
+            (option "-std=" flycheck-gfortran-language-standard concat)
+            (option "-f" flycheck-gfortran-layout concat
+                    flycheck-option-gfortran-layout)
+            (option-list "-W" flycheck-gfortran-warnings concat)
+            (option-list "-I" flycheck-gfortran-include-path concat)
+            (eval flycheck-gfortran-args)
+            source)
+  :error-patterns
+  ((error line-start (file-name) ":" line (or ":" ".") column (or ": " ":\n")
+          (or (= 3 (zero-or-more not-newline) "\n") "")
+          (or "Error" "Fatal Error") ": "
+          (message) line-end)
+   (warning line-start (file-name) ":" line (or ":" ".") column (or ": " ":\n")
+            (or (= 3 (zero-or-more not-newline) "\n") "")
+            "Warning: " (message) line-end))
+  :modes (fortran-mode f90-mode))
+;	     (setq flycheck-gfortran-language-standard "")
 	     (rplacd (assoc
 		      'f90-mode hs-special-modes-alist)
 		     `(
