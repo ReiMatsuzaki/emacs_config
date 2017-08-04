@@ -25,7 +25,6 @@
 (global-set-key (kbd "M-n") (kbd "C-u 5 C-n"))
 (global-set-key (kbd "M-p") (kbd "C-u 5 C-p"))
 
-
 ;; my key map
 (defvar my-keymap (make-sparse-keymap) "my original key map")
 (define-key global-map (kbd "C-o") my-keymap)
@@ -41,9 +40,9 @@
   (compile current-command t)
   (delete-other-windows))
 
-(define-key my-keymap (kbd "C-c") 'compile-1)
-;(define-key my-keymap (kbd "C-c") 'compile)
-;(define-key my-keymap (kbd "c") 'compile)
+(if window-system
+    (define-key my-keymap (kbd "C-c") 'compile)
+  (define-key my-keymap (kbd "C-c") 'compile-1))
 
 ;; linum mode
 (global-linum-mode)
@@ -59,8 +58,8 @@
 (define-key global-map (kbd "M-=") 'text-scale-increase)
 (define-key global-map (kbd "M--") 'text-scale-decrease)
 
-;;;; package manager
 
+;;;; package manager
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -79,17 +78,15 @@
 (setq exec-path (cons (expand-file-name "~/local/bin") exec-path))
 
 ;; unbind C-c C-x and define exit command
-;(global-unset-key (kbd "C-x C-c"))
+(if window-system
+    (progn 
+      (global-unset-key (kbd "C-x C-c"))
+      (global-set-key (kbd "C-x C-c") 'server-edit)))
 (defalias 'exit 'save-buffers-kill-emacs)
 
-;; bind C-c C-x as server edit
-;(global-set-key (kbd "C-x C-c") 'server-edit)
 
 ;; ffap. Extention of C-x C-f
 (ffap-bindings)
-
-;; iswichb. Extention of C-x b
-;(iswitchb-mode 1)
 
 ;; hilight kakko
 (show-paren-mode t)
@@ -191,70 +188,28 @@
 ;; depend on hiwin.el
 ; win manage
 (load (concat config-home "win-controll/win-controll.el"))
-;(load "~/.emacs.d/elisp/win-controll/win-controll.el")
+					;(load "~/.emacs.d/elisp/win-controll/win-controll.el")
 
-(require 'windmove)
+;;; window move rapidly
 
-;;;;; * def (flip)
+(if window-system
+    (progn ()
+	   (global-unset-key (kbd "M-k"))
+	   (defvar move-global-minor-mode-map
+	     (let ((map (make-sparse-keymap)))
+	       (setq windmove-wrap-around t)
+	       (define-key map (kbd "M-j") 'other-window)
+	       (define-key map (kbd "M-k") (lambda () (interactive) (other-window -1)))
+	       map))
+	   
+	   (define-minor-mode move-global-minor-mode
+	     "move minor mode"
+	     :global t)
 
+	   (move-global-minor-mode t)))
 
-(defun buffer-flip-chose-direction (direction)
-  (flet ((buffer-flip (win1 win2)
-		      (let ((b1 (window-buffer win1))
-			    (b2 (window-buffer win2)))
-			(set-window-buffer win1 b2)
-			(set-window-buffer win2 b1)
-			(select-window win2))))
-    (buffer-flip (selected-window) 
-		 (windmove-find-other-window direction))))
-
-(defun buffer-flip-up ()
-  (interactive)
-  (buffer-flip-chose-direction 'up))
-(defun buffer-flip-down ()
-  (interactive)
-  (buffer-flip-chose-direction 'down))
-(defun buffer-flip-right ()
-  (interactive)
-  (buffer-flip-chose-direction 'right))
-(defun buffer-flip-left ()
-  (interactive)
-  (buffer-flip-chose-direction 'left))
-
-
-
-;; simple test:
-; (buffer-flip-chose-direction 'right)
-
-;;;;; * def (UI), not used
-
-(defun buffer-control-ui ()
-  (interactive)
-  (message "move:hjkl, bring:HJKL")
-  (let ((cmd (read-char))
-	(cmd-direction-alist 
-	 '((?L . right) (?H . left) (?J . down) (?K . up)))
-	(cmd-move-alist
-	 '((?l . right) (?h . left) (?j . down) (?k . up)))
-	dir)
-    (setq dir (cdr (assoc cmd cmd-direction-alist)))
-    (when dir
-      (buffer-flip-chose-direction dir))
-    (setq dir (cdr (assoc cmd cmd-move-alist)))
-    (when dir
-      (windmove-do-window-select dir))
-    (when (equal cmd ?3)
-      (wincon-construct
-       'wincon-set-windows-three-holizon
-       `((file ,(lambda () (wincon-get-l-in-current-frame 'buffer-file-name)))
-	 (shell wincon-get-l-eshell-for-current-screen))))
-    (when (equal cmd ?4)
-      (wincon-construct
-       'wincon-set-windows-2121
-       `((file ,(lambda () (wincon-get-l-in-current-frame 'buffer-file-name)))
-	 (shell wincon-get-l-eshell-for-current-screen))))
-    (when (not (equal cmd ?g))
-      (buffer-control-ui))))
+;; C-x o bind to frame move
+(define-key global-map (kbd "C-x o") 'other-frame)
 
 
 ;;;;  Window split  
@@ -299,30 +254,6 @@
 				 (interactive)
 				 (split-window-horizontally-n 4)))
 
-
-;;;;  Kept and open 
-;;;;; def
-
-(defvar opening-buffer nil)
-(defun find-file-and-kept-opening-buffer (file-name)
-  "find file and kept it for opening-buffer"
-  (interactive)
-  (setq opening-buffer (find-file-noselect (expand-file-name file-name))))
-
-(defun save-opening-buffer ()
-  "change buffer and kept it for opening-buffer"
-  (interactive)
-  (setq opening-buffer (current-buffer)))
-
-
-(defun switch-to-opening-buffer ()
-  "open opening-buffer at current window"
-  (interactive)
-  (if opening-buffer
-      (progn
-	(switch-to-buffer opening-buffer)
-	(setq opening-buffer nil))
-  (message "there is no opening-buufer")))
 
 ;;;  Edit        
 ;;;;  auto insert

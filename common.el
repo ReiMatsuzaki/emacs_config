@@ -12,13 +12,14 @@
 	fold-dwim
 	multiple-cursors
 	smartrep
-;	magit
+	persp-mode
 ;	ein
 	outshine
 	helm
 	auto-complete
 	yasnippet
-;	ace-link
+					;	ace-link
+	smooth-scroll
 	auctex
 	magit
 	popwin
@@ -42,10 +43,20 @@
 ;	(compilation-mode :frame nil)
 ;	))
 ;(shackle-mode 1)
-;(setq shackle-lighter "")
+					;(setq shackle-lighter "")
+
+;;;; smooth-scroll
+(require 'smooth-scroll)
+(setq smooth-scroll/vscroll-step-size 4)
+(smooth-scroll-mode t)
+
+
+;;;; yascroll
+(require 'yascroll)
+(scroll-bar-mode t)
+(global-yascroll-bar-mode t)
 
 ;;;; redo+
-
 (when (require 'redo+ nil t)
   (define-key global-map (kbd "C-'") 'redo))
 
@@ -62,7 +73,7 @@
 (global-set-key (kbd "C-c R") 'anzu-query-replace-regexp)
 
 ;;;; window manage
-;(require 'smartrep)
+;(require 'smartrep    )
 ;(smartrep-define-key global-map "C-x"
 ;  '(("o" . other-window)
 ;    ("0" . delete-window)
@@ -121,9 +132,8 @@
     ("O"   . 'mc/reverse-regions)))
 
 ;;;; Git
-
-;(require 'magit)
-;(global-set-key (kbd "C-c g") 'magit-status)
+(require 'magit)
+(define-key my-keymap (kbd "C-g") 'magit-status)
 
 
 ;;; EIN
@@ -172,7 +182,16 @@
 ;  (insert " "))
 
 
-;(define-key (kbd "\C-c 1") 'org-time-stamp-inactive)
+					;(define-key (kbd "\C-c 1") 'org-time-stamp-inactive)
+
+;;; persp-mode
+(if window-system
+    (progn ()
+	   (setq persp-keymap-prefix (kbd "C-c p"))
+	   (persp-mode)
+	   (define-key move-global-minor-mode-map (kbd "M-l") 'persp-next)
+	   (define-key move-global-minor-mode-map (kbd "M-h") 'persp-prev)))
+	   
 
 ;;; Elscreen
 ;;;; basic setting
@@ -322,6 +341,18 @@
 ;	     (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
 ;	     ))
 
+;;; dired
+(require 'dired-details)
+(dired-details-install)	    
+(setq dired-dwim-target t)
+(setq dired-details-hidden-string "")
+(setq dired-details-hide-link-target nil)
+(define-key my-keymap (kbd "C-d") 'dired-toggle)
+(add-hook 'dired-load-hook
+	  (lambda ()
+	    (define-key dired-mode-map (kbd "j") 'dired-next-line)
+	    (define-key dired-mode-map (kbd "k") 'dired-previous-line)))
+
 ;;; helm
 ;;;; require
 
@@ -353,10 +384,43 @@
 ;		  (if (string-match "\\^" input-pattern)
 ;		      (substring input-pattern 1)
 ;		    (concat ".*" input-pattern))))))
+;;;; helm-migemo
+(when (locate-library "migemo")
+  (progn
+    (require 'migemo)
+    (setq migemo-command "cmigemo")
+    (setq migemo-options '("-q" "--emacs"))
+
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (setq migemo-coding-system 'utf-8-unix)
+    (load-library "migemo")
+    (migemo-init)))
+
+;;; Search
+;;;; helm-migemo
+; rubikichi.com/2014/12/9/helm-migemo/
+(when (locate-library "helm-migemo")
+  (progn 
+    (require 'helm-migemo)
+
+    (eval-after-load "helm-migemo"
+      '(defun helm-compile-source--candidates-in-buffer (source)
+	 (helm-aif (assoc 'candidates-in-buffer source)
+	     (append source
+		     `((candidates
+			. ,(or (cdr it)
+			       (lambda ()
+				 ;; Do not use `source' because other plugins
+				 ;; (such as helm-migemo) may change it
+				 (helm-candidates-in-buffer (helm-get-current-source)))))
+		       (volatile) (match identity)))
+	   source)))))
+
 
 ;;;; helm-swoop
-
-;; setting for helm-swoop is written in gui.el
+(require 'helm-swoop)
+(define-key my-keymap (kbd "C-s") 'helm-swoop)
 
 ;;; auto-complete
 
