@@ -21,7 +21,7 @@
 					;	ace-link
 	smooth-scroll
 	auctex
-	magit
+;	magit
 	popwin
 	))
 
