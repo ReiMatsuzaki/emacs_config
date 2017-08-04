@@ -325,7 +325,7 @@ Uses GCC's Fortran compiler gfortran.  See URL
                                         ; warning group
             ;; Fortran has similar include processing as C/C++
             "-iquote" (eval (flycheck-c/c++-quoted-include-directory))
-            (option "-std=" flycheck-gfortran-language-standard concat)
+;            (option "-std=" flycheck-gfortran-language-standard concat)
             (option "-f" flycheck-gfortran-layout concat
                     flycheck-option-gfortran-layout)
             (option-list "-W" flycheck-gfortran-warnings concat)
