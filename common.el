@@ -133,7 +133,7 @@
 
 ;;;; Git
 (require 'magit)
-(define-key my-keymap (kbd "C-g") 'magit-status)
+(define-key my-keymap (kbd "C-t") 'magit-status)
 
 
 ;;; EIN
