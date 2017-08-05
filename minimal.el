@@ -44,9 +44,6 @@
     (define-key my-keymap (kbd "C-c") 'compile)
   (define-key my-keymap (kbd "C-c") 'compile-1))
 
-;; linum mode
-(global-linum-mode)
-
 ;; C-x SPC => Rectangle mark
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
@@ -96,9 +93,17 @@
 ;; no tool bar
 (tool-bar-mode -1)
 
-;; non scroll bar
-(if window-system
-    (scroll-bar-mode 0))
+;; scroll bar mode
+(scroll-bar-mode 0)
+
+;; linum and scroll mode
+(scroll-bar-mode t)
+(global-linum-mode t)
+(defun toggle-scroll-bar-and-linum ()
+  (interactive)
+  (toggle-scroll-bar (if linum-mode 0 1))
+  (global-linum-mode (if linum-mode -1 1)))
+(define-key my-keymap (kbd "C-l") 'toggle-scroll-bar-and-linum)
 
 ;; scroll
 (setq scroll-conservatively 35
@@ -247,7 +252,7 @@
 ;; this code does not work.
 ;; to activate these key bindings, copy above code to end of init.el.
 (global-set-key (kbd "C-x #") '(lambda ()
-                           (interactive)				 
+                           (interactive)  
                            (split-window-horizontally-n 3)))
 (global-set-key (kbd "C-x $") '(lambda ()
 				 (interactive)

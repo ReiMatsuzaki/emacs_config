@@ -13,16 +13,14 @@
 	multiple-cursors
 	smartrep
 	persp-mode
-;	ein
 	outshine
 	helm
 	auto-complete
 	yasnippet
-					;	ace-link
 	smooth-scroll
 	auctex
-;	magit
-	popwin
+	magit
+	shackle
 	))
 
 (require 'cl)
@@ -33,17 +31,21 @@
 
 ;;; Basics
 ;;;; popwin
-(require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
+;(require 'popwin)
+;(setq display-buffer-function 'popwin:display-buffer)
 
 ;;;; chackle
-;(require 'shackle)
-;(setq shackle-rules
-;      '(
-;	(compilation-mode :frame nil)
-;	))
-;(shackle-mode 1)
-					;(setq shackle-lighter "")
+(require 'shackle)
+(setq shackle-rules
+      '(
+	(compilation-mode :align right :ratio 0.25)
+	(ag-mode :align right :ratio 0.25)
+	))
+(shackle-mode 1)
+(setq shackle-lighter "")
+(winner-mode 1)
+(define-key my-keymap (kbd "C-z") 'winner-undo)
+;(global-set-key (kbd "C-z") 'winner-undo)
 
 ;;;; smooth-scroll
 (require 'smooth-scroll)
@@ -52,9 +54,9 @@
 
 
 ;;;; yascroll
-(require 'yascroll)
-(scroll-bar-mode t)
-(global-yascroll-bar-mode t)
+;(require 'yascroll)
+;(scroll-bar-mode t)
+;(global-yascroll-bar-mode t)
 
 ;;;; redo+
 (when (require 'redo+ nil t)
@@ -187,8 +189,10 @@
 ;;; persp-mode
 (if window-system
     (progn ()
-	   (setq persp-keymap-prefix (kbd "C-c p"))
 	   (persp-mode)
+	   (persp-set-keymap-prefix (kbd "C-q"))
+	   (define-key persp-key-map (kbd "A") #'persp-rename)
+	   (define-key persp-key-map (kbd "c") #'persp-frame-switch)
 	   (define-key move-global-minor-mode-map (kbd "M-l") 'persp-next)
 	   (define-key move-global-minor-mode-map (kbd "M-h") 'persp-prev)))
 	   
@@ -420,7 +424,10 @@
 
 ;;;; helm-swoop
 (require 'helm-swoop)
-(define-key my-keymap (kbd "C-s") 'helm-swoop)
+
+
+;;;; the-silver-searcher
+(define-key my-keymap (kbd "C-s") 'ag)
 
 ;;; auto-complete
 
