@@ -15,12 +15,15 @@
 	persp-mode
 	outshine
 	helm
+	helm-swoop
 	auto-complete
 	yasnippet
 	smooth-scroll
 	auctex
 	magit
 	shackle
+	dired-details
+	dired-toggle
 	))
 
 (require 'cl)
