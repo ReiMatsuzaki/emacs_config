@@ -37,7 +37,8 @@
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
 (setq popwin:popup-window-position 'bottom)
-(push '("*compilation*" :width 90 :position right) popwin:special-display-config)
+(push '("*compilation*" :position bottom) popwin:special-display-config)
+;(push '("*compilation*" :width 90 :position right) popwin:special-display-config)
 
 ;;;; chackle
 ;(require 'shackle)

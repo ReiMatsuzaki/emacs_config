@@ -40,9 +40,9 @@
   (compile current-command t)
   (delete-other-windows))
 
-(if window-system
+;(if window-system
     (define-key my-keymap (kbd "C-c") 'compile)
-  (define-key my-keymap (kbd "C-c") 'compile-1))
+;  (define-key my-keymap (kbd "C-c") 'compile-1))
 
 ;; C-x SPC => Rectangle mark
 (cua-mode t)
@@ -54,6 +54,9 @@
 (define-key global-map (kbd "M-+") 'text-scale-increase)
 (define-key global-map (kbd "M-=") 'text-scale-increase)
 (define-key global-map (kbd "M--") 'text-scale-decrease)
+
+;; automatically revert buffers
+(global-auto-revert-mode t)
 
 ;;;; package manager
 ;(require 'package)
