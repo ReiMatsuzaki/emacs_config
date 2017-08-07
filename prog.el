@@ -680,7 +680,9 @@ Uses GCC's Fortran compiler gfortran.  See URL
 	     (outline-minor-mode 1)
 ;	     (orgtbl-mode)
 	     (fold-dwim-hide-all)
-	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))))
+	     (yas-load-directory (expand-file-name (concat config-home "snippets/")))
+	     (define-key TeX-mode-map (kbd "C-i") 'LaTeX-indent-line)
+	     ))
 
 
 

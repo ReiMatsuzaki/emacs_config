@@ -31,26 +31,28 @@
 
 ;;; Basics
 ;;;; popwin
-;(require 'popwin)
-;(setq display-buffer-function 'popwin:display-buffer)
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+(setq popwin:popup-window-position 'bottom)
+(push '("*compilation*" :width 90 :position right) popwin:special-display-config)
 
 ;;;; chackle
-(require 'shackle)
-(setq shackle-rules
-      '(
-	(compilation-mode :align right :ratio 0.25)
-	(ag-mode :align right :ratio 0.25)
-	))
-(shackle-mode 1)
-(setq shackle-lighter "")
-(winner-mode 1)
-(define-key my-keymap (kbd "C-z") 'winner-undo)
+;(require 'shackle)
+;(setq shackle-rules
+;      '(
+;	(compilation-mode :align right :ratio 0.25)
+;	(ag-mode :align right :ratio 0.25)
+;	))
+;(shackle-mode 1)
+;(setq shackle-lighter "")
+;(winner-mode 1)
+;(define-key my-keymap (kbd "C-z") 'winner-undo)
 ;(global-set-key (kbd "C-z") 'winner-undo)
 
 ;;;; smooth-scroll
-(require 'smooth-scroll)
-(setq smooth-scroll/vscroll-step-size 4)
-(smooth-scroll-mode t)
+;(require 'smooth-scroll)
+;(setq smooth-scroll/vscroll-step-size 4)
+;(smooth-scroll-mode t)
 
 
 ;;;; yascroll
