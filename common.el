@@ -12,7 +12,7 @@
 	fold-dwim
 	multiple-cursors
 	smartrep
-	persp-mode
+;	persp-mode
 	outshine
 	helm
 	helm-swoop
@@ -193,14 +193,14 @@
 					;(define-key (kbd "\C-c 1") 'org-time-stamp-inactive)
 
 ;;; persp-mode
-(if window-system
-    (progn ()
-	   (persp-mode)
-	   (persp-set-keymap-prefix (kbd "C-q"))
-	   (define-key persp-key-map (kbd "A") #'persp-rename)
-	   (define-key persp-key-map (kbd "c") #'persp-frame-switch)
-	   (define-key move-global-minor-mode-map (kbd "M-l") 'persp-next)
-	   (define-key move-global-minor-mode-map (kbd "M-h") 'persp-prev)))
+;(if window-system
+;    (progn ()
+;	   (persp-mode)
+;	   (persp-set-keymap-prefix (kbd "C-q"))
+;	   (define-key persp-key-map (kbd "A") #'persp-rename)
+;	   (define-key persp-key-map (kbd "c") #'persp-frame-switch)
+;	   (define-key move-global-minor-mode-map (kbd "M-l") 'persp-next)
+;	   (define-key move-global-minor-mode-map (kbd "M-h") 'persp-prev)))
 	   
 
 ;;; Elscreen
