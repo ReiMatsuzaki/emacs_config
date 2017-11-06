@@ -100,11 +100,9 @@
 (scroll-bar-mode 0)
 
 ;; linum and scroll mode
-(scroll-bar-mode t)
 (global-linum-mode t)
 (defun toggle-scroll-bar-and-linum ()
   (interactive)
-  (toggle-scroll-bar (if linum-mode 0 1))
   (global-linum-mode (if linum-mode -1 1)))
 (define-key my-keymap (kbd "C-l") 'toggle-scroll-bar-and-linum)
 

@@ -325,6 +325,10 @@
 (setq org-lowest-priority ?D)
 (setq org-default-priority ?A)
 
+;; org latex setting
+(setq org-latex-pdf-process
+      '("latexmk %f"))
+
 ;;; elisp
 
 ;; code for elisp mode are written in prog.el

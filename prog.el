@@ -308,9 +308,16 @@
 ;;;;; keybind
 (add-hook 'f90-mode-hook
 	  '(lambda()
+	     (rplacd (assoc
+		      'f90-mode hs-special-modes-alist)
+		     `(
+		       ,(rx (or "function" "subroutine" "recursive" "program"))
+		       ,(rx (or "end"))
+		       ,(rx (or "!"))
+		       f90-end-of-block))
 	     (hs-minor-mode 1)
-	     (flycheck-mode 1)
-	     (flycheck-define-checker fortran-gfortran
+	     ;(flycheck-mode 1)
+	     (flycheck-define-checker fortran-gfortran	       
   "An Fortran syntax checker using GCC.
 
 Uses GCC's Fortran compiler gfortran.  See URL
@@ -325,12 +332,14 @@ Uses GCC's Fortran compiler gfortran.  See URL
                                         ; warning group
             ;; Fortran has similar include processing as C/C++
             "-iquote" (eval (flycheck-c/c++-quoted-include-directory))
-;            (option "-std=" flycheck-gfortran-language-standard concat)
+					;	    (option "-std=" flycheck-gfortran-language-standard concat)
+	    (option "-std=" "f2008" concat)	    	    
             (option "-f" flycheck-gfortran-layout concat
                     flycheck-option-gfortran-layout)
-            (option-list "-W" flycheck-gfortran-warnings concat)
-            (option-list "-I" flycheck-gfortran-include-path concat)
-            (eval flycheck-gfortran-args)
+	    (option-list "-W" flycheck-gfortran-warnings concat)
+	    (option-list "-I" "/usr/local/include/fgsl" concat)
+;            (option-list "-I" flycheck-gfortran-include-path concat)
+;            (eval flycheck-gfortran-args)
             source)
   :error-patterns
   ((error line-start (file-name) ":" line (or ":" ".") column (or ": " ":\n")
@@ -342,13 +351,6 @@ Uses GCC's Fortran compiler gfortran.  See URL
             "Warning: " (message) line-end))
   :modes (fortran-mode f90-mode))
 ;	     (setq flycheck-gfortran-language-standard "")
-	     (rplacd (assoc
-		      'f90-mode hs-special-modes-alist)
-		     `(
-		       ,(rx (or "function" "subroutine" "recursive" "program"))
-		       ,(rx (or "end"))
-		       ,(rx (or "!"))
-		       f90-end-of-block))
 	     ))
 
 ;; see https://coderwall.com/p/u-l0ra/ruby-code-folding-in-emacs
