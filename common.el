@@ -113,7 +113,8 @@
 ;(setq neo-theme 'classic)
 
 ;;;; markdown
-(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
+(require 'markdown-mode)
+;(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.md'" . markdown-mode))
 
 ;;;; mutli-cursors/smartrep
@@ -297,6 +298,8 @@
 	    (define-key org-mode-map (kbd "\C-c 1") 'org-time-stamp-inactive)
 	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
 	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
+
+(setq org-agenda-files '("~/now"))
 
 (smartrep-define-key org-mode-map "C-c"
   '(("C-n" . outline-next-visible-heading)

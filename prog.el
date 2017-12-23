@@ -220,6 +220,8 @@
 					(skip-chars-backward " \t\n"))
 				                   nil))
 
+(define-auto-insert "\\.py" "py_template.py")
+
 ;(add-hook 'python-mode-hook
 ;	  '(lambda()
 ;	     ;(hs-minor-mode t)
