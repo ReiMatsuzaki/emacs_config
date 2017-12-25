@@ -14,7 +14,7 @@
 	ggtags
 	key-chord
 	auctex
-	flycheck
+;	flycheck
 ;	outline-magic
 	))
 

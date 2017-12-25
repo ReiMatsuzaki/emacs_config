@@ -97,8 +97,8 @@
 (tool-bar-mode -1)
 
 ;; linum and scroll mode
-(if window-system
-    (scroll-bar-mode t))
+;(if window-system
+;    (scroll-bar-mode t))
 (global-linum-mode t)
 (defun toggle-scroll-bar-and-linum ()
   (interactive)
@@ -107,6 +107,9 @@
       (toggle-scroll-bar (if linum-mode 0 1)))
   (global-linum-mode (if linum-mode -1 1)))
 (define-key my-keymap (kbd "C-l") 'toggle-scroll-bar-and-linum)
+
+;; no scroll bar
+(toggle-scroll-bar 0)
 
 ;; scroll
 (setq scroll-conservatively 35

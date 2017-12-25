@@ -65,8 +65,8 @@
 ;(global-yascroll-bar-mode t)
 
 ;;;; redo+
-(when (require 'redo+ nil t)
-  (define-key global-map (kbd "C-'") 'redo))
+;(when (require 'redo+ nil t)
+;  (define-key global-map (kbd "C-'") 'redo))
 
 ;;;; smartparens
 ;(require 'smartparens-config)
@@ -141,8 +141,8 @@
     ("O"   . 'mc/reverse-regions)))
 
 ;;;; Git
-(require 'magit)
-(define-key my-keymap (kbd "C-t") 'magit-status)
+;(require 'magit)
+;(define-key my-keymap (kbd "C-t") 'magit-status)
 
 
 ;;; EIN
@@ -265,72 +265,13 @@
 
 
 ;;; outshine
-(require 'outshine)
-(defun outshine-fold-to-level-1  ()
-  (interactive)
-  (beginning-of-line)
-  (while (not (eobp))
-    (outline-hide-more)
-    (forward-line 1)))
-
-;;; org
-;;;;; config
-
-;; set locale as English
-(setq system-time-locale "C")
-
-(setq org-startup-truncated nil)
-(setq org-export-latex-classes nil)
-(setq org-hide-leading-stars nil)
-
-(defun org-fold-this-brunch ()
-  "Fold brunch which the cursol is located."
-  (interactive)
-  (outline-previous-visible-heading 1)
-  (org-cycle))
-
-(global-set-key (kbd "C-c a ") 'org-agenda)
-(global-set-key (kbd "C-c m") 'org-capture)
-
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (setq truncate-lines t)
-	    (define-key org-mode-map (kbd "\C-c 1") 'org-time-stamp-inactive)
-	    (define-key org-mode-map (kbd "\C-c f") 'org-fold-this-brunch)
-	    (define-key org-mode-map (kbd "\C-c e") 'org-edit-special)))
-
-(setq org-agenda-files '("~/now"))
-
-(smartrep-define-key org-mode-map "C-c"
-  '(("C-n" . outline-next-visible-heading)
-    ("C-p" . outline-previous-visible-heading)
-    ("C-u" . outline-up-heading)
-    ("C-f" . org-forward-heading-same-level)
-    ("C-b" . org-backward-heading-same-level)))
-
-;; Columns Views
-; http://futurismo.biz/archives/3631
-(setq org-global-properties (quote ((
-      "Effort_ALL" . "00:05 00:10 00:15 00:30 01:00 01:30 02:00 02:30 03:00"))))
-;; カラムビューで表示する項目
-;; Column の書式は以下.
-;; [http://orgmode.org/manual/Column-attributes.html#Column-attributes
-(setq org-columns-default-format "%50ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM(Clock){:}")
-(setq org-agenda-columns-add-appointments-to-effort-sum t)
-
-; priority means time region
-; | priority | time region|
-; |    A     | 9:00-12:00 |
-; |    B     | 13:00-16:00|
-; |    C     | 16:00-19:00|
-; |    D     | 21:00-24:00|
-(setq org-highest-priority ?A)
-(setq org-lowest-priority ?D)
-(setq org-default-priority ?A)
-
-;; org latex setting
-(setq org-latex-pdf-process
-      '("latexmk %f"))
+;(require 'outshine)
+;(defun outshine-fold-to-level-1  ()
+;  (interactive)
+;  (beginning-of-line)
+;  (while (not (eobp))
+;    (outline-hide-more)
+;    (forward-line 1)))
 
 ;;; elisp
 
@@ -360,7 +301,7 @@
 
 ;;; dired
 (require 'dired-details)
-(dired-details-install)	    
+(dired-details-install)    
 (setq dired-dwim-target t)
 (setq dired-details-hidden-string "")
 (setq dired-details-hide-link-target nil)
@@ -377,7 +318,6 @@
   (helm-mode 1))
 
 ;;;; key bind
-
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'find-file)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
@@ -445,21 +385,6 @@
 ;;;; the-silver-searcher
 (define-key my-keymap (kbd "C-s") 'ag)
 
-;;; auto-complete
-
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-
-(setq ac-auto-start 4)
-(setq ac-use-fuzzy t)
-
-;; exclude Japanese from candidates
-;; http://d.hatena.ne.jp/IMAKADO/20090813/1250130343
-(defadvice ac-word-candidates (after remove-word-contain-japanese activate)
-  (let ((contain-japanese (lambda (s) (string-match (rx (category japanese)) s))))
-    (setq ad-return-value
-	  (remove-if contain-japanese ad-return-value))))
 
 ;;; yasnippet
 (require 'yasnippet)
