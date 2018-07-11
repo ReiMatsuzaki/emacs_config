@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: insert_chk_err
+# key: chk
+# insert ; CHK_ERR(ierr)
+# --
+; CHK_ERR(ierr)
