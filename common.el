@@ -22,8 +22,10 @@
 	auctex
 	magit
 	shackle
-	dired-details
-	dired-toggle
+;	dired-details
+					;	dired-toggle
+	popwin
+	markdown-mode
 	))
 
 (require 'cl)
@@ -300,16 +302,16 @@
 ;	     ))
 
 ;;; dired
-(require 'dired-details)
-(dired-details-install)    
-(setq dired-dwim-target t)
-(setq dired-details-hidden-string "")
-(setq dired-details-hide-link-target nil)
-(define-key my-keymap (kbd "C-d") 'dired-toggle)
-(add-hook 'dired-load-hook
-	  (lambda ()
-	    (define-key dired-mode-map (kbd "j") 'dired-next-line)
-	    (define-key dired-mode-map (kbd "k") 'dired-previous-line)))
+;(require 'dired-details)
+;(dired-details-install)    
+;(setq dired-dwim-target t)
+;(setq dired-details-hidden-string "")
+;(setq dired-details-hide-link-target nil)
+;(define-key my-keymap (kbd "C-d") 'dired-toggle)
+;(add-hook 'dired-load-hook
+;	  (lambda ()
+;	    (define-key dired-mode-map (kbd "j") 'dired-next-line)
+;	    (define-key dired-mode-map (kbd "k") 'dired-previous-line)))
 
 ;;; helm
 ;;;; require
